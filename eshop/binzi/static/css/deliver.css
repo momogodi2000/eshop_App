@@ -1,0 +1,215 @@
+/* Global Styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+  
+  .dashboard {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .dashboard-nav {
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+  }
+  
+  .dashboard-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dashboard-nav-item {
+    display: block;
+    padding: 10px 20px;
+    border-bottom: 1px solid #444;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .dashboard-nav-item:hover {
+    background-color: #444;
+    color: #fff;
+  }
+  
+  .dashboard-nav-item i {
+    margin-right: 10px;
+  }
+  
+  .logout-btn {
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .logout-btn:hover {
+    background-color: #23527c;
+  }
+  
+  .dashboard-app {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto; /* Add this to make the dashboard app scrollable */
+  }
+  
+  .dashboard-toolbar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .dashboard-toolbar a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .dashboard-content {
+    padding: 20px;
+  }
+  
+  .dashboard-overview {
+    margin-top: 20px;
+  }
+  
+  .card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-footer {
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .card-footer a {
+    color: #337ab7;
+    text-decoration: none;
+  }
+  
+  .card-footer a:hover {
+    color: #23527c;
+  }
+  
+  .welcome-section {
+    margin-top: 40px;
+  }
+  
+  .welcome-section h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .features-section {
+    margin-top: 40px;
+  }
+  
+  .features-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .features-section li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .features-section li strong {
+    font-weight: bold;
+  }
+  
+  .testimonials-section {
+    margin-top: 40px;
+  }
+  
+  .testimonials-section .testimonial-card {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .testimonials-section p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .testimonials-section strong {
+    font-weight: bold;
+  }
+  
+  .updates-section {
+    margin-top: 40px;
+  }
+  
+  .updates-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .updates-section li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .report-section {
+    margin-top: 40px;
+  }
+  
+  .report-section a {
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .report-section a:hover {
+    background-color: #23527c;
+  }
+  
+  /* Add this to make the dashboard app scrollable */
+  .dashboard-app::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .dashboard-app::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+  }
+  
+  .dashboard-app::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+  }

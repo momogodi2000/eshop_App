@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/clients.css' %}">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="{% url 'clients_panel' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                    <i class="fas fa-shopping-cart"></i> 
+                    <span>{{ user.username }}'s E-Shop Panel</span>
+                </a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="{% url 'product_browsing' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-search"></i> Product Browsing
+                </a>
+                <a href="#" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-exchange-alt"></i> Product Comparison
+                </a>
+                <a href="{% url 'publicity_feed' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-shopping-cart"></i> Publicite
+                </a>
+                <a href="{% url 'account_management' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-user"></i> Account Management
+                </a>
+                <a href="{% url 'contact_us' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-headset"></i> Customer Support
+                </a>
+                <a href="#" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-star"></i> Reviews and Ratings
+                </a>
+                <a href="#" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-heart"></i> Wishlists
+                </a>
+                <a href="{% url 'logout' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+        <main class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
+            </header>
+            <div class="dashboard-content">
+                <h1 class="animate__animated animate__fadeInRight">Welcome, {{ user.username }}!</h1>
+                <p class="animate__animated animate__fadeInRight">Explore products, make purchases, and manage your account seamlessly.</p>
+
+                <div class="container mt-5">
+                    <h2 class="text-center mb-4">Catalog</h2>
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs" id="catalogTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="electronics-tab" data-toggle="tab" href="#electronics" role="tab" aria-controls="electronics" aria-selected="true">Electronics</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="fashion-tab" data-toggle="tab" href="#fashion" role="tab" aria-controls="fashion" aria-selected="false">Fashion</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="home-living-tab" data-toggle="tab" href="#home-living" role="tab" aria-controls="home-living" aria-selected="false">Home & Living</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="beauty-tab" data-toggle="tab" href="#beauty" role="tab" aria-controls="beauty" aria-selected="false">Beauty & Personal Care</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="sports-tab" data-toggle="tab" href="#sports" role="tab" aria-controls="sports" aria-selected="false">Sports & Outdoors</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="catalogTabsContent">
+                                <!-- Electronics Tab -->
+                                <div class="tab-pane fade show active" id="electronics" role="tabpanel" aria-labelledby="electronics-tab">
+                                    <div class="row">
+                                        <!-- Electronics Products -->
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/smartphone.jpeg' %}" class="card-img-top" alt="Smartphone">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Smartphone</h5>
+                                                    <p class="card-text">Latest model with high performance.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/laptop.jpeg' %}" class="card-img-top" alt="Laptop">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Laptop</h5>
+                                                    <p class="card-text">Powerful laptop for all your needs.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/Camera.jpeg' %}" class="card-img-top" alt="Camera">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Camera</h5>
+                                                    <p class="card-text">Capture memories with this high-quality camera.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/Speaker.jpeg' %}" class="card-img-top" alt="Speaker">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Speaker</h5>
+                                                    <p class="card-text">Enjoy high-fidelity sound with this speaker.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/console.jpeg' %}" class="card-img-top" alt="Gaming Console">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Gaming Console</h5>
+                                                    <p class="card-text">Get your game on with the latest console.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fashion Tab -->
+                                <div class="tab-pane fade" id="fashion" role="tabpanel" aria-labelledby="fashion-tab">
+                                    <div class="row">
+                                        <!-- Fashion Products -->
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/tshirt.jpeg' %}" class="card-img-top" alt="T-Shirt">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">T-Shirt</h5>
+                                                    <p class="card-text">Stylish and comfortable T-shirt.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/jeans.jpeg' %}" class="card-img-top" alt="Jeans">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Jeans</h5>
+                                                    <p class="card-text">Fashionable jeans for every occasion.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/dress.jpeg' %}" class="card-img-top" alt="Dress">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Dress</h5>
+                                                    <p class="card-text">Elegant dress for special events.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/jacket.jpeg' %}" class="card-img-top" alt="Jacket">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Jacket</h5>
+                                                    <p class="card-text">Stay warm with this stylish jacket.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Home & Living Tab -->
+                                <div class="tab-pane fade" id="home-living" role="tabpanel" aria-labelledby="home-living-tab">
+                                    <div class="row">
+                                        <!-- Home & Living Products -->
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/sofa.jpeg' %}" class="card-img-top" alt="Sofa">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Sofa</h5>
+                                                    <p class="card-text">Comfortable and stylish sofa for your living room.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/bed.jpeg' %}" class="card-img-top" alt="Bed">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Bed</h5>
+                                                    <p class="card-text">Quality bed for a good night's sleep.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/Dining.jpeg' %}" class="card-img-top" alt="Dining Table">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Dining Table</h5>
+                                                    <p class="card-text">Elegant dining table for family meals.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/lamp.jpeg' %}" class="card-img-top" alt="Lamp">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Lamp</h5>
+                                                    <p class="card-text">Stylish lamp to brighten up your space.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Beauty & Personal Care Tab -->
+                                <div class="tab-pane fade" id="beauty" role="tabpanel" aria-labelledby="beauty-tab">
+                                    <div class="row">
+                                        <!-- Beauty & Personal Care Products -->
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/skincare.jpeg' %}" class="card-img-top" alt="Skincare">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Skincare</h5>
+                                                    <p class="card-text">Nourish your skin with our range of skincare products.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/makeup.jpeg' %}" class="card-img-top" alt="Makeup">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Makeup</h5>
+                                                    <p class="card-text">Enhance your beauty with high-quality makeup.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/perfume.jpeg' %}" class="card-img-top" alt="Perfume">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Perfume</h5>
+                                                    <p class="card-text">Aromatic perfumes to make a lasting impression.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/haircare.jpeg' %}" class="card-img-top" alt="Haircare">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Haircare</h5>
+                                                    <p class="card-text">Keep your hair healthy and beautiful with our products.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Sports & Outdoors Tab -->
+                                <div class="tab-pane fade" id="sports" role="tabpanel" aria-labelledby="sports-tab">
+                                    <div class="row">
+                                        <!-- Sports & Outdoors Products -->
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/gym-equipment.jpeg' %}" class="card-img-top" alt="Gym Equipment">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Gym Equipment</h5>
+                                                    <p class="card-text">Equip your home gym with quality equipment.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/sportswear.jpeg' %}" class="card-img-top" alt="Sportswear">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Sportswear</h5>
+                                                    <p class="card-text">Comfortable and stylish sportswear for all activities.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/outdoor-gear.jpeg' %}" class="card-img-top" alt="Outdoor Gear">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Outdoor Gear</h5>
+                                                    <p class="card-text">Get ready for your outdoor adventures with our gear.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 mb-4 product-card">
+                                            <div class="card">
+                                                <img src="{% static 'image/bike.jpeg' %}" class="card-img-top" alt="Bike">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Bike</h5>
+                                                    <p class="card-text">High-performance bike for cycling enthusiasts.</p>
+                                                    <a href="#" class="btn btn-primary">View More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if product.video %}
+            <video class="card-img-top" controls>
+                <source src="{{ product.video.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% endif %}
+            <section class="container mt-5 mb-5">
+                <h2 class="text-center">Advertisement</h2>
+                <div class="video-wrapper text-center">
+                    <video width="100%" controls>
+                        <source src="{% static 'assets/video.mp4' %}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- jQuery and Bootstrap Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'js/clients.js' %}"></script>
+</body>
+</html>

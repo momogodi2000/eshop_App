@@ -1,0 +1,118 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicity Feed</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/feed.css' %}">
+
+   
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="#"><img src="{% static 'image/logo.jpeg' %}" alt="Logo"> Publicity Feed</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'clients_panel' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Notifications</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Settings</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-5">Publicity Feed</h2>
+    <div class="row">
+        {% for publicity in publicities %}
+        <div class="col-md-6">
+            <div class="card publicity-card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ publicity.title }}</h5>
+                    <p class="card-text">{{ publicity.description }}</p>
+                    {% if publicity.photos.all %}
+                    <div id="carousel{{ publicity.id }}" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for photo in publicity.photos.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ photo.image.url }}" class="d-block w-100" alt="...">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#carousel{{ publicity.id }}" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carousel{{ publicity.id }}" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% if publicity.videos.all %}
+                    {% for video in publicity.videos.all %}
+                    <video controls>
+                        <source src="{{ video.video.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="mt-3 publicity-actions">
+                        <a href="{% url 'toggle_like' publicity.id %}">
+                            <i class="fas fa-heart {% if request.user in publicity.likes.all %}liked{% endif %}"></i>
+                        </a>
+                        <a href="{% url 'toggle_favorite' publicity.id %}">
+                            <i class="fas fa-star {% if request.user in publicity.favorites.all %}favorited{% endif %}"></i>
+                        </a>
+                        <a href="{% url 'book_publicity' publicity.id %}">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </div>
+                    <form action="{% url 'add_comment' publicity.id %}" method="post" class="mt-3">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="content" class="form-control" placeholder="Add a comment...">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Comment</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-3 comment-section">
+                        <h6>Comments:</h6>
+                        {% for comment in publicity.comments.all %}
+                        <p><strong>{{ comment.user.username }}</strong>: {{ comment.content }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<a href="{% url 'clients_panel' %}" class="return-button">
+    <i class="fas fa-arrow-left"></i> Return to Client Panel
+</a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

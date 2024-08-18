@@ -1,0 +1,61 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ recipient.username }}</title>
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <style>
+        .chat-box {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message .sender {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Chat with {{ recipient.username }}</h1>
+    <div class="chat-box border rounded p-3 mb-3">
+        <!-- Messages will be loaded here dynamically -->
+    </div>
+    <textarea id="message-input" class="form-control mb-3" rows="3" placeholder="Type your message..."></textarea>
+    <button id="send-button" class="btn btn-primary">Send</button>
+</div>
+
+<script>
+    const recipientId = "{{ recipient.id }}";
+    const chatSocket = new WebSocket(
+        `ws://${window.location.host}/ws/chat/${recipientId}/`
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const chatBox = document.querySelector('.chat-box');
+        chatBox.innerHTML += `<div class="message"><span class="sender">${data.sender}:</span> ${data.message}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#send-button').onclick = function(e) {
+        const messageInput = document.querySelector('#message-input');
+        const message = messageInput.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInput.value = '';
+    };
+</script>
+</body>
+</html>

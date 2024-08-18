@@ -1,0 +1,106 @@
+/* Global Styles */
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f8f9fa;
+    margin-top: 60px;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero Section */
+.hero-section {
+    background: url('/static/image/moi.jpeg') no-repeat center center;
+    background-size: cover;
+    padding: 100px 0;
+    color: white;
+}
+
+.hero-section .btn {
+    background-color: #007bff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* Product Section */
+.product-section .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-section .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-section .card-title {
+    font-size: 24px;
+    color: #343a40;
+}
+
+/* Cart Section */
+.cart-section {
+    padding: 40px 0;
+    animation: slideIn 1s ease-in-out;
+}
+
+.cart-section h4 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+#cart-total {
+    font-size: 28px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+#checkout-btn {
+    background-color: #28a745;
+    border: none;
+    padding: 15px 20px;
+    font-size: 20px;
+    animation: pulse 1s infinite;
+}
+
+/* Advertisement Video Section */
+.video-wrapper video {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

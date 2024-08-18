@@ -1,0 +1,57 @@
+/* Custom styles for the About Us page */
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    margin-bottom: 50px;
+}
+
+.navbar {
+    padding: 1rem;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-size: 1rem;
+}
+
+h1 {
+    color: #333;
+}
+
+h2 {
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.team-member img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 3px solid #007bff;
+    margin-bottom: 0.5rem;
+}
+
+.team-member h3 {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.team-member p {
+    font-size: 1rem;
+    color: #666;
+}
+
+footer {
+    margin-top: 50px;
+}

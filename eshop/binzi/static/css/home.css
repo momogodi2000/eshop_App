@@ -1,0 +1,159 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    margin-right: 15px;
+}
+
+/* Carousel */
+.carousel-item {
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+}
+
+.carousel-caption {
+    bottom: 20%;
+    text-align: center;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+    background-color: #ccc;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    font-size: 24px;
+    color: #333;
+}
+
+.carousel-control-prev-icon:before {
+    content: "\f053";
+}
+
+.carousel-control-next-icon:before {
+    content: "\f054";
+}
+
+
+
+
+
+/* Search Bar */
+.search-bar {
+    margin-top: 20px;
+}
+
+/* Catalog Cards */
+.product-card .card {
+    border: none;
+    transition: transform 0.3s;
+}
+
+.product-card .card:hover {
+    transform: scale(1.05);
+}
+
+.product-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* About & Contact */
+.about, .contact {
+    padding: 40px 0;
+}
+
+.footer {
+    background-color: #f1f1f1c2;
+    padding: 10px;
+}
+
+
+
+
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Card Styles */
+.product-card .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.product-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Tab Navigation Styles */
+.nav-tabs {
+    border-bottom: 2px solid #ddd;
+}
+
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-radius: 0;
+    margin-bottom: -1px;
+}
+
+.nav-tabs .nav-link.active {
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background-color: #f8f9fa;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+    .product-card .card-img-top {
+        height: 150px;
+    }
+}
+
+@media (min-width: 768px) {
+    .product-card {
+        margin-bottom: 30px;
+    }
+}
+
+
+/*image slide 
+.carousel-item-bg1, .carousel-item-bg2, .carousel-item-bg3 {
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+
+
+.carousel-item-bg1 {
+    background-image: url('../images/shoes1.jpeg');
+}
+
+.carousel-item-bg2 {
+    background-image: url('../images/shoes1.jpeg');
+}
+
+.carousel-item-bg3 {
+    background-image: url('../images/shoes1.jpeg');
+}
+
+*/

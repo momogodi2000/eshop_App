@@ -1,0 +1,54 @@
+/* Add some padding to the container */
+.container {
+    padding: 20px;
+  }
+  
+  /* Style the table */
+  .table {
+    margin-top: 20px;
+  }
+  
+  /* Add some space between the table rows */
+  .table tbody tr {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table tbody tr:last-child {
+    border-bottom: none;
+  }
+  
+  /* Style the modal */
+  .modal-content {
+    padding: 20px;
+  }
+  
+  .modal-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .modal-footer {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  /* Add a return button that redirects to the admin panel */
+  .return-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #337ab7;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .return-button:hover {
+    background-color: #23527c;
+  }

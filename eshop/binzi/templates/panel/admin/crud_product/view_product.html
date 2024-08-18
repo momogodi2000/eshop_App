@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">{{ product.name }}</h1>
+    <div class="card">
+        <!-- Display product image -->
+        {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+        {% else %}
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <p class="card-text">Quantity: {{ product.quantity }}</p>
+            <p class="card-text">Price: ${{ product.price }}</p>
+            <p class="card-text">Minimum Quantity: {{ product.min_quantity }}</p>
+            <p class="card-text">Maximum Quantity: {{ product.max_quantity }}</p>
+            <p class="card-text">Status: {{ product.get_status_display }}</p>
+            <p class="card-text">Category: {{ product.category.name }}</p>
+            <p class="card-text">Catalog: {{ product.catalog.name }}</p>
+            <a href="{% url 'edit_product' product.id %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'manage_products' %}" class="btn btn-secondary">Back to Products</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

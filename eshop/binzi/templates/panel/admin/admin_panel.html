@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - eShop</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/user_panel.css' %}">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="#" class="brand-logo"><i class="fas fa-store"></i> <span>eShop Admin Panel</span></a>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'manage_users' %}" class="dashboard-nav-item"><i class="fas fa-users"></i> Manage Users</a>
+                <a href="{% url 'manage_products' %}" class="dashboard-nav-item"><i class="fas fa-box"></i> Manage Products</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+                <a href="{% url 'manage_publicity' %}" class="dashboard-nav-item"><i class="fas fa-tags"></i> Management publicite</a>
+                <a href="{% url 'manage_discounts' %}" class="dashboard-nav-item"><i class="fas fa-gift"></i> Manage Discounts</a>
+                <a href="{% url 'analyse' %}" class="dashboard-nav-item"><i class="fas fa-chart-line"></i> Sales Analytics</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-comments"></i> Customer Reviews</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
+            </nav>
+            <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+        </div>
+        <main class="dashboard-app">
+            <header class="dashboard-toolbar">
+                <a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
+            </header>
+            <div class="dashboard-content">
+                <div class="container">
+                    <!-- Dashboard Overview Section -->
+                    <section class="dashboard-overview mt-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">
+                                        <h5>Total Users</h5>
+                                        <h3>{{ total_users }}</h3> <!-- Dynamic value from database -->
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="text-white" href="#">View Details <i class="fas fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">
+                                        <h5>Total Products</h5>
+                                        <h3>{{ total_products }}</h3> <!-- Dynamic value from database -->
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="text-white" href="#">View Details <i class="fas fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">
+                                        <h5>Total Sales</h5>
+                                        <h3>{{ total_sales }}</h3> <!-- Dynamic value from database -->
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="text-white" href="#">View Details <i class="fas fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">
+                                        <h5>Chat with Delivery</h5>
+                                        <h3>{{ chat_with_delivery }}</h3> <!-- Dynamic value from database -->
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="text-white" href="#">View Details <i class="fas fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <h1 class="mt-4">Welcome to the eShop Admin Panel!</h1>
+                    <p>Manage your users, products, orders, categories, discounts, and more from here.</p>
+
+                    <!-- Team Section -->
+                    <section class="team-section mt-5">
+                        <h2>Our Team</h2>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card team-card">
+                                    <img src="{% static 'image/moi.jpeg' %}" class="card-img-top" alt="Team Member 1">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Binzi</h5>
+                                        <p class="card-text">Project Manager</p>
+                                        <p class="card-text">Lead Developer</p>
+                                        <p class="card-text">Designer</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card team-card">
+                                    <img src="{% static 'image/dev1.jpeg' %}" class="card-img-top" alt="Team Member 2">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Jane Doe</h5>
+                                        <p class="card-text">Marketing Head</p>
+                                        <p class="card-text">Customer Relations</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Welcome Image Section -->
+                    <section class="welcome-section mt-5">
+                        <h2>Welcome Image</h2>
+                        <img src="{% static 'image/dev1.jpeg' %}" class="img-fluid welcome-image" alt="Welcome">
+                    </section>
+
+                    <!-- Additional Content -->
+                    <section class="additional-content mt-5">
+                        <h2>Additional Information</h2>
+                        <p>We strive to provide the best service for managing the eShop platform. Our team is dedicated to ensuring smooth and efficient operations, helping you manage your online store with ease.</p>
+                        <p>Whether you need to add new products, manage orders, or analyze sales, our platform provides all the tools you need to run your e-commerce business efficiently.</p>
+                    </section>
+
+                        <!-- Recent Updates -->
+                        <section class="updates-section mt-5">
+                            <h2>Recent Updates</h2>
+                            <ul>
+                                <li>Added support for multiple currencies in the checkout process.</li>
+                                <li>Improved performance of product search and filtering.</li>
+                                <li>Enhanced security features for user accounts.</li>
+                                <li>New analytics dashboard with additional metrics.</li>
+                            </ul>
+                        </section>
+
+                        <!-- User Testimonials -->
+                    <section class="testimonials-section mt-5">
+                        <h2>User Testimonials</h2>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="testimonial-card">
+                                    <p>"The eShop platform has transformed our online business. The dashboard is user-friendly and provides all the essential tools we need to manage our store effectively."</p>
+                                    <p><strong>John Doe</strong>, E-commerce Manager</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="testimonial-card">
+                                    <p>"Excellent features and great customer support. The sales analytics have been particularly useful for understanding our market trends."</p>
+                                    <p><strong>Jane Smith</strong>, Business Owner</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+               <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">© 2024 Product Management System</span>
+        </div>
+    </footer>
+        </main>
+        
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="{% static 'js/admin_panel.js' %}"></script>
+</body>
+</html>

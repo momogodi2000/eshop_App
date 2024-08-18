@@ -1,0 +1,60 @@
+
+body {
+    background-color: #f0f2f5;
+}
+.navbar {
+    background-color: #4267B2;
+    color: #fff;
+}
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+}
+.publicity-card {
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+.publicity-card img, .publicity-card video {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+.publicity-actions i {
+    margin-right: 10px;
+    cursor: pointer;
+}
+.publicity-actions i.liked, .publicity-actions i.favorited {
+    color: #e74c3c;
+}
+.publicity-actions .fas.fa-shopping-cart {
+    color: #27ae60;
+}
+.return-button {
+    background-color: #4267B2;
+    color: #fff;
+    border-radius: 50px;
+    padding: 10px 20px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.return-button i {
+    margin-right: 5px;
+}
+.comment-section {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 10px;
+}
+.comment-section h6 {
+    font-size: 16px;
+}
+.comment-section p {
+    margin-bottom: 10px;
+}
+.navbar-brand img {
+    height: 40px;
+    margin-right: 10px;
+}

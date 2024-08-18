@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt</title>
+</head>
+<body>
+    <h1>Receipt</h1>
+    <p>Total: {{ cart_total }} FCFA</p>
+    <ul>
+        {% for item in cart_items %}
+            <li>{{ item.name }} - {{ item.price }} FCFA</li>
+        {% endfor %}
+    </ul>
+    <div class="receipt">
+        <h1>Receipt</h1>
+        <p>Transaction ID: {{ receipt.transaction_id }}</p>
+        <p>User: {{ receipt.user.username }}</p>
+        <p>Amount: {{ receipt.amount }} FCFA</p>
+        <p>Payment Method: {{ receipt.payment_method }}</p>
+        <p>Status: {{ receipt.status }}</p>
+        <p>Date: {{ receipt.created_at }}</p>
+    </div>
+</body>
+</html>

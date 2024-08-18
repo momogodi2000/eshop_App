@@ -1,0 +1,51 @@
+<!-- panel/admin/crud_pub/templates/crud_pub/manage_publicity.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Publicity</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/pub.css' %}">
+
+    <a href="{% url 'admin_panel' %}" class="btn btn-secondary mb-3">Return to Admin Panel</a>
+
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'add_publicity' %}" class="btn btn-primary">Add Publicity</a>
+    </div>
+    <div class="row">
+        {% for publicity in publicities %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ publicity.title }}</h5>
+                    <p class="card-text">{{ publicity.description }}</p>
+                    <p class="card-text"><small class="text-muted">{{ publicity.date_posted|date:"d M Y" }}</small></p>
+                    <div class="media-list">
+                        {% for photo in publicity.photos.all %}
+                        <img src="{{ photo.image.url }}" class="img-fluid mb-2">
+                        {% endfor %}
+                        {% for video in publicity.videos.all %}
+                        <video src="{{ video.video.url }}" class="img-fluid mb-2" controls></video>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'edit_publicity' publicity.pk %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'delete_publicity' publicity.pk %}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .settings-container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .settings-section {
+            margin-bottom: 30px;
+        }
+        .settings-section h3 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .form-group i {
+            margin-right: 8px;
+        }
+    </style>
+            <a href="{% url 'admin_panel' %}" class="btn btn-secondary mb-3">Return to Admin Panel</a> 
+
+</head>
+<body>
+
+<div class="container settings-container">
+    <h1 class="text-center">Website Settings</h1>
+
+    <!-- General Website Settings -->
+    <div class="settings-section">
+        <h3><i class="fas fa-cogs"></i> General Website Settings</h3>
+        <form>
+            <div class="form-group">
+                <label for="siteName"><i class="fas fa-heading"></i> Site Name</label>
+                <input type="text" class="form-control" id="siteName" placeholder="Enter site name">
+            </div>
+            <div class="form-group">
+                <label for="siteTagline"><i class="fas fa-tag"></i> Site Tagline</label>
+                <input type="text" class="form-control" id="siteTagline" placeholder="Enter site tagline">
+            </div>
+            <div class="form-group">
+                <label for="siteLogo"><i class="fas fa-image"></i> Logo</label>
+                <input type="file" class="form-control-file" id="siteLogo">
+            </div>
+            <div class="form-group">
+                <label for="siteFavicon"><i class="fas fa-image"></i> Favicon</label>
+                <input type="file" class="form-control-file" id="siteFavicon">
+            </div>
+            <div class="form-group">
+                <label for="colorScheme"><i class="fas fa-palette"></i> Color Scheme</label>
+                <input type="color" class="form-control" id="colorScheme">
+            </div>
+            <div class="form-group">
+                <label for="siteFont"><i class="fas fa-font"></i> Fonts</label>
+                <select class="form-control" id="siteFont">
+                    <option>Arial</option>
+                    <option>Roboto</option>
+                    <option>Times New Roman</option>
+                    <option>Georgia</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="contactEmail"><i class="fas fa-envelope"></i> Contact Email</label>
+                <input type="email" class="form-control" id="contactEmail" placeholder="Enter contact email">
+            </div>
+            <div class="form-group">
+                <label for="contactPhone"><i class="fas fa-phone"></i> Contact Phone</label>
+                <input type="text" class="form-control" id="contactPhone" placeholder="Enter contact phone">
+            </div>
+            <div class="form-group">
+                <label for="socialMedia"><i class="fas fa-share-alt"></i> Social Media Links</label>
+                <input type="url" class="form-control" id="socialMedia" placeholder="Enter social media link">
+            </div>
+        </form>
+    </div>
+
+    <!-- SEO Settings -->
+    <div class="settings-section">
+        <h3><i class="fas fa-search"></i> SEO Settings</h3>
+        <form>
+            <div class="form-group">
+                <label for="metaTitle"><i class="fas fa-clipboard"></i> Meta Title</label>
+                <input type="text" class="form-control" id="metaTitle" placeholder="Enter meta title">
+            </div>
+            <div class="form-group">
+                <label for="metaDescription"><i class="fas fa-align-left"></i> Meta Description</label>
+                <textarea class="form-control" id="metaDescription" rows="3" placeholder="Enter meta description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="metaKeywords"><i class="fas fa-key"></i> Meta Keywords</label>
+                <input type="text" class="form-control" id="metaKeywords" placeholder="Enter meta keywords">
+            </div>
+            <div class="form-group">
+                <label for="sitemap"><i class="fas fa-sitemap"></i> Sitemap Generation</label>
+                <button class="btn btn-primary btn-block" id="sitemap">Generate Sitemap</button>
+            </div>
+            <div class="form-group">
+                <label for="robotsTxt"><i class="fas fa-robot"></i> Robots.txt Management</label>
+                <textarea class="form-control" id="robotsTxt" rows="3" placeholder="Edit robots.txt"></textarea>
+            </div>
+        </form>
+    </div>
+
+    <!-- Email Settings -->
+    <div class="settings-section">
+        <h3><i class="fas fa-envelope"></i> Email Settings</h3>
+        <form>
+            <div class="form-group">
+                <label for="smtpServer"><i class="fas fa-server"></i> SMTP Configuration</label>
+                <input type="text" class="form-control" id="smtpServer" placeholder="Enter SMTP server">
+            </div>
+            <div class="form-group">
+                <label for="emailTemplates"><i class="fas fa-envelope-open-text"></i> Email Templates</label>
+                <button class="btn btn-primary btn-block" id="emailTemplates">Manage Templates</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Navigation Settings -->
+    <div class="settings-section">
+        <h3><i class="fas fa-bars"></i> Navigation Settings</h3>
+        <form>
+            <div class="form-group">
+                <label for="menuStructure"><i class="fas fa-list"></i> Menu Structure</label>
+                <button class="btn btn-primary btn-block" id="menuStructure">Edit Menu</button>
+            </div>
+            <div class="form-group">
+                <label for="footerLinks"><i class="fas fa-link"></i> Footer Links</label>
+                <button class="btn btn-primary btn-block" id="footerLinks">Edit Footer Links</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Other Potential Settings -->
+    <div class="settings-section">
+        <h3><i class="fas fa-wrench"></i> Other Settings</h3>
+        <form>
+            <div class="form-group">
+                <label for="language"><i class="fas fa-globe"></i> Language and Localization</label>
+                <select class="form-control" id="language">
+                    <option>English</option>
+                    <option>French</option>
+                    <option>Spanish</option>
+                    <option>German</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="currency"><i class="fas fa-dollar-sign"></i> Currency Settings</label>
+                <input type="text" class="form-control" id="currency" placeholder="Enter default currency">
+            </div>
+            <div class="form-group">
+                <label for="customCss"><i class="fas fa-code"></i> Custom CSS/JS</label>
+                <textarea class="form-control" id="customCss" rows="3" placeholder="Enter custom CSS or JavaScript"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="errorPages"><i class="fas fa-exclamation-triangle"></i> Error Pages</label>
+                <button class="btn btn-primary btn-block" id="errorPages">Customize Error Pages</button>
+            </div>
+            <div class="form-group">
+                <label for="performanceOptimization"><i class="fas fa-tachometer-alt"></i> Performance Optimization</label>
+                <button class="btn btn-primary btn-block" id="performanceOptimization">Optimize Performance</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

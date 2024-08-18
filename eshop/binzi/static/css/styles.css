@@ -1,0 +1,63 @@
+body {
+    padding-top: 50px;
+}
+
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 50px;
+}
+
+.footer {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+
+.btn-social {
+    transition: transform 0.3s ease;
+}
+.btn-social:hover {
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control-file {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Add your custom styles here */
+.container {
+    margin-top: 50px;
+}
+
+
+
+
