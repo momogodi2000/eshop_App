@@ -4,8 +4,7 @@ from django.contrib.auth import views as auth_views  # Add this import
 from .views import chat_view, sales_analysis_view, manage_discounts
 from .views import process_payment, download_receipt
 from .views import publicity_feed, add_comment, toggle_like, toggle_favorite, book_publicity
-from .views import contact_us
-from django.views.generic import TemplateView
+from .views import contact_us, manage_messages, delete_contact_message, delete_contact
 
 
 
@@ -47,7 +46,9 @@ urlpatterns = [
     path('add/', views.add_publicity, name='add_publicity'),
     path('edit/<int:pk>/', views.edit_publicity, name='edit_publicity'),
     path('delete/<int:pk>/', views.delete_publicity, name='delete_publicity'),
-
+    path('manage-messages/', manage_messages, name='manage_messages'),
+    path('delete-contact-message/<int:message_id>/', delete_contact_message, name='delete_contact_message'),
+    path('delete-contact/<int:contact_id>/', delete_contact, name='delete_contact'),
 
 
     path('product_browsing/', views.product_browsing, name='product_browsing'),
@@ -59,7 +60,6 @@ urlpatterns = [
     path('publicity/<int:publicity_id>/like/', toggle_like, name='toggle_like'),
     path('publicity/<int:publicity_id>/favorite/', toggle_favorite, name='toggle_favorite'),
     path('publicity/<int:publicity_id>/book/', book_publicity, name='book_publicity'),
-    path('account_management/', views.account_management, name='account_management'),
     path('contact_us/', contact_us, name='contact_us'),
 
 

@@ -7,7 +7,187 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | E-Shop Platform</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/about.css' %}" rel="stylesheet">
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    <style>
+        .team-member {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .portfolio-item {
+            margin-bottom: 30px;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .fade-in {
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .testimonial {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-block {
+            margin-bottom: 20px;
+        }
+
+        .testimonial-block p {
+            font-style: italic;
+        }
+
+        .stats {
+            margin-top: 50px;
+        }
+
+        .stats .stat {
+            margin-bottom: 20px;
+        }
+
+        .stats .stat i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .stats .stat span {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.stat {
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.stat:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.stat i {
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2ecc71;
+}
+
+.stat-text {
+    font-size: 18px;
+    color: #666;
+}
+/* Navbar Styles */
+.navbar {
+    padding: 1rem 2rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.navbar-brand {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6h16M4 12h16m-7 6h7'/%3E%3C/svg%3E");
+}
+
+.navbar-nav .nav-item {
+    margin: 0 0.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: #f8f9fa;
+    background-color: #343a40;
+    border-radius: 0.25rem;
+}
+
+/* Responsive Navbar */
+@media (max-width: 992px) {
+    .navbar-collapse {
+        margin-top: 1rem;
+    }
+}
+
+/* Optional - Add animation for smoother menu collapse/expand */
+.collapse {
+    transition: height 0.3s ease;
+}
+
+
+.testimonial-block {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial {
+    text-align: center;
+}
+
+.testimonial-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 10px auto;
+}
+
+.testimonial p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.testimonial strong {
+    font-size: 18px;
+    color: #333;
+}
+    </style>
 </head>
 <body>
     <header>
@@ -32,7 +212,7 @@
         </nav>
     </header>
 
-    <main class="container mt-5">
+    <main class="container mt-5 fade-in">
         <h1 class="text-center mb-4">About Us</h1>
         <div class="row mt-4">
             <div class="col-lg-6 mb-4">
@@ -42,17 +222,100 @@
             <div class="col-lg-6 mb-4">
                 <h2>Our Team</h2>
                 <div class="team-member">
-                    <img src="{% static 'image/moi.jpeg' %}" alt="John Doe" class="img-fluid rounded-circle">
+                    <img src="{% static 'image/dev.jpeg' %}" alt="John Doe">
                     <h3>John Doe</h3>
                     <p>Founder & CEO</p>
                     <p>John is the visionary behind E-Shop. With over a decade of experience in e-commerce, he ensures that our platform is customer-centric and innovative.</p>
                 </div>
-                <div class="team-member mt-3">
-                    <img src="{% static 'image/moi.jpeg' %}" alt="Jane Smith" class="img-fluid rounded-circle">
+                <div class="team-member">
+                    <img src="{% static 'image/moi.jpeg' %}" alt="Jane Smith">
                     <h3>Jane Smith</h3>
                     <p>Chief Technology Officer (CTO)</p>
                     <p>Jane leads our tech team, ensuring that our platform runs smoothly and securely. Her expertise in web development and software engineering is crucial to our success.</p>
                 </div>
+                <div class="team-member">
+                    <img src="{% static 'image/moi.jpeg' %}" alt="Bob Johnson">
+                    <h3>Bob Johnson</h3>
+                    <p>Marketing Manager</p>
+                    <p>Bob is responsible for spreading the word about E-Shop. With his creative marketing strategies, he helps us reach new customers and build a loyal community.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-center mb-4">Developer's Portfolio</h2>
+        <div class="row">
+            <div class="col-md-4 portfolio-item">
+                <img src="{% static 'image/moi.jpeg' %}" alt="Project 1">
+                <h4 class="text-center mt-2">Project One</h4>
+                <p class="text-center">A brief description of Project One, showcasing its features and impact.</p>
+            </div>
+        </div>
+
+        <h2 class="text-center mt-5">Testimonials</h2>
+<div class="row mt-4">
+    <div class="col-md-3 testimonial-block">
+        <div class="testimonial">
+            <img src="{% static 'image/moi.jpeg' %}" alt="Customer Photo" class="testimonial-photo">
+            <p>"E-Shop has transformed the way we shop online. Their attention to detail and customer service is outstanding!"</p>
+            <p class="text-right"><strong>Customer Name</strong></p>
+        </div>
+    </div>
+    <div class="col-md-3 testimonial-block">
+        <div class="testimonial">
+            <img src="{% static 'image/moi.jpeg' %}" alt="Customer Photo" class="testimonial-photo">
+            <p>"The platform is easy to use and offers a fantastic range of products. Highly recommended!"</p>
+            <p class="text-right"><strong>Another Customer</strong></p>
+        </div>
+    </div>
+    <div class="col-md-3 testimonial-block">
+        <div class="testimonial">
+            <img src="{% static 'image/moi.jpeg' %}" alt="Customer Photo" class="testimonial-photo">
+            <p>"I was blown away by the speed of delivery and the quality of the products. 10/10!"</p>
+            <p class="text-right"><strong>Satisfied Customer</strong></p>
+        </div>
+    </div>
+    <div class="col-md-3 testimonial-block">
+        <div class="testimonial">
+            <img src="{% static 'image/moi.jpeg' %}" alt="Customer Photo" class="testimonial-photo">
+            <p>"E-Shop has exceeded my expectations in every way. I'm a customer for life!"</p>
+            <p class="text-right"><strong>Loyal Customer</strong></p>
+        </div>
+    </div>
+</div>
+
+        <h2 class="text-center mt-5">Get in Touch</h2>
+        <form class="mt-4" action="{% url 'contact' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Send</button>
+        </form>
+
+        <div class="stats">
+            <div class="stat">
+                <i class="fas fa-users fa-3x"></i>
+                <span class="stat-number">1000+</span>
+                <p class="stat-text">Happy Customers</p>
+            </div>
+            <div class="stat">
+                <i class="fas fa-shopping-cart fa-3x"></i>
+                <span class="stat-number">5000+</span>
+                <p class="stat-text">Orders Placed</p>
+            </div>
+            <div class="stat">
+                <i class="fas fa-star fa-3x"></i>
+                <span class="stat-number">4.5/5</span>
+                <p class="stat-text">Average Rating</p>
             </div>
         </div>
     </main>
@@ -62,7 +325,44 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     <script src="{% static 'js/about.js' %}"></script>
+    <script>
+        // Optional JavaScript for additional animations or interactions
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Example of a simple animation
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                element.classList.add('fade-in');
+            });
+        });
+
+        // Add animation to the navbar-toggler
+document.querySelector('.navbar-toggler').addEventListener('click', function() {
+    this.classList.toggle('active');
+    document.querySelector('.collapse').classList.toggle('show');
+});
+
+// Add animation to the nav-link
+document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+        this.classList.add('active');
+        setTimeout(function() {
+            link.classList.remove('active');
+        }, 300);
+    });
+});
+
+// Add animation to the testimonials
+document.querySelectorAll('.testimonial-block').forEach(function(block) {
+    block.addEventListener('mouseover', function() {
+        this.classList.add('animated');
+    });
+    block.addEventListener('mouseout', function() {
+        this.classList.remove('animated');
+    });
+});
+    </script>
 </body>
 </html>

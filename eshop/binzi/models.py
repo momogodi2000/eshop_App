@@ -17,16 +17,7 @@ class CustomUser(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     theme = models.CharField(max_length=100, default='light', choices=[('light', 'Light'), ('dark', 'Dark')])
     
-class UserSetting(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    logo = models.ImageField(upload_to='logos/', blank=True, null=True)
-    color_scheme = models.CharField(max_length=7, blank=True)  # Hex color code for the theme
-    language = models.CharField(max_length=50, default='en')
-    currency = models.CharField(max_length=10, default='USD')
-
-    def __str__(self):
-        return f"Settings for {self.user.username}"
-    
+  
 
 class ContactMessage(models.Model):
     name = models.CharField(max_length=255)

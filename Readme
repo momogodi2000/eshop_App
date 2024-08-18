@@ -1,0 +1,222 @@
+
+                    Django E-commerce Platform
+This is a Django-based e-commerce platform designed to manage products, sales, and interactions between different user roles: Admin, Deliver, and Clients. The platform allows administrators to manage users, products, categories, and catalogs, while delivering agents handle deliveries and clients can browse products, make purchases, and interact with publicities.
+
+Table of Contents
+Features
+Installation
+Usage
+Actors and Roles
+Project Structure
+Screenshots
+License
+Features
+User Authentication: Custom user model with roles (Admin, Deliver, Client).
+Product Management: Admins can create, update, and delete products, categories, and catalogs.
+Sales Management: Track sales, calculate discounts, and manage receipts.
+Publicity System: Create and manage publicities with photos, videos, comments, likes, and bookings.
+Site Customization: Admins can customize site settings such as theme, logo, and more.
+Messaging System: Users can send messages to each other.
+Contact Management: Admins can manage contact messages and information submitted by users.
+Installation
+Prerequisites
+Python 3.x
+Django 3.x or later
+PostgreSQL (or another preferred database)
+Steps
+Clone the Repository
+
+
+
+git clone https://github.com/yourusername/your-repo.git
+cd your-repo
+Create a Virtual Environment
+
+
+python3 -m venv venv
+source venv/bin/activate
+Install Dependencies
+
+
+pip install -r requirements.txt
+Database Setup
+
+Configure your database in settings.py.
+Run migrations to set up the database schema:
+
+
+python manage.py migrate
+Create a Superuser
+
+
+python manage.py createsuperuser
+Run the Development Server
+
+bash
+Copy code
+python manage.py runserver
+Access the Application
+
+Open your browser and go to http://127.0.0.1:8000.
+Usage
+Actors and Roles
+Admin
+
+Username: admin
+Password: admin123
+Role: The admin can manage all aspects of the platform, including products, users, sales, publicities, and site settings.
+Deliver
+
+Username: deliver
+Password: del123
+Role: Delivers manage the delivery process for the orders placed by clients.
+Clients
+
+Role: Clients can sign up, browse products, make purchases, and interact with publicities (like, comment, and book).
+How to Interact
+Admin Dashboard: Once logged in as an admin, you will have access to the admin dashboard where you can manage products, sales, categories, users, and more.
+
+Deliver Dashboard: Upon logging in as a deliver agent, you will be directed to a dashboard where you can manage deliveries assigned to you.
+
+Client Account: Clients need to create an account through the registration page. After logging in, they can browse products, purchase items, and engage with publicities.
+
+Models Overview
+CustomUser: Extends the default Django AbstractUser with additional fields such as role, profile picture, and theme.
+ContactMessage: Stores messages submitted by users through a contact form.
+Category: Manages product categories.
+Catalog: Organizes products into catalogs.
+Product: Contains information about the products, including quantity, status, price, and associated category and catalog.
+Sale: Tracks sales information, including the product sold, quantity, and total amount.
+Message: Handles user-to-user messaging.
+SiteSettings: Stores customizable site settings, including logo, color scheme, and social media links.
+Receipt: Stores transaction receipts.
+Publicity: Manages publicities with associated photos, videos, comments, likes, favorites, and bookings.
+Photo: Stores images associated with publicities.
+Video: Stores videos associated with publicities.
+Comment: Stores comments made by users on publicities.
+Like: Tracks likes on publicities.
+Favorite: Tracks publicities marked as favorites by users.
+Booking: Manages bookings made by users on publicities.
+Contact: Stores contact information and service feedback provided by users.
+Project Structure
+arduino
+Copy code
+your-repo/
+│
+├── manage.py
+├── README.md
+├── requirements.txt
+├── <your_app_name>/
+│   ├── migrations/
+│   ├── static/
+│   ├── templates/
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   └── ...
+└── ...
+
+
+
+
+## Database Setup
+
+1. **Database Configuration:**
+    - Update your `settings.py` file with the appropriate database configuration.
+
+    ```python
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'your_db_name',
+            'USER': 'your_db_user',
+            'PASSWORD': 'your_db_password',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
+    ```
+
+2. **Run Migrations:**
+    ```bash
+    python manage.py migrate
+    ```
+
+## Credential Setup
+
+1. **Environment Variables:**
+    - Create a `.env` file at the root of your project.
+
+    ```env
+    SECRET_KEY=your_secret_key
+    DEBUG=True
+    ALLOWED_HOSTS=127.0.0.1, .localhost
+    EMAIL_HOST=smtp.yourmail.com
+    EMAIL_PORT=587
+    EMAIL_HOST_USER=your_email@example.com
+    EMAIL_HOST_PASSWORD=your_email_password
+    EMAIL_USE_TLS=True
+    ```
+
+2. **Add `.env` file to your settings:**
+    - Update your `settings.py` to read from the `.env` file.
+
+    ```python
+    from dotenv import load_dotenv
+    import os
+
+    load_dotenv()
+
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    DEBUG = os.getenv('DEBUG', 'False') == 'True'
+    EMAIL_HOST = os.getenv('EMAIL_HOST')
+    EMAIL_PORT = os.getenv('EMAIL_PORT')
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+    ```
+
+## User Roles and Functionalities
+
+### 1. **Admin**
+   - **Access:** Admin Panel (`/admin/`)
+   - **Capabilities:**
+     - Manage users and their roles.
+     - View and manage all user-submitted feedback.
+     - Oversee overall system settings.
+     - Send email notifications to users.
+
+### 2. **Registered Users**
+   - **Access:** 
+     - Contact Form (`/contact_us/`)
+   - **Capabilities:**
+     - Submit feedback via the contact form.
+     - Rate the service with a star rating.
+     - Automatically submit geolocation data.
+     - Receive confirmation emails upon form submission.
+
+### 3. **Anonymous Users**
+   - **Access:**
+     - Home Page (`/`)
+     - Registration and Login (`/register/`, `/login/`)
+   - **Capabilities:**
+     - Browse public sections of the website.
+     - Register for an account.
+     - Login to access user functionalities.
+
+## Usage
+
+1. **Submitting Feedback:**
+   - Users can navigate to the contact page and submit their feedback. They can rate the service, describe their experience, and their location will be automatically recorded.
+
+2. **Managing Feedback (Admin):**
+   - Admin users can log in to the admin panel and view all submitted feedback. They can manage user accounts and oversee the smooth running of the application.
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+**Note:** Replace placeholder text like `your_db_name`, `your_email@example.com`, etc., with your actual configuration details.

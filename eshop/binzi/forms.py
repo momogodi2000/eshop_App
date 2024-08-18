@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
-from .models import CustomUser, UserSetting
+from .models import CustomUser
 from .models import Product
 from django import forms
 from .models import Product, Category, Catalog
@@ -130,10 +130,6 @@ class CustomUserChangeForm(UserChangeForm):
         model = CustomUser
         fields = ['username', 'email', 'profile_picture', 'theme']
 
-class UserSettingForm(forms.ModelForm):
-    class Meta:
-        model = UserSetting
-        fields = ['logo', 'color_scheme', 'language', 'currency']
 
 
 

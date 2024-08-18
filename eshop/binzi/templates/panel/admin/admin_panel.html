@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/user_panel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/deliver.css' %}">
 </head>
 <body>
     <div class="dashboard">
@@ -25,7 +25,7 @@
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="{% url 'manage_users' %}" class="dashboard-nav-item"><i class="fas fa-users"></i> Manage Users</a>
                 <a href="{% url 'manage_products' %}" class="dashboard-nav-item"><i class="fas fa-box"></i> Manage Products</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+                <a href="{% url 'manage_messages' %}" class="dashboard-nav-item"><i class="fas fa-shopping-cart"></i> Manage Message</a>
                 <a href="{% url 'manage_publicity' %}" class="dashboard-nav-item"><i class="fas fa-tags"></i> Management publicite</a>
                 <a href="{% url 'manage_discounts' %}" class="dashboard-nav-item"><i class="fas fa-gift"></i> Manage Discounts</a>
                 <a href="{% url 'analyse' %}" class="dashboard-nav-item"><i class="fas fa-chart-line"></i> Sales Analytics</a>

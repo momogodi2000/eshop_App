@@ -8,7 +8,159 @@
     <title>Contact Us | E-Shop Platform</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'css/contact.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+input, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #3e8e41;
+}
+
+.animate__animated {
+    animation-duration: 2s;
+}
+
+.animate__fadeInDown {
+    animation-name: fadeInDown;
+}
+
+.animate__fadeInUp {
+    animation-name: fadeInUp;
+}
+
+.animate__pulse {
+    animation-name: pulse;
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+/* Navbar Styles */
+.navbar {
+    padding: 1rem 2rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.navbar-brand {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6h16M4 12h16m-7 6h7'/%3E%3C/svg%3E");
+}
+
+.navbar-nav .nav-item {
+    margin: 0 0.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: #f8f9fa;
+    background-color: #343a40;
+    border-radius: 0.25rem;
+}
+
+/* Responsive Navbar */
+@media (max-width: 992px) {
+    .navbar-collapse {
+        margin-top: 1rem;
+    }
+}
+
+/* Optional - Add animation for smoother menu collapse/expand */
+.collapse {
+    transition: height 0.3s ease;
+}
+
+</style>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,8 +185,8 @@
     </header>
 
     <main class="container mt-5">
-        <h1 class="text-center mb-4">Contact Us</h1>
-        <form action="/send_message" method="POST" class="mt-4" id="contactForm">
+        <h1 class="text-center mb-4 animate__animated animate__fadeInDown">Contact Us</h1>
+        <form action="/send_message" method="POST" class="mt-4 animate__animated animate__fadeInUp" id="contactForm">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="name" class="form-label">Name</label>
@@ -49,16 +201,42 @@
                 <label for="message" class="form-label">Message</label>
                 <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" id="submitButton">Send Message</button>
+            <button type="submit" class="btn btn-primary animate__animated animate__pulse" id="submitButton">Send Message</button>
         </form>
     </main>
 
-    <footer class="bg-dark text-white text-center py-3 mt-5">
+    <footer class="bg-dark text-white text-center py-3 mt-5 animate__animated animate__fadeInUp">
         <p>&copy; 2024 E-Shop. All Rights Reserved.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     <script src="{% static 'js/contact.js' %}"></script>
+    <script>
+        // Add animation to the form
+        document.querySelector('#contactForm').addEventListener('submit', function() {
+            this.classList.add('animate__animated', 'animate__fadeOutUp');
+            setTimeout(function() {
+                document.querySelector('#contactForm').classList.remove('animate__animated', 'animate__fadeOutUp');
+            }, 2000);
+        });
+
+        // Add animation to the form
+document.querySelector('#contactForm').addEventListener('submit', function() {
+    this.classList.add('animate__animated', 'animate__fadeOutUp');
+    setTimeout(function() {
+        document.querySelector('#contactForm').classList.remove('animate__animated', 'animate__fadeOutUp');
+    }, 2000);
+});
+
+// Add animation to the submit button
+document.querySelector('#submitButton').addEventListener('mouseover', function() {
+    this.classList.add('animate__animated', 'animate__pulse');
+});
+
+document.querySelector('#submitButton').addEventListener('mouseout', function() {
+    this.classList.remove('animate__animated', 'animate__pulse');
+});
+    </script>
 </body>
 </html>

@@ -36,13 +36,8 @@ from django.core.files.base import ContentFile
 from .models import Publicity, Video, Photo
 from .forms import PublicityForm, VideoForm, PhotoForm
 from .models import  Comment, Like, Favorite, Booking
-from .forms import CustomUserChangeForm, UserSettingForm
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from .models import CustomUser, UserSetting
-from .forms import ContactForm  # Correct import from forms.py
-
-
+from .forms import ContactForm
+from .models import ContactMessage, Contact
 
 
 
@@ -124,6 +119,8 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             auth_login(request, user)
+          
+
             if user.role == 'admin':
                 return redirect('admin_panel')  # Adjust this to match your URL pattern name
             elif user.role == 'deliver':
@@ -133,6 +130,8 @@ def login(request):
     else:
         form = AuthenticationForm()
     return render(request, 'auth/login.html', {'form': form})
+
+
 
 def forgot_password(request):
     if request.method == 'POST':
@@ -456,6 +455,30 @@ def delete_publicity(request, pk):
 
 
 
+## admin view messsage
+
+@login_required
+def manage_messages(request):
+    contact_messages = ContactMessage.objects.all()
+    contacts = Contact.objects.all()
+    context = {
+        'contact_messages': contact_messages,
+        'contacts': contacts,
+    }
+    return render(request, 'panel/admin/setting/manage_messages.html', context)
+
+@login_required
+def delete_contact_message(request, message_id):
+    message = get_object_or_404(ContactMessage, id=message_id)
+    message.delete()
+    return redirect('manage_messages')
+
+@login_required
+def delete_contact(request, contact_id):
+    contact = get_object_or_404(Contact, id=contact_id)
+    contact.delete()
+    return redirect('manage_messages')
+
 
 
 
@@ -613,39 +636,6 @@ def book_publicity(request, publicity_id):
     publicity = get_object_or_404(Publicity, id=publicity_id)
     Booking.objects.create(publicity=publicity, user=request.user)
     return redirect('publicity_feed')
-
-
-
-
-
-
-@login_required
-def account_management(request):
-    user = request.user
-    try:
-        user_setting = user.usersetting
-    except UserSetting.DoesNotExist:
-        # Create the UserSetting object if it doesn't exist
-        user_setting = UserSetting.objects.create(user=user)
-    
-    context = {
-        'user_setting': user_setting,
-        'user': user,
-    }
-    return render(request, 'panel/clients/setting/account_management.html', context)
-
-
-
-@receiver(post_save, sender=CustomUser)
-def create_user_setting(sender, instance, created, **kwargs):
-    if created:
-        UserSetting.objects.create(user=instance)
-
-@receiver(post_save, sender=CustomUser)
-def save_user_setting(sender, instance, **kwargs):
-    instance.usersetting.save()
-
-
 
 
 
