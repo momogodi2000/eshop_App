@@ -156,24 +156,29 @@ def logout(request):
 def admin_panel(request):
     total_users = CustomUser.objects.count()
     total_products = Product.objects.count()
-    total_sales = Sale.objects.count()  # Assuming Sale represents completed orders
-    chat_with_delivery = Message.objects.filter(sender__role='deliver').count()  # Assuming 'deliver' role in sender
+    total_sales = Sale.objects.count()
+    chat_with_delivery = Message.objects.filter(sender__role='deliver').count()
+
+    # Prepare data for the graph
+    graph_data = {
+        'labels': ['Users', 'Products', 'Sales', 'Chats'],
+        'data': [total_users, total_products, total_sales, chat_with_delivery]
+    }
 
     context = {
         'total_users': total_users,
         'total_products': total_products,
         'total_sales': total_sales,
         'chat_with_delivery': chat_with_delivery,
+        'graph_data': graph_data,
     }
-    return render(request, 'panel/admin/admin_panel.html')
+    return render(request, 'panel/admin/admin_panel.html', context)
+
 
 @login_required
 def deliver_panel(request):
     return render(request, 'panel/deliver/deliver_panel.html')
 
-@login_required
-def clients_panel(request):
-    return render(request, 'panel/clients/clients_panel.html')
 
 #crud_user
 
@@ -486,6 +491,10 @@ def delete_contact(request, contact_id):
 #clients logic/view
 
 @login_required
+def clients_panel(request):
+    return render(request, 'panel/clients/clients_panel.html')
+
+@login_required
 def product_browsing(request):
     # Get all categories and catalogs
     categories = Category.objects.all()
@@ -523,7 +532,7 @@ campay = CamPayClient({
     "environment": "PROD"  # use "DEV" for demo mode or "PROD" for live mode
 })
 
-
+@login_required
 def process_payment(request):
     if request.method == 'POST':
         try:
@@ -547,7 +556,11 @@ def process_payment(request):
             if collect.get('status') == 'SUCCESSFUL':
                 # Generate receipt
                 receipt_id = generate_receipt(cart_items, cart_total)
-                return JsonResponse({'success': True, 'receiptId': receipt_id})
+                return JsonResponse({
+                    'success': True,
+                    'receiptId': receipt_id,
+                    'receiptUrl': reverse('download_receipt', args=[receipt_id])
+                })
             else:
                 # Handle payment failure
                 return JsonResponse({'success': False, 'message': collect.get('reason', 'Payment failed')}, status=400)
@@ -577,7 +590,6 @@ def generate_receipt(cart_items, cart_total):
         return receipt.id
 
     return None
-
 
 @login_required
 def download_receipt(request, transaction_id):
@@ -649,3 +661,45 @@ def contact_us(request):
         form = ContactForm()
         return render(request, 'panel/clients/setting/contact_us.html', {'form': form})
 
+@login_required
+def account_manage(request):
+    if request.method == 'POST':
+        user = request.user
+        user.username = request.POST.get('username')
+        user.email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if password:  # Only update the password if provided
+            user.set_password(password)
+
+        if request.FILES:  # Check if a new profile picture is uploaded
+            user.profile_picture = request.FILES.get('profile_picture')
+
+        user.save()
+        return redirect('clients_panel')  # Redirect to the clients panel or wherever you prefer
+
+    return render(request, 'panel/clients/account/account_manage.html')
+
+def order_history(request):
+    if request.user.is_authenticated:
+        sales = Sale.objects.filter(user=request.user).order_by('-sale_date')
+        return render(request, 'panel/clients/account/order_history.html', {'sales': sales})
+    return redirect('login')  # Redirect to login if not authenticated
+
+
+
+def loyalty_program(request):
+    user = request.user
+    if user.is_authenticated:
+        # Assuming you want to track points based on sales
+        sales = Sale.objects.filter(user=user)
+        total_points = sum(sale.quantity for sale in sales)  # Example calculation
+        # You can customize how you calculate and track points
+        context = {
+            'total_points': total_points,
+            'user': user,
+            'sales': sales,
+        }
+        return render(request, 'panel/clients/account/loyalty_program.html', context)
+    else:
+        return render(request, 'login.html')

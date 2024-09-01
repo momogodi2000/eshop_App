@@ -82,6 +82,7 @@ class Product(models.Model):
 
 
 class Sale(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)  # Allow null temporarily
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     sale_date = models.DateField(default=timezone.now)

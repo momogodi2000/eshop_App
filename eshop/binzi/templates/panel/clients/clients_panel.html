@@ -17,7 +17,24 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/deliver.css' %}">
+
 </head>
+<style>
+      .profile-avatar {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+    }
+    
+    .profile-avatar img {
+        width: 50px; /* Adjust size as needed */
+        height: 50px; /* Ensure it's a square */
+        border-radius: 50%; /* Make it circular */
+        object-fit: cover; /* Crop the image to fit */
+        border: 2px solid #fff; /* Optional: Add a border */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional: Add a shadow */
+    }
+</style>
 <body>
     <div class="dashboard">
         <div class="dashboard-nav">
@@ -26,6 +43,13 @@
                     <i class="fas fa-shopping-cart"></i> 
                     <span>{{ user.username }}'s E-Shop Panel</span>
                 </a>
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                    {% else %}
+                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                    {% endif %}
+                </div>
             </header>
             <nav class="dashboard-nav-list">
                 <a href="{% url 'product_browsing' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
@@ -37,23 +61,27 @@
                 <a href="{% url 'publicity_feed' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-shopping-cart"></i> Publicite
                 </a>
-                <a href="#" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                <a href="{% url 'account_manage' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-user"></i> Account Management
                 </a>
                 <a href="{% url 'contact_us' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-headset"></i> Customer Support
                 </a>
-                <a href="#" class="dashboard-nav-item animate__animated animate__fadeInLeft">
-                    <i class="fas fa-star"></i> Reviews and Ratings
+                <a href="{% url 'order_history' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-box"></i> Order History
                 </a>
                 <a href="#" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-heart"></i> Wishlists
+                </a>
+                <a href="{% url 'loyalty_program' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-star"></i> Loyalty Program
                 </a>
                 <a href="{% url 'logout' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </nav>
         </div>
+
         <main class="dashboard-app">
             <header class="dashboard-toolbar">
                 <a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>

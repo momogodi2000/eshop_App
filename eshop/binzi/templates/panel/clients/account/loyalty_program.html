@@ -1,0 +1,64 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loyalty Program</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'css/global.css' %}" rel="stylesheet">
+    <link href="{% static 'css/loyalty_program.css' %}" rel="stylesheet">
+</head>
+<body>
+    <a href="{% url 'clients_panel' %}" class="btn btn-secondary mb-3">Return to clients Panel</a> 
+
+    <header>
+        <!-- Navigation bar or header -->
+    </header>
+
+    <main class="container mt-5">
+        <h1 class="text-center">Loyalty Program</h1>
+        <div class="card">
+            <div class="card-header">
+                <h2>My Loyalty Points</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">Total Points: <span id="points">{{ total_points }}</span></p>
+                <h3>Benefits</h3>
+                <ul>
+                    <li>Discounts on future purchases</li>
+                    <li>Exclusive offers and promotions</li>
+                    <li>Early access to new products</li>
+                </ul>
+                <h3>Redemption Options</h3>
+                <p>Redeem your points for discounts or exclusive items.</p>
+                <!-- Example of redemption form or options -->
+                <form>
+                    <div class="mb-3">
+                        <label for="redeemPoints" class="form-label">Enter Points to Redeem:</label>
+                        <input type="number" class="form-control" id="redeemPoints">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Redeem</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script>$(document).ready(function () {
+        // Example of a simple animation
+        $('#points').fadeIn(1000);
+    
+        // You can add more interactive features or animations here
+    });
+    </script>
+</body>
+</html>

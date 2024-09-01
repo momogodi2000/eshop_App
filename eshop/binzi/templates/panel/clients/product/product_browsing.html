@@ -95,7 +95,10 @@
                 </ul>
                 <p>Total: <span id="cart-total">0.00</span> FCFA</p>
                 <button id="checkout-btn" class="btn btn-success">Proceed to Payment</button>
+                <button id="empty-cart-btn" class="btn btn-danger">Empty Cart</button> <!-- New button to empty the cart -->
+
             </div>
+            
         </div>
     </section>
 
@@ -157,6 +160,154 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <!-- Custom JS -->
-    <script src="{% static 'js/browsing.js' %}"></script>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    const locationInfo = document.getElementById('location-info');
+    const modalCartItems = document.getElementById('modal-cart-items');
+    const modalCartTotal = document.getElementById('modal-cart-total');
+    const confirmPaymentBtn = document.getElementById('confirm-payment');
+    const phoneNumberInput = document.getElementById('phone-number'); // Phone number input
+    const emptyCartBtn = document.getElementById('empty-cart-btn'); // Empty cart button
+
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.dataset.id;
+            const productName = this.dataset.name;
+            const productPrice = parseFloat(this.dataset.price);
+
+            const product = cart.find(p => p.id === productId);
+            if (product) {
+                product.quantity += 1;
+            } else {
+                cart.push({ id: productId, name: productName, price: productPrice, quantity: 1 });
+            }
+
+            updateCart();
+        });
+    });
+
+    function updateCart() {
+        cartItems.innerHTML = '';
+        let total = 0;
+
+        cart.forEach(product => {
+            const item = document.createElement('li');
+            item.className = 'list-group-item d-flex justify-content-between align-items-center';
+            item.innerHTML = `${product.name} x ${product.quantity} <span>${(product.price * product.quantity).toFixed(2)} FCFA</span>`;
+            cartItems.appendChild(item);
+
+            total += product.price * product.quantity;
+        });
+
+        cartTotal.innerText = total.toFixed(2);
+        localStorage.setItem('cartItems', JSON.stringify(cart));
+        localStorage.setItem('cartTotal', total.toFixed(2));
+    }
+
+    function emptyCart() {
+        cart = []; // Clear the cart
+        localStorage.removeItem('cartItems'); // Clear local storage
+        localStorage.removeItem('cartTotal'); // Clear total from local storage
+        updateCart(); // Update the display
+        alert("Your cart has been emptied."); // Notify the user
+    }
+
+    emptyCartBtn.addEventListener('click', emptyCart);
+
+    checkoutBtn.addEventListener('click', () => {
+        // Fetch location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                locationInfo.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+            }, error => {
+                locationInfo.textContent = 'Unable to retrieve location.';
+            });
+        } else {
+            locationInfo.textContent = 'Geolocation is not supported by this browser.';
+        }
+
+        // Populate cart details in the modal
+        modalCartItems.innerHTML = cart.map(item => `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                ${item.name} x ${item.quantity}
+                <span>${(item.price * item.quantity).toFixed(2)} FCFA</span>
+            </li>
+        `).join('');
+        modalCartTotal.textContent = parseFloat(localStorage.getItem('cartTotal')).toFixed(2);
+
+        paymentModal.show();
+    });
+
+    confirmPaymentBtn.addEventListener('click', () => {
+        const paymentMethod = document.getElementById('payment-method').value;
+        const phoneNumber = phoneNumberInput.value.trim(); // Get phone number from input
+
+        if (!phoneNumber) {
+            alert("Phone number is required for payment.");
+            return;
+        }
+
+        fetch('/process-payment/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                paymentMethod: paymentMethod === 'campay' ? 'campay' : paymentMethod,
+                phoneNumber: phoneNumber,
+                cartItems: cart,
+                cartTotal: localStorage.getItem('cartTotal')
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Payment successful!');
+                window.location.href = `/download-receipt/${data.receiptId}/`;
+            } else {
+                alert('Payment failed. Please try again.');
+            }
+        })
+        .catch(error => {
+            alert('An error occurred. Please try again later.');
+            console.error('Payment error:', error);
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Add an example item to the cart for testing
+    function addItemToCart(item) {
+        cart.push(item); // Add the item to the cart
+        localStorage.setItem('cartItems', JSON.stringify(cart)); // Save cart to local storage
+        updateCart(); // Update the display
+    }
+
+    // Example items (can be removed or modified)
+    const exampleItem = { id: '1', name: 'Sample Item', price: 19.99, quantity: 1 };
+    addItemToCart(exampleItem); // Add an example item to the cart
+});
+</script>
+
 </html>

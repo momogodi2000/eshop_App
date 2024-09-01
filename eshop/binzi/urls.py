@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views  # Add this import
 from .views import chat_view, sales_analysis_view, manage_discounts
 from .views import process_payment, download_receipt
 from .views import publicity_feed, add_comment, toggle_like, toggle_favorite, book_publicity
-from .views import contact_us, manage_messages, delete_contact_message, delete_contact
+from .views import contact_us, manage_messages, delete_contact_message, delete_contact, account_manage, order_history, loyalty_program
 
 
 
@@ -20,6 +20,12 @@ urlpatterns = [
     path('panel/deliver/', views.deliver_panel, name='deliver_panel'),
     path('panel/clients/', views.clients_panel, name='clients_panel'),
     path('clients/', views.clients_panel, name='clients_panel'),
+    path('account/manage/', account_manage, name='account_manage'),
+    path('order-history/', order_history, name='order_history'),
+    path('loyalty_program/', loyalty_program, name='loyalty_program'),
+
+
+
 
     path('admin_panel/', views.admin_panel, name='admin_panel'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), name='password_reset_confirm'),

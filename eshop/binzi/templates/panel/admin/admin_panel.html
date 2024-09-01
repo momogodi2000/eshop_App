@@ -91,60 +91,33 @@
                         </div>
                     </section>
 
+
+                    <div class="dashboard">
+                        <nav class="dashboard-nav">
+                            <!-- Navigation items -->
+                        </nav>
+                        <div class="dashboard-app">
+                            <header class="dashboard-toolbar">
+                                <button id="toggle-button">Toggle Sidebar</button>
+                            </header>
+                            <div class="dashboard-content">
+                                <div class="dashboard-overview">
+                                    <div class="card">Total Users: {{ total_users }}</div>
+                                    <div class="card">Total Products: {{ total_products }}</div>
+                                    <div class="card">Total Sales: {{ total_sales }}</div>
+                                    <div class="card">Chats with Delivery: {{ chat_with_delivery }}</div>
+                                </div>
+                                <canvas id="statsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
                     <h1 class="mt-4">Welcome to the eShop Admin Panel!</h1>
                     <p>Manage your users, products, orders, categories, discounts, and more from here.</p>
 
-                    <!-- Team Section -->
-                    <section class="team-section mt-5">
-                        <h2>Our Team</h2>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card team-card">
-                                    <img src="{% static 'image/moi.jpeg' %}" class="card-img-top" alt="Team Member 1">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Binzi</h5>
-                                        <p class="card-text">Project Manager</p>
-                                        <p class="card-text">Lead Developer</p>
-                                        <p class="card-text">Designer</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card team-card">
-                                    <img src="{% static 'image/dev1.jpeg' %}" class="card-img-top" alt="Team Member 2">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Jane Doe</h5>
-                                        <p class="card-text">Marketing Head</p>
-                                        <p class="card-text">Customer Relations</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+               
 
-                    <!-- Welcome Image Section -->
-                    <section class="welcome-section mt-5">
-                        <h2>Welcome Image</h2>
-                        <img src="{% static 'image/dev1.jpeg' %}" class="img-fluid welcome-image" alt="Welcome">
-                    </section>
 
-                    <!-- Additional Content -->
-                    <section class="additional-content mt-5">
-                        <h2>Additional Information</h2>
-                        <p>We strive to provide the best service for managing the eShop platform. Our team is dedicated to ensuring smooth and efficient operations, helping you manage your online store with ease.</p>
-                        <p>Whether you need to add new products, manage orders, or analyze sales, our platform provides all the tools you need to run your e-commerce business efficiently.</p>
-                    </section>
-
-                        <!-- Recent Updates -->
-                        <section class="updates-section mt-5">
-                            <h2>Recent Updates</h2>
-                            <ul>
-                                <li>Added support for multiple currencies in the checkout process.</li>
-                                <li>Improved performance of product search and filtering.</li>
-                                <li>Enhanced security features for user accounts.</li>
-                                <li>New analytics dashboard with additional metrics.</li>
-                            </ul>
-                        </section>
 
                         <!-- User Testimonials -->
                     <section class="testimonials-section mt-5">
@@ -183,5 +156,38 @@
 
     <!-- Custom JavaScript -->
     <script src="{% static 'js/admin_panel.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+    const ctx = document.getElementById('statsChart').getContext('2d');
+    const graphData = {{ graph_data|safe }};
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: graphData.labels,
+            datasets: [{
+                label: 'Statistics',
+                data: graphData.data,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    document.getElementById('toggle-button').addEventListener('click', function() {
+        const nav = document.querySelector('.dashboard-nav');
+        nav.classList.toggle('hidden');
+    });
+</script>
+    </script>
 </body>
 </html>

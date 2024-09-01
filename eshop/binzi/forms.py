@@ -25,7 +25,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = CustomUser  # Updated model
-        fields = UserCreationForm.Meta.fields= ['username', 'email', 'role','password1', 'password2']
+        fields = UserCreationForm.Meta.fields= ['username', 'email', 'password1', 'password2']
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField()
 

@@ -2,24 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt</title>
+    <style>
+        /* Add your custom styles here for the receipt */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .receipt-details {
+            margin-bottom: 20px;
+        }
+        .receipt-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .receipt-items th, .receipt-items td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .receipt-items th {
+            background-color: #f2f2f2;
+        }
+        .receipt-total {
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Receipt</h1>
-    <p>Total: {{ cart_total }} FCFA</p>
-    <ul>
-        {% for item in cart_items %}
-            <li>{{ item.name }} - {{ item.price }} FCFA</li>
-        {% endfor %}
-    </ul>
-    <div class="receipt">
+    <div class="receipt-header">
         <h1>Receipt</h1>
-        <p>Transaction ID: {{ receipt.transaction_id }}</p>
-        <p>User: {{ receipt.user.username }}</p>
-        <p>Amount: {{ receipt.amount }} FCFA</p>
-        <p>Payment Method: {{ receipt.payment_method }}</p>
-        <p>Status: {{ receipt.status }}</p>
+        <p>Thank you for your purchase!</p>
+    </div>
+
+    <div class="receipt-details">
         <p>Date: {{ receipt.created_at }}</p>
+        <p>Receipt ID: {{ receipt.id }}</p>
+        <p>Total: {{ receipt.total }} FCFA</p>
+    </div>
+
+    <table class="receipt-items">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price (FCFA)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="receipt-total">
+        <p>Total: {{ cart_total }} FCFA</p>
     </div>
 </body>
 </html>
