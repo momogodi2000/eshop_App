@@ -703,3 +703,30 @@ def loyalty_program(request):
         return render(request, 'panel/clients/account/loyalty_program.html', context)
     else:
         return render(request, 'login.html')
+    
+
+
+## deliver view
+from django.utils.decorators import method_decorator
+from django.http import HttpResponseRedirect
+from django.views import View
+from .models import Sale, Receipt
+from django.urls import reverse
+from .models import Delivery
+
+@method_decorator(login_required, name='dispatch')
+class ManageDeliverView(View):
+    def get(self, request, *args, **kwargs):
+        deliveries = Delivery.objects.filter(deliverer=request.user, status='pending')
+        context = {
+            'deliveries': deliveries,
+        }
+        return render(request, 'panel/deliver/manage_del/manage_deliver.html', context)
+
+@method_decorator(login_required, name='dispatch')
+class DeliveryValidationView(View):
+    def post(self, request, pk, *args, **kwargs):
+        delivery = get_object_or_404(Delivery, pk=pk)
+        delivery.status = 'completed'
+        delivery.save()
+        return HttpResponseRedirect(reverse('manage_deliveries'))

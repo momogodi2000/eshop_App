@@ -5,6 +5,8 @@ from .views import chat_view, sales_analysis_view, manage_discounts
 from .views import process_payment, download_receipt
 from .views import publicity_feed, add_comment, toggle_like, toggle_favorite, book_publicity
 from .views import contact_us, manage_messages, delete_contact_message, delete_contact, account_manage, order_history, loyalty_program
+from .views import ManageDeliverView, DeliveryValidationView
+
 
 
 
@@ -69,7 +71,8 @@ urlpatterns = [
     path('contact_us/', contact_us, name='contact_us'),
 
 
-   
+    path('manage-deliver/', ManageDeliverView.as_view(), name='manage_deliver'),
+    path('validate-delivery/<int:pk>/', views.DeliveryValidationView.as_view(), name='validate_delivery'),
 
 
 

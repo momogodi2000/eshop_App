@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Deliveries</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/manage_deliver.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap"></script>
+    <style>
+        body { background-color: #f8f9fa; font-family: Arial, sans-serif; }
+        .card-header { background-color: #007bff; color: white; font-weight: bold; text-align: center; }
+        .list-group-item { cursor: pointer; transition: background 0.3s; }
+        .list-group-item:hover { background-color: #e2e6ea; }
+        #notification { display: none; }
+        #map { width: 100%; }
+        @media (max-width: 768px) { h1 { font-size: 1.75rem; } }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Manage Deliveries</h1>
+        <div class="card">
+            <div class="card-header">
+                <h2>Pending Deliveries</h2>
+            </div>
+            <div class="card-body">
+                <div id="notification" class="mb-3"></div>
+                <div id="deliveryList" class="list-group">
+                    {% for delivery in deliveries %}
+                        <a href="#" class="list-group-item list-group-item-action" data-id="{{ delivery.id }}" data-product="{{ delivery.sale.product.name }}" data-receipt="{{ delivery.sale.id }}" data-lat="{{ delivery.location.lat }}" data-lng="{{ delivery.location.lng }}">
+                            Deliver {{ delivery.sale.product.name }} - Receipt #{{ delivery.sale.id }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deliveryModal" tabindex="-1" aria-labelledby="deliveryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deliveryModalLabel">Delivery Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="map" style="height: 400px;"></div>
+                    <p id="receiptInfo"></p>
+                    <form method="post" action="{% url 'validate_delivery' delivery_id %}">
+                        {% csrf_token %}
+                        <button id="confirmDelivery" class="btn btn-success">Confirm Delivery</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.list-group-item-action').on('click', function () {
+                const product = $(this).data('product');
+                const receipt = $(this).data('receipt');
+                const lat = $(this).data('lat');
+                const lng = $(this).data('lng');
+                $('#receiptInfo').text(`Receipt: ${receipt}, Product: ${product}`);
+                $('#deliveryModal').modal('show');
+                initMap(lat, lng);
+            });
+
+            function initMap(lat, lng) {
+                const location = { lat: parseFloat(lat), lng: parseFloat(lng) };
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: location,
+                });
+                new google.maps.Marker({
+                    position: location,
+                    map: map,
+                });
+            }
+        });
+    </script>
+</body>
+</html>

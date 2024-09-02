@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Deliver Panel</title>
+    <title>Deliver Panel</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -36,7 +36,7 @@
             </header>
             <nav class="dashboard-nav-list">
                 <a href="{% url 'deliver_panel' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Manage Deliver</a>
+                <a href="{% url 'manage_deliver' %}" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Manage Deliver</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Chat with Admin</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Geolocation Tracking</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Integration with Mapping Services</a>
@@ -45,7 +45,7 @@
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
             </nav>
-            <a href="{% url logout' %}" class="btn btn-primary logout-btn">Logout</a>
+            <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
         </div>
         <main class="dashboard-app">
             <header class="dashboard-toolbar">
@@ -56,115 +56,9 @@
                     <h1 class="mt-4">Welcome to the National ID Admin Panel - Deliver Panel</h1>
                     <p>Manage all aspects of National ID card delivery, from order management to delivery tracking.</p>
 
-                    <!-- Delivery User Section -->
-                    <section class="deliver-user mt-5">
-                        <h2>Delivery User Dashboard</h2>
-                        <div class="row">
-                            <!-- Order Management -->
-                            <div class="col-md-6">
-                                <div class="card deliver-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-box"></i> Order Management</h5>
-                                        <p class="card-text">Manage your assigned orders, view customer details, update order status, and track deliveries.</p>
-                                        <a href="#" class="btn btn-primary">View Orders</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Maps or Route Optimization -->
-                            <div class="col-md-6">
-                                <div class="card deliver-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-map-marked-alt"></i> Maps & Route Optimization</h5>
-                                        <p class="card-text">Plan efficient delivery routes using integrated maps and route optimization tools.</p>
-                                        <a href="#" class="btn btn-primary">Optimize Routes</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <!-- Communication -->
-                            <div class="col-md-6">
-                                <div class="card deliver-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-comments"></i> Communication</h5>
-                                        <p class="card-text">Communicate with customers regarding order details and receive notifications and alerts.</p>
-                                        <a href="#" class="btn btn-primary">Chat with Customers</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Performance Metrics -->
-                            <div class="col-md-6">
-                                <div class="card deliver-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-chart-line"></i> Performance Metrics</h5>
-                                        <p class="card-text">Monitor your delivery success rate, average delivery time, and customer satisfaction ratings.</p>
-                                        <a href="#" class="btn btn-primary">View Metrics</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
 
-                    <!-- Admin User Section -->
-                    <section class="admin-user mt-5">
-                        <h2>Admin User Dashboard</h2>
-                        <div class="row">
-                            <!-- Delivery Personnel Management -->
-                            <div class="col-md-6">
-                                <div class="card admin-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-users"></i> Delivery Personnel Management</h5>
-                                        <p class="card-text">Manage your delivery team, track performance metrics, and handle scheduling and shift management.</p>
-                                        <a href="#" class="btn btn-primary">Manage Personnel</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Order Overview -->
-                            <div class="col-md-6">
-                                <div class="card admin-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-boxes"></i> Order Overview</h5>
-                                        <p class="card-text">Get a real-time overview of order statuses, delivery performance metrics, and customer complaints.</p>
-                                        <a href="#" class="btn btn-primary">View Orders</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <!-- Inventory Management -->
-                            <div class="col-md-6">
-                                <div class="card admin-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-warehouse"></i> Inventory Management</h5>
-                                        <p class="card-text">Monitor real-time product availability, receive low stock alerts, and manage warehouse resources.</p>
-                                        <a href="#" class="btn btn-primary">Manage Inventory</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Route Optimization -->
-                            <div class="col-md-6">
-                                <div class="card admin-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-route"></i> Route Optimization</h5>
-                                        <p class="card-text">Optimize delivery routes, manage vehicles, and analyze cost efficiency related to fuel and labor.</p>
-                                        <a href="#" class="btn btn-primary">Optimize Routes</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <!-- Analytics -->
-                            <div class="col-md-12">
-                                <div class="card admin-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-chart-pie"></i> Analytics</h5>
-                                        <p class="card-text">Analyze delivery performance, customer satisfaction, and costs to optimize the overall delivery process.</p>
-                                        <a href="#" class="btn btn-primary">View Analytics</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+
+
 
                     <!-- Additional Sections -->
                     <section class="additional-features mt-5">

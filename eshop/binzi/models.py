@@ -232,3 +232,16 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
+    
+
+
+
+class Delivery(models.Model):
+    sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
+    deliverer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, limit_choices_to={'role': 'deliver'})
+    status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('in_progress', 'In Progress'), ('completed', 'Completed')], default='pending')
+    location = models.CharField(max_length=255)  # Could include address and coordinates
+    timestamp = models.DateTimeField( default=timezone.now)
+
+    def __str__(self):
+        return f'Delivery for {self.sale.product.name} to {self.sale.user.username}'
