@@ -1,0 +1,20 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+
+{% block title %}Receiver Panel{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Receiver Panel</h1>
+    
+    <h3 class="mt-4">Received Messages</h3>
+    <div class="list-group">
+        {% for message in messages %}
+            <div class="list-group-item {% if not message.is_read %}bg-light{% endif %}">
+                <strong>{{ message.sender.username }}:</strong> {{ message.message }}
+                <small class="text-muted">Received at {{ message.timestamp }}</small>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

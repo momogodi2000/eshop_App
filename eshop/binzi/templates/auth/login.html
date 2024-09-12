@@ -7,31 +7,47 @@
     <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  
     <style>
+        body {
+            background-image: url('{% static "image/login.jpeg" %}');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: #ffffff81;
+        }
+
         .form-container {
             max-width: 500px;
-            margin: 50px auto;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.274);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
-        .social-login {
-            margin-top: 20px;
+
+        .form-container:hover {
+            transform: scale(1.02);
         }
+
+        .btn-social {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-social:hover {
+            transform: scale(1.1);
+        }
+
         /* Responsive styles */
         @media (max-width: 576px) {
             .form-container {
                 margin: 20px;
                 padding: 15px;
             }
-        }
-        /* Animation for buttons */
-        .btn-social {
-            transition: transform 0.3s ease;
-        }
-        .btn-social:hover {
-            transform: scale(1.1);
         }
     </style>
 </head>

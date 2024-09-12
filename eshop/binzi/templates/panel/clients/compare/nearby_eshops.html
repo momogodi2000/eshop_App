@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nearby E-Shops</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container-fluid {
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .shop-info {
+            margin-top: 20px;
+        }
+
+        .shop-card {
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .shop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-route {
+            background-color: #007bff;
+            color: white;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-route:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            #map {
+                height: 300px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .shop-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <h1>Find Nearby E-Shops and E-Commerce</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <div id="map"></div>
+        </div>
+        <div class="col-md-4">
+            <h2>Shops Nearby</h2>
+            <div id="shop-list" class="shop-info"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    let map, userMarker;
+
+    // Initialize and add the map
+    function initMap() {
+        // Set default center
+        const defaultLocation = { lat: 3.8480, lng: 11.5021 }; // Yaoundé, Cameroon coordinates
+
+        // Create map centered on default location
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: defaultLocation,
+            zoom: 14,
+        });
+
+        // Try to get user's current location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                // Center map on user's location
+                map.setCenter(userLocation);
+
+                // Add a marker for the user
+                userMarker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    title: "You are here",
+                    icon: {
+                        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                    },
+                });
+
+                // Fetch nearby shops (you can replace this with an API call)
+                fetchNearbyShops(userLocation);
+            });
+        } else {
+            fetchNearbyShops(defaultLocation); // Fall back to default location
+        }
+    }
+
+    // Mock data for nearby shops (replace with actual API data)
+    const shops = [
+        { id: 1, name: "Tech E-Store", lat: 3.8530, lng: 11.5060, info: "Best tech gadgets in town!" },
+        { id: 2, name: "Fashion Hub", lat: 3.8475, lng: 11.5025, info: "Latest fashion trends." },
+        { id: 3, name: "MarketPlace", lat: 3.8490, lng: 11.5090, info: "Get everything you need." },
+    ];
+
+    // Fetch nearby shops and display them on the map and list
+    function fetchNearbyShops(location) {
+        shops.forEach((shop) => {
+            // Add marker to map
+            const marker = new google.maps.Marker({
+                position: { lat: shop.lat, lng: shop.lng },
+                map: map,
+                title: shop.name,
+            });
+
+            // Add click event to marker
+            google.maps.event.addListener(marker, 'click', function () {
+                viewShopDetails(shop);
+            });
+
+            // Add shop to list
+            $("#shop-list").append(`
+                <div class="card mb-3 shop-card">
+                    <div class="card-body">
+                        <h5 class="card-title">${shop.name}</h5>
+                        <p class="card-text">${shop.info}</p>
+                        <button class="btn btn-route" onclick="getRoute(${shop.lat}, ${shop.lng})">Get Route</button>
+                    </div>
+                </div>
+            `);
+        });
+    }
+
+    // Display shop details (optional)
+    function viewShopDetails(shop) {
+        alert(`Shop Name: ${shop.name}\nInfo: ${shop.info}`);
+    }
+
+    // Get route from user's location to selected shop
+    function getRoute(lat, lng) {
+        if (!userMarker) {
+            alert("Could not detect your location. Please enable geolocation.");
+            return;
+        }
+
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+
+        const request = {
+            origin: userMarker.getPosition(),
+            destination: { lat, lng },
+            travelMode: google.maps.TravelMode.DRIVING,
+        };
+
+        directionsService.route(request, (result, status) => {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsRenderer.setDirections(result);
+            } else {
+                alert("Directions request failed. Please try again.");
+            }
+        });
+    }
+</script>
+
+<!-- Replace with your Google Maps API key -->
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap">
+</script>
+
+</body>
+</html>

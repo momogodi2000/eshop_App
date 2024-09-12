@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserChangeForm
 from .models import Contact
 
 
+
 class RegistrationForm(UserCreationForm):
     class Meta:
         model = CustomUser  # Updated model
@@ -73,19 +74,6 @@ class ProductForm(forms.ModelForm):
 
 
 
-class GeneralSettingsForm(forms.Form):
-    site_name = forms.CharField(max_length=100, label='Site Name')
-    site_tagline = forms.CharField(max_length=255, label='Site Tagline', required=False)
-    site_logo = forms.ImageField(label='Site Logo', required=False)
-    site_favicon = forms.ImageField(label='Site Favicon', required=False)
-    color_scheme = forms.CharField(max_length=7, label='Color Scheme', required=False)
-    font = forms.CharField(max_length=50, label='Font', required=False)
-    contact_email = forms.EmailField(label='Contact Email', required=False)
-    contact_phone = forms.CharField(max_length=20, label='Contact Phone', required=False)
-    social_media_links = forms.URLField(label='Social Media Links', required=False)
-
-
-
 
 
 from django.forms.widgets import ClearableFileInput
@@ -145,3 +133,52 @@ class ContactForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control'}),
 
         }
+
+
+
+
+class ReplyMessageForm(forms.Form):
+    reply_message = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 5,
+            'placeholder': 'Write your reply here...'
+        }),
+        label="Reply Message",
+        max_length=1000,
+        required=True
+    )
+
+from django.conf import settings  # Add this line
+from .models import ChatMessage
+from django.contrib.auth import get_user_model
+
+
+class ChatMessageForm(forms.ModelForm):
+    class Meta:
+        model = ChatMessage
+        fields = ['receiver', 'message']
+        
+    receiver = forms.ModelChoiceField(queryset=get_user_model().objects.all(), required=True)
+
+
+
+from django.contrib.auth.models import User
+
+class UpdateSettingsForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password', 'profile_picture', 'telephone']
+    
+    password = forms.CharField(widget=forms.PasswordInput, required=False)
+    profile_picture = forms.ImageField(required=False)
+    telephone = forms.CharField(max_length=15, required=False)  # Adjust max_length as needed
+
+
+
+from .models import EShop
+
+class EShopForm(forms.ModelForm):
+    class Meta:
+        model = EShop
+        fields = ['name', 'description', 'latitude', 'longitude', 'address', 'website']

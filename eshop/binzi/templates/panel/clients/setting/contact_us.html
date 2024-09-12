@@ -1,35 +1,83 @@
+{% extends 'base_clients.html' %}
 {% load static %}
 
+{% block title %}Contact Us{% endblock %}
 
-<!-- contact_us.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/support.css' %}" rel="stylesheet">  <!-- Link to your custom CSS -->
-</head>
-<a href="{% url 'clients_panel' %}" class="btn btn-secondary mb-3">Return to clients Panel</a> 
-
-<body>
+{% block content %}
     <div class="container mt-5">
         <h1 class="text-center mb-4">Contact Us</h1>
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form method="post" class="p-4 border rounded shadow-sm">
+                <form method="post" class="p-4 border rounded shadow-sm bg-light">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </form>
             </div>
         </div>
     </div>
+{% endblock %}
 
+{% block extra_css %}
+<style>
+    .container {
+        margin-top: 50px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        color: #007bff;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    form {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+        margin-top: 10px;
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/support.js' %}"></script>  <!-- Link to your custom JS -->
-</body>
-</html>
-
+    <script src="{% static 'js/support.js' %}"></script> <!-- Link to your custom JS -->
+{% endblock %}

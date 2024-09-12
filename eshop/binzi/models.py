@@ -122,30 +122,6 @@ class Message(models.Model):
 
 
 
-class SiteSettings(models.Model):
-    site_name = models.CharField(max_length=255)
-    site_tagline = models.CharField(max_length=255, blank=True)
-    site_logo = models.ImageField(upload_to='logos/', blank=True)
-    site_favicon = models.ImageField(upload_to='favicons/', blank=True)
-    color_scheme = models.CharField(max_length=7, blank=True)  # Hex color code
-    site_font = models.CharField(max_length=100, blank=True)
-    contact_email = models.EmailField(max_length=255, blank=True)
-    contact_phone = models.CharField(max_length=20, blank=True)
-    social_media = models.URLField(blank=True)
-    meta_title = models.CharField(max_length=255, blank=True)
-    meta_description = models.TextField(blank=True)
-    meta_keywords = models.CharField(max_length=255, blank=True)
-    smtp_server = models.CharField(max_length=255, blank=True)
-    language = models.CharField(max_length=50, blank=True)
-    currency = models.CharField(max_length=50, blank=True)
-    custom_css = models.TextField(blank=True)
-    custom_js = models.TextField(blank=True)  # Optional if needed
-
-
-    
-    def __str__(self):
-        return f"Message from {self.name} ({self.email})"
-
 
 class Receipt(models.Model):
     transaction_id = models.CharField(max_length=255, unique=True)
@@ -245,3 +221,68 @@ class Delivery(models.Model):
 
     def __str__(self):
         return f'Delivery for {self.sale.product.name} to {self.sale.user.username}'
+
+
+
+
+class ChatMessage(models.Model):
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_chat_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='received_chat_messages', on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"From {self.sender} to {self.receiver} at {self.timestamp}"
+
+
+class EShop(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    address = models.CharField(max_length=255)
+    website = models.URLField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+
+
+
+
+
+# Rating for products
+class ProductRating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField()  # Rating out of 5
+    comment = models.TextField(blank=True)
+    date_posted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.product.name} - {self.rating} stars by {self.user.username}'
+
+
+# Rating for delivery users
+class DeliverRating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    deliver_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='deliver_ratings', on_delete=models.CASCADE, limit_choices_to={'role': 'deliver'})
+    rating = models.PositiveIntegerField()  # Rating out of 5
+    comment = models.TextField(blank=True)
+    date_posted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Deliver {self.deliver_user.username} - {self.rating} stars by {self.user.username}'
+
+
+# Rating for overall service quality
+class ServiceQualityRating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField()  # Rating out of 5
+    comment = models.TextField(blank=True)
+    date_posted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Service quality - {self.rating} stars by {self.user.username}'

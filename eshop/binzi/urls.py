@@ -1,11 +1,13 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views  # Add this import
-from .views import chat_view, sales_analysis_view, manage_discounts
+from .views import  sales_analysis_view, manage_discounts
 from .views import process_payment, download_receipt
 from .views import publicity_feed, add_comment, toggle_like, toggle_favorite, book_publicity
 from .views import contact_us, manage_messages, delete_contact_message, delete_contact, account_manage, order_history, loyalty_program
-from .views import ManageDeliverView, DeliveryValidationView
+from .views import ManageDeliverView, DeliveryValidationView, reply_contact_message
+from .views import sender_panel, receiver_panel, update_setting,  payment_verification_view, verify_payment, rate_page, delivery_notifications
+
 
 
 
@@ -46,17 +48,33 @@ urlpatterns = [
     path('products/view/<int:product_id>/', views.view_product, name='view_product'),  # New URL for viewing product details
     path('products/delete/<int:product_id>/', views.delete_product, name='delete_product'),
     path('about_us/', views.about_us, name='about_us'),
-    path('chat/<int:recipient_id>/', chat_view, name='chat'),
-    path('setting/', views.settings_view, name='setting'),
+
+
     path('analyse/', sales_analysis_view, name='analyse'),
     path('manage-discounts/', manage_discounts, name='manage_discounts'),
     path('manage_publicity', views.manage_publicity, name='manage_publicity'),
     path('add/', views.add_publicity, name='add_publicity'),
     path('edit/<int:pk>/', views.edit_publicity, name='edit_publicity'),
     path('delete/<int:pk>/', views.delete_publicity, name='delete_publicity'),
+
+    path('panel/admin/payment/payment_verification/', payment_verification_view, name='payment_verification'),
+    path('verify_payment/', verify_payment, name='verify_payment'),
+
+
     path('manage-messages/', manage_messages, name='manage_messages'),
+    path('reply-contact-message/<int:message_id>/', reply_contact_message, name='reply_contact_message'),
+    path('reply-contact-message/<int:message_id>/', views.reply_contact_message, name='reply_contact_message'),
     path('delete-contact-message/<int:message_id>/', delete_contact_message, name='delete_contact_message'),
     path('delete-contact/<int:contact_id>/', delete_contact, name='delete_contact'),
+   
+    path('sender-panel/', sender_panel, name='sender_panel'),
+    path('receiver-panel/', receiver_panel, name='receiver_panel'),
+    path('update-setting/', update_setting, name='update_setting'),
+
+
+    path('rate/', rate_page, name='rate_page'),
+    path('notifications/', delivery_notifications, name='delivery_notifications'),
+
 
 
     path('product_browsing/', views.product_browsing, name='product_browsing'),
@@ -75,6 +93,8 @@ urlpatterns = [
     path('validate-delivery/<int:pk>/', views.DeliveryValidationView.as_view(), name='validate_delivery'),
 
 
+    path('eshops/', views.nearby_eshops_view, name='nearby_eshops'),
+    path('eshop/<int:eshop_id>/', views.get_eshop_details, name='eshop_details'),
 
 
 ]

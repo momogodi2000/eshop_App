@@ -8,20 +8,54 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
+        body {
+            background: url("{% static 'image/auth.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
         .form-container {
             max-width: 500px;
-            margin: 50px auto;
+            width: 100%;
             padding: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.575);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
         }
-        /* Responsive styles */
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .btn-primary {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .text-center p a {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .text-center p a:hover {
+            color: #0056b3;
+        }
         @media (max-width: 576px) {
             .form-container {
                 margin: 20px;
                 padding: 15px;
             }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -31,16 +65,34 @@
             <h2>Register</h2>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}">Password</label>
+                    {{ form.password1 }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    {{ form.password2 }}
+                </div>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
             </form>
             <div class="text-center mt-3">
-                <p>Already have an account? <a href="{% url 'login' %}" class="btn btn-primary">Login</a></p>
-                <p><a href="{% url 'forgot_password' %}" class="btn btn-primary">Forgot Password?</a></p>
-                <p><a href="{% url 'home' %}" class="btn btn-primary">Return Home</a></p>
+                <p>Already have an account? <a href="{% url 'login' %}" class="btn btn-outline-primary">Login</a></p>
+                <p><a href="{% url 'forgot_password' %}" class="btn btn-outline-primary">Forgot Password?</a></p>
+                <p><a href="{% url 'home' %}" class="btn btn-outline-primary">Return Home</a></p>
             </div>
-            
         </div>
     </div>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,66 @@
+{% extends 'base_admin.html' %}
+{% block title %}Chat with Deliver{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Chat with Deliver</h1>
+
+    <div class="chat-container">
+        <div class="chat-box">
+            {% for message in messages %}
+                <div class="message {{ message.sender == user|yesno:"sent,received" }}">
+                    <p><strong>{{ message.sender.username }}:</strong> {{ message.message }}</p>
+                    <small>{{ message.timestamp }}</small>
+                </div>
+            {% empty %}
+                <p>No messages yet.</p>
+            {% endfor %}
+        </div>
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        max-width: 600px;
+        margin: auto;
+    }
+    .chat-box {
+        border: 1px solid #ddd;
+        padding: 10px;
+        height: 400px;
+        overflow-y: scroll;
+        background-color: #f9f9f9;
+    }
+    .message {
+        margin-bottom: 10px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .message.sent {
+        background-color: #d4edda;
+        text-align: right;
+    }
+    .message.received {
+        background-color: #f8d7da;
+        text-align: left;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatBox = document.querySelector('.chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;  // Scroll to the bottom on load
+
+        // Optional: Add real-time functionality using WebSockets or polling
+    });
+</script>
+{% endblock %}

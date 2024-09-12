@@ -17,7 +17,6 @@ from .tokens import account_activation_token
 from .forms import RegistrationForm, ForgotPasswordForm
 from .models import Product
 from .forms import ProductForm
-from .models import SiteSettings
 from django.db.models import Sum
 from django.utils import timezone
 from .models import Sale, Message
@@ -301,65 +300,6 @@ def about_us(request):
     return render(request, 'panel/admin/about_us.html')
 
 
-@login_required
-def chat_view(request, recipient_id):
-    recipient = get_object_or_404(CustomUser, id=recipient_id)
-    return render(request, 'panel/admin/chat/chat.html', {'recipient': recipient})
-
-@login_required
-def settings_view(request):
-    try:
-        settings = SiteSettings.objects.get(id=1)  # Attempt to get object with ID 1
-    except SiteSettings.DoesNotExist:
-        # Create a new settings object if it doesn't exist
-        settings = SiteSettings.objects.create(
-            site_name="Your Website Name",  # Set default values
-            # ... other default settings
-        )
-
-    if request.method == 'POST':
-        # Process the form data
-        site_name = request.POST.get('siteName')
-        site_tagline = request.POST.get('siteTagline')
-        contact_email = request.POST.get('contactEmail')
-        contact_phone = request.POST.get('contactPhone')
-        social_media = request.POST.get('socialMedia')
-        meta_title = request.POST.get('metaTitle')
-        meta_description = request.POST.get('metaDescription')
-        meta_keywords = request.POST.get('metaKeywords')
-        smtp_server = request.POST.get('smtpServer')
-        language = request.POST.get('language')
-        currency = request.POST.get('currency')
-        custom_css = request.POST.get('customCss')
-
-        # Handle file uploads
-        if 'siteLogo' in request.FILES:
-            settings.site_logo = request.FILES['siteLogo']
-        if 'siteFavicon' in request.FILES:
-            settings.site_favicon = request.FILES['siteFavicon']
-
-        # Update settings fields
-        settings.site_name = site_name
-        settings.site_tagline = site_tagline
-        settings.contact_email = contact_email
-        settings.contact_phone = contact_phone
-        settings.social_media = social_media
-        settings.meta_title = meta_title
-        settings.meta_description = meta_description
-        settings.meta_keywords = meta_keywords
-        settings.smtp_server = smtp_server
-        settings.language = language
-        settings.currency = currency
-        settings.custom_css = custom_css
-
-        # Save changes
-        settings.save()
-
-        # Redirect to the settings page (or show a success message)
-        return redirect('settings_view')  # Replace with the correct URL name
-
-    # Render the settings page
-    return render(request, 'panel/admin/setting/setting.html', {'settings': settings})
 
 @login_required
 def sales_analysis_view(request):
@@ -461,6 +401,15 @@ def delete_publicity(request, pk):
 
 
 ## admin view messsage
+from .forms import ReplyMessageForm  # Create this form for replying to messages
+from django.core.mail import send_mail
+import yagmail
+from django.contrib import messages
+
+# Yagmail credentials
+username = "yvangodimomo@gmail.com"
+password = "pzls apph esje cgdl"
+
 
 @login_required
 def manage_messages(request):
@@ -484,8 +433,75 @@ def delete_contact(request, contact_id):
     contact.delete()
     return redirect('manage_messages')
 
+@login_required
+def reply_contact_message(request, message_id):
+    message = get_object_or_404(ContactMessage, id=message_id)
+    
+    if request.method == 'POST':
+        form = ReplyMessageForm(request.POST)
+        if form.is_valid():
+            reply_message = form.cleaned_data['reply_message']
+            # Send the reply using Yagmail
+            yag = yagmail.SMTP('yvangodimomo@gmail.com', 'pzls apph esje cgdl')
+            yag.send(
+                to=message.email,
+                subject="Reply to Your Contact Message",
+                contents=f"Hi {message.name},\n\n{reply_message}\n\nBest regards,\nAdmin Team"
+            )
+            return redirect('manage_messages')  # Redirect back after sending the email
+    else:
+        form = ReplyMessageForm()
+
+    return render(request, 'panel/admin/setting/reply_contact_message.html', {'message': message, 'form': form})
 
 
+from .forms import ChatMessageForm  # Ensure this line is present
+from .models import ChatMessage
+
+
+@login_required
+def sender_panel(request):
+    if request.method == 'POST':
+        form = ChatMessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user  # Set the sender to the current user
+            message.save()
+            return redirect('sender_panel')
+    else:
+        form = ChatMessageForm()
+    
+    messages = ChatMessage.objects.filter(sender=request.user).order_by('-timestamp')
+    return render(request, 'panel/admin/chat/sender_panel.html', {'form': form, 'messages': messages})
+
+@login_required
+def receiver_panel(request):
+    messages = ChatMessage.objects.filter(receiver=request.user).order_by('-timestamp')
+    # Mark messages as read
+    ChatMessage.objects.filter(receiver=request.user, is_read=False).update(is_read=True)
+    
+    return render(request, 'panel/deliver/chat/receiver_panel.html', {'messages': messages})
+
+
+
+from .forms import UpdateSettingsForm  # Make sure this line is present
+
+@login_required
+def update_setting(request):
+    user = request.user
+    
+    if request.method == 'POST':
+        form = UpdateSettingsForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            if form.cleaned_data['password']:
+                user.set_password(form.cleaned_data['password'])
+            user.save()
+            return redirect('home')  # Redirect to an appropriate page after update
+    else:
+        form = UpdateSettingsForm(instance=user)
+    
+    return render(request, 'panel/admin/update/update_setting.html', {'form': form})
 
 
 #clients logic/view
@@ -611,6 +627,53 @@ def download_receipt(request, transaction_id):
     return response
 
 
+@login_required
+def payment_verification_view(request):
+    # Render the payment verification page
+    return render(request, 'panel/admin/payment/payment_verification.html')
+
+@login_required
+def verify_payment(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            transaction_id = data.get('transactionId')
+            
+            # Retrieve payment details using the transaction_id
+            payment_details = retrieve_payment_details(transaction_id)
+            
+            if payment_details:
+                cart_total = payment_details.get('cart_total')
+                receipt_id = payment_details.get('receipt_id')
+                return JsonResponse({
+                    'success': True,
+                    'receiptId': receipt_id,
+                    'cartTotal': cart_total,
+                    'receiptUrl': reverse('download_receipt', args=[receipt_id])
+                })
+            else:
+                return JsonResponse({'success': False, 'message': 'Payment not found'}, status=404)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'message': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)}, status=400)
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+
+def retrieve_payment_details(transaction_id):
+    # Retrieve payment details from the Receipt model
+    try:
+        receipt = get_object_or_404(Receipt, transaction_id=transaction_id)
+        return {
+            'cart_total': receipt.total,
+            'receipt_id': receipt.id,
+        }
+    except Receipt.DoesNotExist:
+        return None
+
+
+
 
 
 
@@ -703,7 +766,83 @@ def loyalty_program(request):
         return render(request, 'panel/clients/account/loyalty_program.html', context)
     else:
         return render(request, 'login.html')
-    
+
+
+
+
+from .models import Product, CustomUser, ProductRating, DeliverRating, ServiceQualityRating
+from django.db.models import Avg
+
+
+@login_required
+def rate_page(request):
+    # Annotate products with the average rating from the related ProductRating model
+    products = Product.objects.all().annotate(average_rating=Avg('productrating__rating'))
+    deliver_users = CustomUser.objects.filter(role='deliver')
+
+    if request.method == 'POST':
+        # Handle product rating submission
+        if 'rate_product' in request.POST:
+            product_id = request.POST['product_id']
+            rating = request.POST['product_rating']
+            comment = request.POST['product_comment']
+            product = Product.objects.get(id=product_id)
+            ProductRating.objects.create(user=request.user, product=product, rating=rating, comment=comment)
+            return redirect('rate_page')
+
+        # Handle deliver rating submission
+        elif 'rate_deliver' in request.POST:
+            deliver_id = request.POST['deliver_id']
+            rating = request.POST['deliver_rating']
+            comment = request.POST['deliver_comment']
+            deliver_user = CustomUser.objects.get(id=deliver_id)
+            DeliverRating.objects.create(user=request.user, deliver_user=deliver_user, rating=rating, comment=comment)
+            return redirect('rate_page')
+
+        # Handle service quality rating submission
+        elif 'rate_service' in request.POST:
+            rating = request.POST['service_rating']
+            comment = request.POST['service_comment']
+            ServiceQualityRating.objects.create(user=request.user, rating=rating, comment=comment)
+            return redirect('rate_page')
+
+    # Pass products with their average ratings and deliver users to the template
+    context = {
+        'products': products,
+        'deliver_users': deliver_users
+    }
+    return render(request, 'panel/clients/rate/rate_page.html', context)
+
+
+from .models import Delivery
+
+def delivery_notifications(request):
+    if request.user.is_authenticated and request.user.role == 'client':
+        notifications = Delivery.objects.filter(sale__user=request.user).order_by('-timestamp')
+    else:
+        notifications = []
+
+    return render(request, 'panel/clients/deliver/delivery_notifications.html', {'notifications': notifications})
+
+
+
+
+from .models import EShop
+
+def nearby_eshops_view(request):
+    eshops = EShop.objects.all()  # You can also filter by location
+    return render(request, 'panel/clients/compare/nearby_eshops.html', {'eshops': eshops})
+
+def get_eshop_details(request, eshop_id):
+    eshop = get_object_or_404(EShop, id=eshop_id)
+    return JsonResponse({
+        'name': eshop.name,
+        'description': eshop.description,
+        'latitude': eshop.latitude,
+        'longitude': eshop.longitude,
+        'address': eshop.address,
+        'website': eshop.website
+    }) 
 
 
 ## deliver view

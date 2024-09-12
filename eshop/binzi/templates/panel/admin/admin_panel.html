@@ -14,23 +14,75 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/deliver.css' %}">
+    <style>
+        /* Custom Styles for Video Section */
+        .video-section iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        /* Custom Styles for Testimonials */
+        .testimonials {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .testimonial-item {
+            border-left: 5px solid #007bff;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-item p {
+            font-style: italic;
+        }
+
+        .testimonial-item h5 {
+            font-weight: bold;
+        }
+
+        /* Animation for Testimonials */
+        .testimonial-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard">
         <div class="dashboard-nav">
             <header>
-                <a href="#" class="brand-logo"><i class="fas fa-store"></i> <span>eShop Admin Panel</span></a>
+                <a href="{% url 'admin_panel' %}" class="brand-logo"><i class="fas fa-store"></i> <span>eShop Admin Panel</span></a>
+                
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid rounded-circle" style="width: 80px; height: 80px;">
+                    {% else %}
+                        <img src="{% static 'image/auth.png' %}" alt="Default Avatar" class="img-fluid rounded-circle" style="width: 80px; height: 80px;">
+                    {% endif %}
             </header>
             <nav class="dashboard-nav-list">
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'admin_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="{% url 'manage_users' %}" class="dashboard-nav-item"><i class="fas fa-users"></i> Manage Users</a>
                 <a href="{% url 'manage_products' %}" class="dashboard-nav-item"><i class="fas fa-box"></i> Manage Products</a>
                 <a href="{% url 'manage_messages' %}" class="dashboard-nav-item"><i class="fas fa-shopping-cart"></i> Manage Message</a>
                 <a href="{% url 'manage_publicity' %}" class="dashboard-nav-item"><i class="fas fa-tags"></i> Management publicite</a>
                 <a href="{% url 'manage_discounts' %}" class="dashboard-nav-item"><i class="fas fa-gift"></i> Manage Discounts</a>
-                <a href="{% url 'analyse' %}" class="dashboard-nav-item"><i class="fas fa-chart-line"></i> Sales Analytics</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-comments"></i> Customer Reviews</a>
-                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'payment_verification' %}" class="dashboard-nav-item"><i class="fas fa-gift"></i> Verifier payment</a>                <a href="{% url 'analyse' %}" class="dashboard-nav-item"><i class="fas fa-chart-line"></i> Sales Analytics</a>
+                <a href="{% url 'sender_panel' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with deliver</a>
+                <a href="{% url 'update_setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
                 <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
             </nav>
             <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
@@ -89,64 +141,48 @@
                                 </div>
                             </div>
                         </div>
-                    </section>
-
-
-                    <div class="dashboard">
-                        <nav class="dashboard-nav">
-                            <!-- Navigation items -->
-                        </nav>
-                        <div class="dashboard-app">
-                            <header class="dashboard-toolbar">
-                                <button id="toggle-button">Toggle Sidebar</button>
-                            </header>
-                            <div class="dashboard-content">
-                                <div class="dashboard-overview">
-                                    <div class="card">Total Users: {{ total_users }}</div>
-                                    <div class="card">Total Products: {{ total_products }}</div>
-                                    <div class="card">Total Sales: {{ total_sales }}</div>
-                                    <div class="card">Chats with Delivery: {{ chat_with_delivery }}</div>
-                                </div>
+                        
+                        <!-- Graph Section -->
+                        <div class="row mt-5">
+                            <div class="col-md-12">
+                                <h2>Sales Analytics</h2>
                                 <canvas id="statsChart"></canvas>
                             </div>
                         </div>
-                    </div>
+                    </section>
 
-                    <h1 class="mt-4">Welcome to the eShop Admin Panel!</h1>
-                    <p>Manage your users, products, orders, categories, discounts, and more from here.</p>
+                    <!-- Video Section for Publicity -->
+                    <section class="video-section mt-5">
+                        <h2>Promotional Video</h2>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/wjo8JRsHFrU" allowfullscreen></iframe>
+                        </div>
+                        <p>Check out our latest promotional video to understand how eShop can benefit your business.</p>
+                    </section>
 
-               
-
-
-
-                        <!-- User Testimonials -->
-                    <section class="testimonials-section mt-5">
+                    <!-- Testimonials Section -->
+                    <section class="testimonials mt-5">
                         <h2>User Testimonials</h2>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="testimonial-card">
-                                    <p>"The eShop platform has transformed our online business. The dashboard is user-friendly and provides all the essential tools we need to manage our store effectively."</p>
-                                    <p><strong>John Doe</strong>, E-commerce Manager</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="testimonial-card">
-                                    <p>"Excellent features and great customer support. The sales analytics have been particularly useful for understanding our market trends."</p>
-                                    <p><strong>Jane Smith</strong>, Business Owner</p>
-                                </div>
-                            </div>
+                        <div class="testimonial-item">
+                            <p>"eShop has revolutionized the way we manage our online store. The intuitive interface and powerful features have greatly improved our efficiency."</p>
+                            <h5>- Alex Johnson</h5>
+                        </div>
+                        <div class="testimonial-item">
+                            <p>"The customer support and ease of use of eShop have been fantastic. We've seen a significant boost in sales since we started using it."</p>
+                            <h5>- Maria Garcia</h5>
                         </div>
                     </section>
+
                 </div>
             </div>
-               <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <span class="text-muted">© 2024 Product Management System</span>
-        </div>
-    </footer>
+
+            <!-- Footer -->
+            <footer class="footer mt-auto py-3 bg-light">
+                <div class="container">
+                    <span class="text-muted">© 2024 Product Management System</span>
+                </div>
+            </footer>
         </main>
-        
     </div>
 
     <!-- Bootstrap JS -->
@@ -158,36 +194,28 @@
     <script src="{% static 'js/admin_panel.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-<script>
-    const ctx = document.getElementById('statsChart').getContext('2d');
-    const graphData = {{ graph_data|safe }};
-    const myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: graphData.labels,
-            datasets: [{
-                label: 'Statistics',
-                data: graphData.data,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+    <script>
+        const ctx = document.getElementById('statsChart').getContext('2d');
+        const statsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ graph_data.labels|safe }},
+                datasets: [{
+                    label: 'Monthly Sales',
+                    data: {{ graph_data.data|safe }},
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
-
-    document.getElementById('toggle-button').addEventListener('click', function() {
-        const nav = document.querySelector('.dashboard-nav');
-        nav.classList.toggle('hidden');
-    });
-</script>
+        });
     </script>
 </body>
 </html>

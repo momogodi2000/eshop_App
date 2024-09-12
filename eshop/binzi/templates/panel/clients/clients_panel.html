@@ -55,7 +55,7 @@
                 <a href="{% url 'product_browsing' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-search"></i> Product Browsing
                 </a>
-                <a href="#" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                <a href="{% url 'nearby_eshops' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-exchange-alt"></i> Product Comparison
                 </a>
                 <a href="{% url 'publicity_feed' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
@@ -70,12 +70,16 @@
                 <a href="{% url 'order_history' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-box"></i> Order History
                 </a>
-                <a href="#" class="dashboard-nav-item animate__animated animate__fadeInLeft">
-                    <i class="fas fa-heart"></i> Wishlists
+                <a href="{% url 'rate_page' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
+                    <i class="fas fa-heart"></i> Rate
                 </a>
                 <a href="{% url 'loyalty_program' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-star"></i> Loyalty Program
                 </a>
+                <a href="{% url 'delivery_notifications' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft notification-item">
+                    <i class="fas fa-bell"></i> Deliver Notification
+                </a>
+                
                 <a href="{% url 'logout' %}" class="dashboard-nav-item animate__animated animate__fadeInLeft">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>

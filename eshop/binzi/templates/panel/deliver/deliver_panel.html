@@ -20,12 +20,101 @@
 
 
     <style>
-        /* Add custom styles for the map */
-        #map {
-            height: 400px;
-            width: 100%;
-            margin-top: 20px;
-        }
+        body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    flex-wrap: wrap;
+}
+
+.dashboard-nav {
+    width: 250px;
+    background-color: #343a40;
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard-nav .brand-logo {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.dashboard-nav .brand-logo i {
+    margin-right: 10px;
+}
+
+.profile-avatar img {
+    width: 80px;
+    height: 80px;
+    margin: 10px 0;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.dashboard-nav-list {
+    width: 100%;
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.dashboard-nav-item {
+    padding: 15px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.dashboard-nav-item i {
+    margin-right: 10px;
+}
+
+.dashboard-nav-item:hover {
+    background-color: #495057;
+    color: #fff;
+}
+
+.logout-btn {
+    margin-top: auto;
+    background-color: #dc3545;
+    border: none;
+    padding: 10px 20px;
+}
+
+.dashboard-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f8f9fa;
+    overflow-y: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .dashboard-nav {
+        width: 100%;
+    }
+
+    .dashboard-content {
+        padding: 10px;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -33,18 +122,25 @@
         <div class="dashboard-nav">
             <header>
                 <a href="#" class="brand-logo"><i class="fas fa-id-card"></i> <span>Deliver Panel</span></a>
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid rounded-circle">
+                    {% else %}
+                        <img src="{% static 'image/auth.png' %}" alt="Default Avatar" class="img-fluid rounded-circle">
+                    {% endif %}
+                </div>
             </header>
             <nav class="dashboard-nav-list">
-                <a href="{% url 'deliver_panel' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="{% url 'manage_deliver' %}" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Manage Deliver</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Chat with Admin</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Geolocation Tracking</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Integration with Mapping Services</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Proof of Delivery</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Notification</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
-            </nav>
+                <a href="{% url 'deliver_panel' %}" class="dashboard-nav-item active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="{% url 'manage_deliver' %}" class="dashboard-nav-item"><i class="fas fa-user-shield"></i> Manage Deliver</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-comment-alt"></i> Chat with Admin</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Geolocation Tracking</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-map-signs"></i> Integration with Mapping Services</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-file-alt"></i> Proof of Delivery</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Clients Notification</a>
+                <a href="{% url 'update_setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-info"></i> About Us</a>
+              </nav>
             <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
         </div>
         <main class="dashboard-app">

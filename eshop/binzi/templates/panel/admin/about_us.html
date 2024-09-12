@@ -1,27 +1,14 @@
+{% extends 'base_admin.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/about2.css' %}">
 
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/about2.css' %}">
-</head>
-<body>
-    <div>
-        <p><a href="{% url 'admin_panel' %}" class="btn btn-primary">Return Home</a></p>
-    </div>
-    <div class="about-us-container">
-        <div class="container">
-            <h1 class="mt-4">About Us</h1>
+{% block content %}
+    <div class="container">
+        <div class="mt-4">
+        </div>
+        <div class="about-us-container mt-5">
+            <h1>About Us</h1>
             <p>Welcome to E-Shop, your number one source for all things shopping. We're dedicated to providing you the very best of products, with an emphasis on customer service, dependability, and uniqueness. Founded in 2020, E-Shop has come a long way from its beginnings. When we first started out, our passion for quality and affordability drove us to do intense market research and find the best products to offer. Now we serve customers all over the country and are thrilled to be a part of the e-commerce industry.</p>
             
             <!-- Portfolio Section -->
@@ -46,8 +33,8 @@
                             </div>
                             <div class="card-body">
                                 <ul>
-                                    <li>Programming Languages: Python, JavaScript, php, dart</li>
-                                    <li>Frameworks: Django, laravel, flutter, next js, flask</li>
+                                    <li>Programming Languages: Python, JavaScript, PHP, Dart</li>
+                                    <li>Frameworks: Django, Laravel, Flutter, Next.js, Flask</li>
                                     <li>Libraries: Bootstrap, jQuery</li>
                                     <li>Tools: Git, Docker</li>
                                 </ul>
@@ -65,8 +52,8 @@
                                         <div class="card project-card">
                                             <img src="{% static 'image/dev1.jpeg' %}" class="card-img-top" alt="Project 1">
                                             <div class="card-body">
-                                                <h5 class="card-title">projector management app</h5>
-                                                <p class="card-text">projector management app in Django.</p>
+                                                <h5 class="card-title">Projector Management App</h5>
+                                                <p class="card-text">Projector management app in Django.</p>
                                                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#project1Modal">Live Demo</a>
                                                 <a href="https://github.com/momogodi2000/projector-management-app-in-django.git" target="_blank" class="btn btn-secondary">View Code</a>
                                             </div>
@@ -76,8 +63,8 @@
                                         <div class="card project-card">
                                             <img src="{% static 'image/dev.jpeg' %}" class="card-img-top" alt="Project 2">
                                             <div class="card-body">
-                                                <h5 class="card-title">real time collaboration app in next js and laravel</h5>
-                                                <p class="card-text">real app collaboration.</p>
+                                                <h5 class="card-title">Real-Time Collaboration App</h5>
+                                                <p class="card-text">Real-time collaboration app in Next.js and Laravel.</p>
                                                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#project2Modal">Live Demo</a>
                                                 <a href="https://github.com/momogodi2000/real-time-collaboration-web-app.git" target="_blank" class="btn btn-secondary">View Code</a>
                                             </div>
@@ -87,8 +74,8 @@
                                         <div class="card project-card">
                                             <img src="{% static 'image/dev1.jpeg' %}" class="card-img-top" alt="Project 3">
                                             <div class="card-body">
-                                                <h5 class="card-title">ecommerce app in flask</h5>
-                                                <p class="card-text">Ecommerce app in Python.</p>
+                                                <h5 class="card-title">E-commerce App in Flask</h5>
+                                                <p class="card-text">E-commerce app in Python.</p>
                                                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#project3Modal">Live Demo</a>
                                                 <a href="https://github.com/momogodi2000/simple-flask-e-commerce-with-sqlite.git" target="_blank" class="btn btn-secondary">View Code</a>
                                             </div>
@@ -116,9 +103,9 @@
                             <div class="card-body">
                                 <p>Make it easy for potential employers or clients to get in touch. Include your email address, a contact form, and links to relevant social media profiles (GitHub, LinkedIn, etc.).</p>
                                 <ul class="list-unstyled">
-                                    <li>Email: <a href="mailto:yvangodimomo@gmail.com">binzi@gmail.com</a></li>
-                                    <li>GitHub: <a href="https://github.com/momogodi2000" target="_blank">myprofile</a></li>
-                                    <li>LinkedIn: <a href="https://www.linkedin.com/in/momo-godi-yvan-206642244/" target="_blank">myprofile</a></li>
+                                    <li>Email: <a href="mailto:binzijunoir@gmail.com">binzijunoir@gmail.com</a></li>
+                                    <li>GitHub: <a href="https://github.com/momogodi2000" target="_blank">my profile</a></li>
+                                    <li>LinkedIn: <a href="https://www.linkedin.com/in/momo-godi-yvan-206642244/" target="_blank">my profile</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -134,13 +121,14 @@
                         <div class="card team-card">
                             <img src="{% static 'image/moi.jpeg' %}" class="card-img-top" alt="Team Member 1">
                             <div class="card-body">
-                                <h5 class="card-title">binzi</h5>
+                                <h5 class="card-title">Binzi</h5>
                                 <p class="card-text">Project Manager</p>
                                 <p class="card-text">Designer</p>
                                 <p class="card-text">Lead Developer</p>
                             </div>
                         </div>
                     </div>
+                </div>
             </section>
         </div>
     </div>
@@ -148,63 +136,55 @@
     <!-- Project Modals -->
     <!-- Example modal for Project 1 -->
     <div class="modal fade" id="project1Modal" tabindex="-1" aria-labelledby="project1ModalLabel" aria-hidden="true">
-       <div class="modal-dialog modal-lg">
-           <div class="modal-content">
-               <div class="modal-header">
-                   <h5 class="modal-title" id="project1ModalLabel">Project 1 Live Demo</h5>
-                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                       <span aria-hidden="true">&times;</span>
-                   </button>
-               </div>
-               <div class="modal-body">
-                   <p>Embed your live demo here, or provide a link to it.</p>
-                   <iframe src="https://example.com/project1" width="100%" height="400" frameborder="0"></iframe>
-               </div>
-           </div>
-       </div>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="project1ModalLabel">Project 1 Live Demo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Embed your live demo here, or provide a link to it.</p>
+                    <iframe src="https://example.com/project1" width="100%" height="400" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Example modal for Project 2 -->
     <div class="modal fade" id="project2Modal" tabindex="-1" aria-labelledby="project2ModalLabel" aria-hidden="true">
-       <div class="modal-dialog modal-lg">
-           <div class="modal-content">
-               <div class="modal-header">
-                   <h5 class="modal-title" id="project2ModalLabel">Project 2 Live Demo</h5>
-                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                       <span aria-hidden="true">&times;</span>
-                   </button>
-               </div>
-               <div class="modal-body">
-                   <p>Embed your live demo here, or provide a link to it.</p>
-                   <iframe src="https://example.com/project2" width="100%" height="400" frameborder="0"></iframe>
-                   </div>
-                   </div>
-                   </div>
-                   </div>
-
-                   <!-- Example modal for Project 3 -->
-<div class="modal fade" id="project3Modal" tabindex="-1" aria-labelledby="project3ModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="project3ModalLabel">Project 3 Live Demo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Embed your live demo here, or provide a link to it.</p>
-                <iframe src="https://example.com/project3" width="100%" height="400" frameborder="0"></iframe>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="project2ModalLabel">Project 2 Live Demo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Embed your live demo here, or provide a link to it.</p>
+                    <iframe src="https://example.com/project2" width="100%" height="400" frameborder="0"></iframe>
+                </div>
             </div>
         </div>
     </div>
- </div>
- 
- <!-- Bootstrap JS -->
- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
- 
+
+    <!-- Example modal for Project 3 -->
+    <div class="modal fade" id="project3Modal" tabindex="-1" aria-labelledby="project3ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="project3ModalLabel">Project 3 Live Demo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Embed your live demo here, or provide a link to it.</p>
+                    <iframe src="https://example.com/project3" width="100%" height="400" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/about2.js' %}"></script>
+
+{% endblock %}
+
  <!-- Custom JavaScript -->
- <script src="{% static 'js/about2.js' %}"></script>
+
  
