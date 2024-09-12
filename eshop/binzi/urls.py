@@ -97,4 +97,7 @@ urlpatterns = [
     path('eshop/<int:eshop_id>/', views.get_eshop_details, name='eshop_details'),
 
 
+
+    path('deliver/rate/view_rate/', views.view_rate, name='view_rate'),
+
 ]

@@ -133,13 +133,13 @@
             <nav class="dashboard-nav-list">
                 <a href="{% url 'deliver_panel' %}" class="dashboard-nav-item active"><i class="fas fa-home"></i> Dashboard</a>
                 <a href="{% url 'manage_deliver' %}" class="dashboard-nav-item"><i class="fas fa-user-shield"></i> Manage Deliver</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-comment-alt"></i> Chat with Admin</a>
+                <a href="{% url 'receiver_panel' %}" class="dashboard-nav-item"><i class="fas fa-comment-alt"></i> Chat with Admin</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Geolocation Tracking</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-map-signs"></i> Integration with Mapping Services</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-file-alt"></i> Proof of Delivery</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Clients Notification</a>
+                <a href="{% url 'view_rate' %}" class="dashboard-nav-item"><i class="fas fa-bell"></i> Clients feedback</a>
                 <a href="{% url 'update_setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-info"></i> About Us</a>
+                <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info"></i> About Us</a>
               </nav>
             <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
         </div>

@@ -174,9 +174,6 @@ def admin_panel(request):
     return render(request, 'panel/admin/admin_panel.html', context)
 
 
-@login_required
-def deliver_panel(request):
-    return render(request, 'panel/deliver/deliver_panel.html')
 
 
 #crud_user
@@ -814,6 +811,7 @@ def rate_page(request):
     return render(request, 'panel/clients/rate/rate_page.html', context)
 
 
+
 from .models import Delivery
 
 def delivery_notifications(request):
@@ -845,7 +843,17 @@ def get_eshop_details(request, eshop_id):
     }) 
 
 
+
+
+
+
 ## deliver view
+@login_required
+def deliver_panel(request):
+    return render(request, 'panel/deliver/deliver_panel.html')
+
+
+
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.views import View
@@ -869,3 +877,22 @@ class DeliveryValidationView(View):
         delivery.status = 'completed'
         delivery.save()
         return HttpResponseRedirect(reverse('manage_deliveries'))
+
+
+##deliver
+
+@login_required
+def view_rate(request):
+    # Annotate products with the average rating from ProductRating model
+    products_with_ratings = Product.objects.all().annotate(average_rating=Avg('productrating__rating'))
+    
+    # Fetch all deliverer ratings
+    deliver_user = CustomUser.objects.get(id=request.user.id)
+    deliver_ratings = DeliverRating.objects.filter(deliver_user=deliver_user)
+    
+    # Pass products with ratings and deliver ratings to the template
+    context = {
+        'products_with_ratings': products_with_ratings,
+        'deliver_ratings': deliver_ratings,
+    }
+    return render(request, 'panel/deliver/rate/view_rate.html', context)

@@ -1,0 +1,81 @@
+{% extends 'base_deliver.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Client Feedback and Ratings</h2>
+
+    <!-- Product Feedback Section -->
+    <div class="card mb-5">
+        <div class="card-header bg-primary text-white">
+            <h3>Product Feedback</h3>
+        </div>
+        <div class="card-body">
+            {% if products_with_ratings %}
+                {% for product in products_with_ratings %}
+                    <div class="product-item py-3">
+                        <h5>{{ product.name }}</h5>
+                        <p>Average Rating: <strong>{{ product.average_rating|default:"No ratings yet" }}</strong></p>
+                        <ul>
+                            {% for rating in product.productrating_set.all %}
+                                <li><strong>Client:</strong> {{ rating.user.username }} - 
+                                    <strong>Rating:</strong> {{ rating.rating }}/5
+                                    <br><strong>Comment:</strong> {{ rating.comment }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <hr>
+                {% endfor %}
+            {% else %}
+                <p>No product ratings available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Deliver Feedback Section -->
+    <div class="card mb-5">
+        <div class="card-header bg-success text-white">
+            <h3>Your Delivery Feedback</h3>
+        </div>
+        <div class="card-body">
+            {% if deliver_ratings %}
+                {% for rating in deliver_ratings %}
+                    <div class="rating-item py-3">
+                        <p><strong>Client:</strong> {{ rating.user.username }}</p>
+                        <p><strong>Rating:</strong> {{ rating.rating }}/5</p>
+                        <p><strong>Comment:</strong> {{ rating.comment }}</p>
+                    </div>
+                    <hr>
+                {% endfor %}
+            {% else %}
+                <p>No delivery ratings available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple animation for feedback sections
+    document.addEventListener("DOMContentLoaded", function() {
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = 1;
+                card.style.transform = "translateY(0)";
+            }, index * 200);
+        });
+    });
+</script>
+
+<style>
+    .card {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.5s ease;
+    }
+    .card-header {
+        font-size: 1.5rem;
+    }
+</style>
+{% endblock %}
