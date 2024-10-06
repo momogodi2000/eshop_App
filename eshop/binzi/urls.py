@@ -99,5 +99,9 @@ urlpatterns = [
 
 
     path('deliver/rate/view_rate/', views.view_rate, name='view_rate'),
+    path('setting_deliver/', views.setting_deliver, name='setting_deliver'),
+    path('setting_user/', views.setting_user, name='setting_user'),
+    path('profile_user/', views.profile_user, name='profile_user'),
+
 
 ]

@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Deliver Panel{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',
+                        secondary: '#2c3e50',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="bg-secondary text-white w-64 min-h-screen p-4 hidden lg:block transition-all duration-300 ease-in-out">
+            <div class="mb-8">
+                <a href="#" class="text-2xl font-bold flex items-center">
+                    <i class="fas fa-id-card mr-2"></i>
+                    <span>Deliver Panel</span>
+                </a>
+            </div>
+            <div class="mb-8 text-center">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="w-24 h-24 rounded-full mx-auto">
+                {% else %}
+                    <img src="{% static 'image/auth.png' %}" alt="Default Avatar" class="w-24 h-24 rounded-full mx-auto">
+                {% endif %}
+            </div>
+            <nav>
+                <a href="{% url 'deliver_panel' %}" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded transition duration-200">
+                    <i class="fas fa-home mr-2"></i> Dashboard
+                </a>
+                <a href="{% url 'manage_deliver' %}" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded transition duration-200">
+                    <i class="fas fa-user-shield mr-2"></i> Manage Deliver
+                </a>
+                <a href="{% url 'receiver_panel' %}" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded transition duration-200">
+                    <i class="fas fa-comment-alt mr-2"></i> Chat with Admin
+                </a>
+                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded transition duration-200">
+                    <i class="fas fa-map-marked-alt mr-2"></i> Geolocation Tracking
+                </a>
+                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded transition duration-200">
+                    <i class="fas fa-map-signs mr-2"></i> Integration with Mapping Services
+                </a>
+                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded transition duration-200">
+                    <i class="fas fa-file-alt mr-2"></i> Proof of Delivery
+                </a>
+                <a href="{% url 'view_rate' %}" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded transition duration-200">
+                    <i class="fas fa-bell mr-2"></i> Clients feedback
+                </a>
+                <a href="{% url 'setting_deliver' %}" class="block py-2 px-4 text-sm hover:bg-gray-700 rounded transition duration-200">
+                    <i class="fas fa-cogs mr-2"></i> Settings
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="{% url 'logout' %}" class="block w-full py-2 px-4 bg-red-600 text-white text-center rounded hover:bg-red-700 transition duration-200">
+                    Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top navbar -->
+            <header class="bg-white dark:bg-gray-800 shadow-md">
+                <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                    <button id="sidebar-toggle" class="lg:hidden text-gray-600 dark:text-gray-200 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="flex items-center">
+                        <div class="relative">
+                            <input type="text" placeholder="Search..." class="bg-gray-200 dark:bg-gray-700 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <div class="ml-4">
+                            <button id="language-toggle" class="text-gray-600 dark:text-gray-200 focus:outline-none">
+                                <i class="fas fa-globe"></i>
+                            </button>
+                        </div>
+                        <button id="theme-toggle" class="ml-4 text-gray-600 dark:text-gray-200 focus:outline-none">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-gray-900">
+                <div id="content" class="container mx-auto px-4 py-8 animate-fadeIn">
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap" async defer></script>
+
+    <script>
+        // Sidebar toggle
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('hidden');
+        });
+
+        // Theme toggle
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const isDark = localStorage.getItem('dark-mode') === 'true';
+
+        if (isDark) {
+            html.classList.add('dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        themeToggle.addEventListener('click', function() {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('dark-mode', isDark);
+            this.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        // Language toggle (placeholder functionality)
+        document.getElementById('language-toggle').addEventListener('click', function() {
+            alert('Language toggle functionality to be implemented');
+        });
+
+        // Content fade-in animation
+        function fadeInContent() {
+            const content = document.getElementById('content');
+            content.classList.add('animate-fadeIn');
+            setTimeout(() => {
+                content.classList.remove('animate-fadeIn');
+            }, 500);
+        }
+
+        // Call fadeInContent on page load and when navigating
+        document.addEventListener('DOMContentLoaded', fadeInContent);
+        // You might need to call fadeInContent() when navigating between pages if you're using AJAX navigation
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

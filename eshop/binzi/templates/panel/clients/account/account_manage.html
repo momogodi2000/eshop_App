@@ -1,58 +1,40 @@
+{% extends 'panel/base/base_clients.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Management</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/deliver.css' %}">
-</head>
-<body>
-    <a href="{% url 'clients_panel' %}" class="btn btn-secondary mb-3">Return to clients Panel</a> 
+{% block title %}Account Management{% endblock %}
 
-    <div class="container mt-5">
-        <h2 class="text-center">Account Management</h2>
-        <form method="POST" enctype="multipart/form-data" class="animate__animated animate__fadeIn">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep the same">
-            </div>
-            <div class="form-group">
-                <label for="profile_picture">Profile Picture</label>
-                <input type="file" class="form-control-file" id="profile_picture" name="profile_picture">
-            </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </form>
-    </div>
+{% block content %}
+<div class="container mx-auto mt-5">
 
-    <style>
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
+    <h2 class="text-center text-2xl font-bold mb-4">Account Management</h2>
+    <form method="POST" enctype="multipart/form-data" class="animate__animated animate__fadeIn">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+            <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+            <input type="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+        <div class="mb-4">
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="password" name="password" placeholder="Leave blank to keep the same">
+        </div>
+        <div class="mb-4">
+            <label for="profile_picture" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+            <input type="file" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="profile_picture" name="profile_picture">
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Save Changes</button>
+    </form>
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        .container {
+            padding: 15px;
         }
-
-        .form-control,
-        .form-control-file {
-            border-radius: 0.5rem;
-        }
-    </style>
-</body>
-</html>
+    }
+</style>
+{% endblock %}

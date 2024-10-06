@@ -1,30 +1,62 @@
-{% extends 'base_admin.html' %}
+{% extends 'panel/base/base_admin.html' %}
 
 {% block title %}Payment Verification{% endblock %}
 
 {% block extra_css %}
 <style>
-    .receipt-card {
-        transition: transform 0.2s;
+    body {
+        background-color: #f8f9fa;
     }
+
+    .container {
+        max-width: 600px;
+        margin-top: 50px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .receipt-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 20px;
+    }
+
     .receipt-card:hover {
         transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
+
     .error-message {
         color: red;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    .alert {
+        margin-top: 20px;
+    }
+
+    h1 {
+        margin-bottom: 30px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-center">Payment Verification</h1>
-    <div class="form-group">
-        <label for="transactionId">Enter Transaction ID:</label>
-        <input type="text" id="transactionId" class="form-control" placeholder="Transaction ID">
-    </div>
-    <button id="verifyPayment" class="btn btn-primary">Verify Payment</button>
+    <div class="container">
+        <h1 class="text-center">Payment Verification</h1>
+        <div class="form-group">
+            <label for="transactionId">Enter Transaction ID:</label>
+            <input type="text" id="transactionId" class="form-control" placeholder="Transaction ID" aria-describedby="transactionHelp">
+            <small id="transactionHelp" class="form-text text-muted">Please enter your transaction ID to verify.</small>
+        </div>
+        <button id="verifyPayment" class="btn btn-primary">Verify Payment</button>
 
-    <div id="result" class="mt-4"></div>
+        <div id="result" class="mt-4"></div>
+    </div>
 {% endblock %}
 
 {% block extra_js %}
@@ -60,8 +92,8 @@
             <div class="receipt-card card">
                 <div class="card-body">
                     <h5 class="card-title">Payment Successful!</h5>
-                    <p class="card-text">Receipt ID: ${data.receiptId}</p>
-                    <p class="card-text">Total Amount: ${data.cartTotal} XAF</p>
+                    <p class="card-text">Receipt ID: <strong>${data.receiptId}</strong></p>
+                    <p class="card-text">Total Amount: <strong>${data.cartTotal} XAF</strong></p>
                     <a href="${data.receiptUrl}" class="btn btn-success">Download Receipt</a>
                 </div>
             </div>

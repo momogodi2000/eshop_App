@@ -1,0 +1,48 @@
+{% extends 'panel/base/base_deliver.html' %}
+
+{% block title %}Update Settings{% endblock %}
+<style>
+    body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation styles */
+.animated {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.animated.fadeIn {
+    opacity: 1;
+}
+</style>
+{% block content %}
+<div class="container">
+    <div class="card animated fadeIn">
+        <div class="card-header">
+            <h5 class="card-title">Update Your Settings</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Update Settings</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+    $('.card').addClass('fadeIn'); // Add fade-in effect on load
+});
+</script>
+{% endblock %}

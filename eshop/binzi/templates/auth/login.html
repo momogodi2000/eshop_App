@@ -60,13 +60,6 @@
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
-            <div class="social-login text-center mt-3">
-                <h3>Or login with</h3>
-                <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-google btn-block btn-social">Google</a>
-                <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-facebook btn-block btn-social">Facebook</a>
-                <a href="{% url 'social:begin' 'apple' %}" class="btn btn-apple btn-block btn-social">Apple</a>
-                <a href="{% url 'social:begin' 'yahoo' %}" class="btn btn-yahoo btn-block btn-social">Yahoo</a>
-            </div>
             <div class="text-center mt-3">
                 <p>Don't have an account? <a href="{% url 'register' %}" class="btn btn-primary">Register</a></p>
                 <p><a href="{% url 'forgot_password' %}" class="btn btn-primary">Forgot Password?</a></p>

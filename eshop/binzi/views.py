@@ -43,7 +43,7 @@ from .models import ContactMessage, Contact
 
 
 
-
+## authentication view
 
 # Function to generate a random 6-digit password reset code
 def generate_password_reset_code():
@@ -92,10 +92,16 @@ class CustomPasswordResetView(PasswordResetView):
 def home(request):
     return render(request, 'home/home.html')
 
-
 def contact(request):
-    return render(request, 'home/contact.html')
-
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the form data to the database
+            return redirect('contact')  # Redirect to the same page after saving
+    else:
+        form = ContactForm()
+    
+    return render(request, 'home/contact.html', {'form': form})
 
 def about(request):
     return render(request, 'home/about.html')
@@ -130,8 +136,6 @@ def login(request):
         form = AuthenticationForm()
     return render(request, 'auth/login.html', {'form': form})
 
-
-
 def forgot_password(request):
     if request.method == 'POST':
         form = CustomPasswordResetView.form_class(request.POST)
@@ -149,7 +153,9 @@ def logout(request):
     auth_logout(request)
     return redirect('home')
 
-# dashboard
+
+
+# admin dashboard
 
 @login_required
 def admin_panel(request):
@@ -172,8 +178,6 @@ def admin_panel(request):
         'graph_data': graph_data,
     }
     return render(request, 'panel/admin/admin_panel.html', context)
-
-
 
 
 #crud_user
@@ -337,8 +341,6 @@ def manage_discounts(request):
 
 
 
-
-
 # panel/admin/crud_pub/views.py
 
 @login_required
@@ -454,6 +456,10 @@ def reply_contact_message(request, message_id):
 
 from .forms import ChatMessageForm  # Ensure this line is present
 from .models import ChatMessage
+from .models import Product, CustomUser, ProductRating, DeliverRating, ServiceQualityRating
+from django.db.models import Avg
+from .models import EShop
+from .models import Delivery
 
 
 @login_required
@@ -531,11 +537,6 @@ def product_browsing(request):
         'selected_category': selected_category,
         'selected_catalog': selected_catalog,
     })
-
-
-
-
-
 
 ##payment API
 
@@ -671,9 +672,6 @@ def retrieve_payment_details(transaction_id):
 
 
 
-
-
-
 @login_required
 def publicity_feed(request):
     publicities = Publicity.objects.all().order_by('-date_posted')
@@ -708,7 +706,6 @@ def book_publicity(request, publicity_id):
     publicity = get_object_or_404(Publicity, id=publicity_id)
     Booking.objects.create(publicity=publicity, user=request.user)
     return redirect('publicity_feed')
-
 
 
 def contact_us(request):
@@ -747,7 +744,6 @@ def order_history(request):
     return redirect('login')  # Redirect to login if not authenticated
 
 
-
 def loyalty_program(request):
     user = request.user
     if user.is_authenticated:
@@ -763,12 +759,6 @@ def loyalty_program(request):
         return render(request, 'panel/clients/account/loyalty_program.html', context)
     else:
         return render(request, 'login.html')
-
-
-
-
-from .models import Product, CustomUser, ProductRating, DeliverRating, ServiceQualityRating
-from django.db.models import Avg
 
 
 @login_required
@@ -812,8 +802,6 @@ def rate_page(request):
 
 
 
-from .models import Delivery
-
 def delivery_notifications(request):
     if request.user.is_authenticated and request.user.role == 'client':
         notifications = Delivery.objects.filter(sale__user=request.user).order_by('-timestamp')
@@ -823,9 +811,6 @@ def delivery_notifications(request):
     return render(request, 'panel/clients/deliver/delivery_notifications.html', {'notifications': notifications})
 
 
-
-
-from .models import EShop
 
 def nearby_eshops_view(request):
     eshops = EShop.objects.all()  # You can also filter by location
@@ -844,10 +829,54 @@ def get_eshop_details(request, eshop_id):
 
 
 
+@login_required
+def setting_user(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        current_password = request.POST.get('currentPassword')
+        new_password = request.POST.get('newPassword')
+        confirm_password = request.POST.get('confirmPassword')
+        profile_picture = request.FILES.get('profile_picture')
+
+        # Update name and email
+        request.user.name = name
+        request.user.email = email
+
+        # Check current password for security
+        if not request.user.check_password(current_password):
+            context = {'error': 'Current password is incorrect'}
+        else:
+            # Update password if provided and valid
+            if new_password and new_password == confirm_password:
+                request.user.set_password(new_password)
+
+            # Update profile picture if provided
+            if profile_picture:
+                request.user.profile_picture = profile_picture
+
+            request.user.save()
+            context = {'success': 'Settings updated successfully'}
+            # Redirect to avoid resubmission on refresh
+            return redirect('clients_panel')
+    else:
+        context = {}
+
+    return render(request, 'panel/clients/profile/setting_user.html', context)
+
+@login_required
+def profile_user(request):
+    return render(request, 'panel/clients/profile/profile_user.html', {'user': request.user})
+
+
+
+
 
 
 
 ## deliver view
+
+
 @login_required
 def deliver_panel(request):
     return render(request, 'panel/deliver/deliver_panel.html')
@@ -879,8 +908,6 @@ class DeliveryValidationView(View):
         return HttpResponseRedirect(reverse('manage_deliveries'))
 
 
-##deliver
-
 @login_required
 def view_rate(request):
     # Annotate products with the average rating from ProductRating model
@@ -896,3 +923,21 @@ def view_rate(request):
         'deliver_ratings': deliver_ratings,
     }
     return render(request, 'panel/deliver/rate/view_rate.html', context)
+
+
+@login_required
+def setting_deliver(request):
+    user = request.user
+    
+    if request.method == 'POST':
+        form = UpdateSettingsForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            if form.cleaned_data['password']:
+                user.set_password(form.cleaned_data['password'])
+            user.save()
+            return redirect('home')  # Redirect to an appropriate page after update
+    else:
+        form = UpdateSettingsForm(instance=user)
+    
+    return render(request, 'panel/deliver/update/setting_deliver.html', {'form': form})

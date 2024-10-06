@@ -1,0 +1,86 @@
+{% extends 'panel/base/base_clients.html' %}
+
+{% block title %}Security Settings{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10 px-4">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Security Settings</h2>
+    
+    <form method="post" action="{% url 'setting_user' %}" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-6 max-w-lg mx-auto">
+        {% csrf_token %}
+
+        <!-- Name -->
+        <div class="mb-6">
+            <label for="name" class="block text-sm font-semibold text-gray-700">Name</label>
+            <input type="text" id="name" name="name" value="{{ user.name }}" placeholder="Enter your name" class="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <!-- Email -->
+        <div class="mb-6">
+            <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" placeholder="Enter your email" class="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-6">
+            <label for="phone" class="block text-sm font-semibold text-gray-700">Phone</label>
+            <input type="text" id="phone" name="phone" value="{{ user.phone }}" placeholder="Enter your phone number" class="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <!-- Address -->
+        <div class="mb-6">
+            <label for="address" class="block text-sm font-semibold text-gray-700">Address</label>
+            <input type="text" id="address" name="address" value="{{ user.address }}" placeholder="Enter your address" class="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="mb-6">
+            <label for="profile_picture" class="block text-sm font-semibold text-gray-700">Profile Picture</label>
+            <input type="file" id="profile_picture" name="profile_picture" class="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="mt-4 w-32 h-32 rounded-full mx-auto border-2 border-gray-300">
+            {% endif %}
+        </div>
+
+        <!-- Current Password -->
+        <div class="mb-6">
+            <label for="currentPassword" class="block text-sm font-semibold text-gray-700">Current Password</label>
+            <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password" class="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <!-- New Password -->
+        <div class="mb-6">
+            <label for="newPassword" class="block text-sm font-semibold text-gray-700">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password" class="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <!-- Confirm New Password -->
+        <div class="mb-6">
+            <label for="confirmPassword" class="block text-sm font-semibold text-gray-700">Confirm New Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password" class="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-md transition duration-300">
+            Update Profile
+        </button>
+    </form>
+
+    <!-- Success or Error Messages -->
+    {% if error %}
+        <p class="mt-4 text-red-600 text-center">{{ error }}</p>
+    {% elif success %}
+        <p class="mt-4 text-green-600 text-center">{{ success }}</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script>
+$(document).ready(function(){
+    $('form').on('submit', function(event){
+        // Additional client-side validations can be added here
+    });
+});
+</script>
+{% endblock %}

@@ -1,242 +1,161 @@
+{% extends 'panel/base/base_home.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | E-Shop Platform</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/contact.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-</head>
+{% block title %}Contact Us | E-Shop Platform{% endblock %}
+
+{% block styles %}
 <style>
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    font-size: 36px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-form {
-    margin-top: 20px;
-}
-
-label {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-input, textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-}
-
-input[type="submit"] {
-    background-color: #4CAF50;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #3e8e41;
-}
-
-.animate__animated {
-    animation-duration: 2s;
-}
-
-.animate__fadeInDown {
-    animation-name: fadeInDown;
-}
-
-.animate__fadeInUp {
-    animation-name: fadeInUp;
-}
-
-.animate__pulse {
-    animation-name: pulse;
-}
-
-@keyframes fadeInDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      line-height: 1.8;
     }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #00698f;
     }
-}
 
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
+    .text-center {
+      text-align: center;
     }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
+
+    /* Form Styles */
+    .contact-form {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-}
 
-@keyframes pulse {
-    0% {
-        transform: scale(1);
+    .contact-form label {
+      font-weight: bold;
     }
-    50% {
-        transform: scale(1.1);
+
+    .contact-form input, 
+    .contact-form textarea {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      transition: border-color 0.3s ease;
     }
-    100% {
-        transform: scale(1);
+
+    .contact-form input:focus, 
+    .contact-form textarea:focus {
+      border-color: #00698f;
+      outline: none;
     }
-}
-/* Navbar Styles */
-.navbar {
-    padding: 1rem 2rem;
-    border-bottom: 2px solid #e9ecef;
-}
 
-.navbar-brand {
-    font-size: 1.75rem;
-    font-weight: bold;
-}
-
-.navbar-toggler {
-    border: none;
-}
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6h16M4 12h16m-7 6h7'/%3E%3C/svg%3E");
-}
-
-.navbar-nav .nav-item {
-    margin: 0 0.5rem;
-}
-
-.navbar-nav .nav-link {
-    color: #ffffff;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    transition: color 0.3s ease-in-out;
-}
-
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link:focus {
-    color: #f8f9fa;
-    background-color: #343a40;
-    border-radius: 0.25rem;
-}
-
-/* Responsive Navbar */
-@media (max-width: 992px) {
-    .navbar-collapse {
-        margin-top: 1rem;
+    .btn-primary {
+      background-color: #00698f;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
     }
-}
 
-/* Optional - Add animation for smoother menu collapse/expand */
-.collapse {
-    transition: height 0.3s ease;
-}
+    .btn-primary:hover {
+      background-color: #005a77;
+    }
 
+    /* Animation Classes */
+    .animate__animated {
+      animation-duration: 1.5s;
+    }
+
+    /* Footer */
+    footer {
+      padding: 20px;
+      text-align: center;
+      background-color: #333;
+      color: #fff;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .contact-form {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .contact-form {
+        padding: 15px;
+      }
+    }
 </style>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">E-Shop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
-                    </li>
-                </ul>
+
+<!-- Bootstrap CSS and Animate.css -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="{% static 'css/contact.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+{% endblock %}
+
+{% block content %}
+<main class="container mt-5">
+    <h1 class="text-center mb-4 animate__animated animate__fadeInDown">Contact Us</h1>
+    <form action="/send_message" method="POST" class="contact-form animate__animated animate__fadeInUp" id="contactForm">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
             </div>
-        </nav>
-    </header>
-
-    <main class="container mt-5">
-        <h1 class="text-center mb-4 animate__animated animate__fadeInDown">Contact Us</h1>
-        <form action="/send_message" method="POST" class="mt-4 animate__animated animate__fadeInUp" id="contactForm">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
+            <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
             </div>
-            <div class="mb-3">
-                <label for="message" class="form-label">Message</label>
-                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary animate__animated animate__pulse" id="submitButton">Send Message</button>
-        </form>
-    </main>
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea class="form-control" id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 animate__animated animate__pulse" id="submitButton">Send Message</button>
+    </form>
+</main>
+{% endblock %}
 
-    <footer class="bg-dark text-white text-center py-3 mt-5 animate__animated animate__fadeInUp">
-        <p>&copy; 2024 E-Shop. All Rights Reserved.</p>
-    </footer>
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+<script src="{% static 'js/contact.js' %}"></script>
+<script>
+    // Add fade-out animation to the form upon submission
+    document.querySelector('#contactForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        this.classList.add('animate__animated', 'animate__fadeOutUp');
+        setTimeout(() => this.submit(), 1000);
+    });
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
-    <script src="{% static 'js/contact.js' %}"></script>
-    <script>
-        // Add animation to the form
-        document.querySelector('#contactForm').addEventListener('submit', function() {
-            this.classList.add('animate__animated', 'animate__fadeOutUp');
-            setTimeout(function() {
-                document.querySelector('#contactForm').classList.remove('animate__animated', 'animate__fadeOutUp');
-            }, 2000);
-        });
+    // Button hover effect animation
+    document.querySelector('#submitButton').addEventListener('mouseover', function() {
+        this.classList.add('animate__animated', 'animate__pulse');
+    });
 
-        // Add animation to the form
-document.querySelector('#contactForm').addEventListener('submit', function() {
-    this.classList.add('animate__animated', 'animate__fadeOutUp');
-    setTimeout(function() {
-        document.querySelector('#contactForm').classList.remove('animate__animated', 'animate__fadeOutUp');
-    }, 2000);
-});
-
-// Add animation to the submit button
-document.querySelector('#submitButton').addEventListener('mouseover', function() {
-    this.classList.add('animate__animated', 'animate__pulse');
-});
-
-document.querySelector('#submitButton').addEventListener('mouseout', function() {
-    this.classList.remove('animate__animated', 'animate__pulse');
-});
-    </script>
-</body>
-</html>
+    document.querySelector('#submitButton').addEventListener('mouseout', function() {
+        this.classList.remove('animate__animated', 'animate__pulse');
+    });
+</script>
+{% endblock %}

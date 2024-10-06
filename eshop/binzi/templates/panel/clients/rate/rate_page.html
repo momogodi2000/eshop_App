@@ -1,227 +1,111 @@
-{% extends 'base_clients.html' %}
+{% extends 'panel/base/base_clients.html' %}
 {% load static %}
 
-<style>
-.container {
-  padding: 30px;
-  background-color: #f8f9fa;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  margin-top: 40px;
-  color: #343a40;
-  text-align: center;
-}
-
-h3 {
-  margin-top: 40px;
-  color: #343a40;
-}
-
-.btn-primary {
-  margin-top: 20px;
-}
-
-textarea {
-  resize: none;
-}
-
-table {
-  margin-top: 40px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-/* Add some basic styling for the forms */
-form {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-}
-
-button[type="submit"] {
-  width: 100%;
-  padding: 10px;
-  background-color: #337ab7;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button[type="submit"]:hover {
-  background-color: #23527c;
-}
-
-/* Add some basic styling for the table */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 10px;
-  border: 1px solid #ddd;
-}
-
-th {
-  background-color: #f0f0f0;
-}
-
-/* Add some basic responsiveness */
-@media (max-width: 768px) {
-  form {
-    max-width: 300px;
-  }
-  table {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  form {
-    max-width: 200px;
-  }
-  table {
-    font-size: 12px;
-  }
-}
-</style>
-
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center text-primary">Rate and Comment on Our Services</h2>
+<div class="container mx-auto mt-10">
+    <h2 class="text-center text-3xl font-bold text-blue-600 mb-6">Rate and Comment on Our Services</h2>
 
     <!-- Product Rating Section -->
-    <h3>Rate Our Products</h3>
-    <form method="POST">
+    <h3 class="text-xl font-semibold mt-4">Rate Our Products</h3>
+    <form method="POST" class="bg-white p-6 rounded-lg shadow-md mb-6">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="product_id">Select Product:</label>
-            <select name="product_id" class="form-control" id="product_id" required>
+        <div class="mb-4">
+            <label for="product_id" class="block text-sm font-medium text-gray-700">Select Product:</label>
+            <select name="product_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="product_id" required>
                 {% for product in products %}
                     <option value="{{ product.id }}">{{ product.name }}</option>
                 {% endfor %}
             </select>
         </div>
-        <div class="form-group">
-            <label for="product_rating">Rating (1-5):</label>
-            <input type="number" name="product_rating" class="form-control" id="product_rating" min="1" max="5" required>
+        <div class="mb-4">
+            <label for="product_rating" class="block text-sm font-medium text-gray-700">Rating (1-5):</label>
+            <input type="number" name="product_rating" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="product_rating" min="1" max="5" required>
         </div>
-        <div class="form-group">
-            <label for="product_comment">Comment:</label>
-            <textarea name="product_comment" class="form-control" id="product_comment" rows="3" placeholder="Write your comments..."></textarea>
+        <div class="mb-4">
+            <label for="product_comment" class="block text-sm font-medium text-gray-700">Comment:</label>
+            <textarea name="product_comment" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="product_comment" rows="3" placeholder="Write your comments..."></textarea>
         </div>
-        <button type="submit" name="rate_product" class="btn btn-primary w-100">Submit Product Rating</button>
+        <button type="submit" name="rate_product" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Submit Product Rating</button>
     </form>
 
     <!-- Delivery User Rating Section -->
-    <h3>Rate Our Delivery Users</h3>
-    <form method="POST">
+    <h3 class="text-xl font-semibold mt-4">Rate Our Delivery Users</h3>
+    <form method="POST" class="bg-white p-6 rounded-lg shadow-md mb-6">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="deliver_id">Select Delivery User:</label>
-            <select name="deliver_id" class="form-control" id="deliver_id" required>
+        <div class="mb-4">
+            <label for="deliver_id" class="block text-sm font-medium text-gray-700">Select Delivery User:</label>
+            <select name="deliver_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="deliver_id" required>
                 {% for deliver_user in deliver_users %}
                     <option value="{{ deliver_user.id }}">{{ deliver_user.username }}</option>
                 {% endfor %}
             </select>
         </div>
-        <div class="form-group">
-            <label for="deliver_rating">Rating (1-5):</label>
-            <input type="number" name="deliver_rating" class="form-control" id="deliver_rating" min="1" max="5" required>
+        <div class="mb-4">
+            <label for="deliver_rating" class="block text-sm font-medium text-gray-700">Rating (1-5):</label>
+            <input type="number" name="deliver_rating" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="deliver_rating" min="1" max="5" required>
         </div>
-        <div class="form-group">
-            <label for="deliver_comment">Comment:</label>
-            <textarea name="deliver_comment" class="form-control" id="deliver_comment" rows="3" placeholder="Write your comments..."></textarea>
+        <div class="mb-4">
+            <label for="deliver_comment" class="block text-sm font-medium text-gray-700">Comment:</label>
+            <textarea name="deliver_comment" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="deliver_comment" rows="3" placeholder="Write your comments..."></textarea>
         </div>
-        <button type="submit" name="rate_deliver" class="btn btn-primary w-100">Submit Delivery Rating</button>
+        <button type="submit" name="rate_deliver" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Submit Delivery Rating</button>
     </form>
 
     <!-- Service Quality Rating Section -->
-    <h3>Rate the Overall Service Quality</h3>
-    <form method="POST">
+    <h3 class="text-xl font-semibold mt-4">Rate the Overall Service Quality</h3>
+    <form method="POST" class="bg-white p-6 rounded-lg shadow-md mb-6">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="service_rating">Rating (1-5):</label>
-            <input type="number" name="service_rating" class="form-control" id="service_rating" min="1" max="5" required>
+        <div class="mb-4">
+            <label for="service_rating" class="block text-sm font-medium text-gray-700">Rating (1-5):</label>
+            <input type="number" name="service_rating" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="service_rating" min="1" max="5" required>
         </div>
-        <div class="form-group">
-            <label for="service_comment">Comment:</label>
-            <textarea name="service_comment" class="form-control" id="service_comment" rows="3" placeholder="Write your comments..."></textarea>
+        <div class="mb-4">
+            <label for="service_comment" class="block text-sm font-medium text-gray-700">Comment:</label>
+            <textarea name="service_comment" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="service_comment" rows="3" placeholder="Write your comments..."></textarea>
         </div>
-        <button type="submit" name="rate_service" class="btn btn-primary w-100">Submit Service Rating</button>
+        <button type="submit" name="rate_service" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Submit Service Rating</button>
     </form>
 
     <!-- Statistics Table -->
-    <h3 class="mt-5">Rating Statistics</h3>
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>Product</th>
-                <th>Average Rating</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.average_rating|default:"No ratings yet" }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <h3 class="text-xl font-semibold mt-5">Rating Statistics</h3>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-2 px-4 border-b text-left text-gray-600">Product</th>
+                    <th class="py-2 px-4 border-b text-left text-gray-600">Average Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr class="hover:bg-gray-50">
+                    <td class="py-2 px-4 border-b">{{ product.name }}</td>
+                    <td class="py-2 px-4 border-b">{{ product.average_rating|default:"No ratings yet" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
-   // Add animation to the rating forms
-document.addEventListener("DOMContentLoaded", function() {
-  const forms = document.querySelectorAll("form");
-  forms.forEach(form => {
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
-      // Add animation here, e.g. fade out the form and show a success message
-      form.style.opacity = 0;
-      setTimeout(function() {
-        form.style.display = "none";
-        const successMessage = document.createElement("p");
-        successMessage.textContent = "Thank you for your rating!";
-        successMessage.style.color = "green";
-        form.parentNode.appendChild(successMessage);
-      }, 500);
+    // Add animation to the rating forms
+    document.addEventListener("DOMContentLoaded", function() {
+        const forms = document.querySelectorAll("form");
+        forms.forEach(form => {
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                // Add animation here, e.g. fade out the form and show a success message
+                form.style.opacity = 0;
+                setTimeout(function() {
+                    form.style.display = "none";
+                    const successMessage = document.createElement("p");
+                    successMessage.textContent = "Thank you for your rating!";
+                    successMessage.className = "text-green-600 mt-4 text-center";
+                    form.parentNode.appendChild(successMessage);
+                }, 500);
+            });
+        });
     });
-  });
-});
-
-// Add responsiveness to the table
-document.addEventListener("DOMContentLoaded", function() {
-  const table = document.querySelector("table");
-  window.addEventListener("resize", function() {
-    if (window.innerWidth < 768) {
-      table.classList.add("table-responsive");
-    } else {
-      table.classList.remove("table-responsive");
-    }
-  });
-});
 </script>
 {% endblock %}
