@@ -5,35 +5,34 @@
 
 {% block styles %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" href="{% static 'css/discounts.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="text-center">Manage Discounts</h2>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover mt-4">
-            <thead class="thead-dark">
+<div class="container mx-auto mt-4">
+    <h2 class="text-2xl font-bold text-center mb-4">Manage Discounts</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300 mt-4">
+            <thead class="bg-gray-800 text-white">
                 <tr>
-                    <th>User</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Original Price</th>
-                    <th>Discount (%)</th>
-                    <th>Final Price</th>
-                    <th>Sale Date</th>
+                    <th class="py-2 px-4 border-b">User</th>
+                    <th class="py-2 px-4 border-b">Product</th>
+                    <th class="py-2 px-4 border-b">Quantity</th>
+                    <th class="py-2 px-4 border-b">Original Price</th>
+                    <th class="py-2 px-4 border-b">Discount (%)</th>
+                    <th class="py-2 px-4 border-b">Final Price</th>
+                    <th class="py-2 px-4 border-b">Sale Date</th>
                 </tr>
             </thead>
             <tbody>
                 {% for sale in sales %}
-                <tr>
-                    <td>{{ sale.user.username }}</td>
-                    <td>{{ sale.product.name }}</td>
-                    <td>{{ sale.quantity }}</td>
-                    <td>${{ sale.product.price|floatformat:2 }}</td>
-                    <td>{{ sale.discount_percentage|floatformat:2 }}%</td>
-                    <td>${{ sale.final_price|floatformat:2 }}</td>
-                    <td>{{ sale.sale_date|date:"Y-m-d H:i" }}</td>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b">{{ sale.user.username }}</td>
+                    <td class="py-2 px-4 border-b">{{ sale.product.name }}</td>
+                    <td class="py-2 px-4 border-b">{{ sale.quantity }}</td>
+                    <td class="py-2 px-4 border-b">${{ sale.product.price|floatformat:2 }}</td>
+                    <td class="py-2 px-4 border-b">{{ sale.discount_percentage|floatformat:2 }}%</td>
+                    <td class="py-2 px-4 border-b">${{ sale.final_price|floatformat:2 }}</td>
+                    <td class="py-2 px-4 border-b">{{ sale.sale_date|date:"Y-m-d H:i" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -43,8 +42,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="{% static 'js/discounts.js' %}"></script>
+<!-- No external JS libraries needed for Tailwind CSS -->
 {% endblock %}

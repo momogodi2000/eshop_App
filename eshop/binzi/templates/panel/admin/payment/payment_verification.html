@@ -2,102 +2,63 @@
 
 {% block title %}Payment Verification{% endblock %}
 
-{% block extra_css %}
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
-
-    .container {
-        max-width: 600px;
-        margin-top: 50px;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .receipt-card {
-        transition: transform 0.2s, box-shadow 0.2s;
-        margin-top: 20px;
-    }
-
-    .receipt-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .error-message {
-        color: red;
-    }
-
-    .btn-primary {
-        width: 100%;
-    }
-
-    .alert {
-        margin-top: 20px;
-    }
-
-    h1 {
-        margin-bottom: 30px;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-    <div class="container">
-        <h1 class="text-center">Payment Verification</h1>
-        <div class="form-group">
-            <label for="transactionId">Enter Transaction ID:</label>
-            <input type="text" id="transactionId" class="form-control" placeholder="Transaction ID" aria-describedby="transactionHelp">
-            <small id="transactionHelp" class="form-text text-muted">Please enter your transaction ID to verify.</small>
-        </div>
-        <button id="verifyPayment" class="btn btn-primary">Verify Payment</button>
-
-        <div id="result" class="mt-4"></div>
+<div class="container mx-auto max-w-md mt-12">
+    <h1 class="text-3xl font-bold text-center mb-8">Payment Verification</h1>
+    <div class="mb-6">
+        <label for="transactionId" class="block text-sm font-medium text-gray-700">Enter Transaction ID:</label>
+        <input type="text" id="transactionId" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500" placeholder="Transaction ID" aria-describedby="transactionHelp">
+        <small id="transactionHelp" class="text-gray-500">Please enter your transaction ID to verify.</small>
     </div>
+    <button id="verifyPayment" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Verify Payment</button>
+
+    <div id="result" class="mt-4"></div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    $(document).ready(function() {
-        $('#verifyPayment').click(function() {
-            const transactionId = $('#transactionId').val();
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('verifyPayment').addEventListener('click', function() {
+            const transactionId = document.getElementById('transactionId').value;
+            const resultDiv = document.getElementById('result');
+
             if (transactionId) {
-                $.ajax({
-                    url: "{% url 'process_payment' %}",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({ transactionId }),
-                    success: function(data) {
-                        if (data.success) {
-                            displayReceipt(data);
-                        } else {
-                            $('#result').html(`<div class="alert alert-danger">${data.message}</div>`);
-                        }
+                fetch("{% url 'process_payment' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{ csrf_token }}", // Include CSRF token
                     },
-                    error: function(xhr) {
-                        $('#result').html(`<div class="alert alert-danger">${xhr.responseJSON.message}</div>`);
+                    body: JSON.stringify({ transactionId }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayReceipt(data);
+                    } else {
+                        resultDiv.innerHTML = `<div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">${data.message}</div>`;
                     }
+                })
+                .catch(xhr => {
+                    resultDiv.innerHTML = `<div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">${xhr.message}</div>`;
                 });
             } else {
-                $('#result').html('<div class="alert alert-warning">Please enter a transaction ID.</div>');
+                resultDiv.innerHTML = '<div class="mt-4 p-4 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded">Please enter a transaction ID.</div>';
             }
         });
     });
 
     function displayReceipt(data) {
-        $('#result').html(`
-            <div class="receipt-card card">
-                <div class="card-body">
-                    <h5 class="card-title">Payment Successful!</h5>
-                    <p class="card-text">Receipt ID: <strong>${data.receiptId}</strong></p>
-                    <p class="card-text">Total Amount: <strong>${data.cartTotal} XAF</strong></p>
-                    <a href="${data.receiptUrl}" class="btn btn-success">Download Receipt</a>
-                </div>
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `
+            <div class="mt-4 p-4 bg-white border border-gray-300 rounded-lg shadow-md">
+                <h5 class="text-lg font-semibold">Payment Successful!</h5>
+                <p class="mt-2">Receipt ID: <strong>${data.receiptId}</strong></p>
+                <p>Total Amount: <strong>${data.cartTotal} XAF</strong></p>
+                <a href="${data.receiptUrl}" class="mt-4 inline-block bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">Download Receipt</a>
             </div>
-        `);
+        `;
     }
 </script>
 {% endblock %}

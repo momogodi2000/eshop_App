@@ -26,8 +26,6 @@ class ContactMessage(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-
-
 class Category(models.Model):
     name = models.CharField(max_length=255)
 
@@ -74,13 +72,6 @@ class Product(models.Model):
         return self.name
 
 
-
-
-
-
-    
-
-
 class Sale(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)  # Allow null temporarily
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -112,15 +103,11 @@ class Sale(models.Model):
         return self.product.price * (1 - discount) * self.quantity
 
 
-
-
 class Message(models.Model):
     sender = models.ForeignKey(CustomUser, related_name='sent_messages', on_delete=models.CASCADE)
     recipient = models.ForeignKey(CustomUser, related_name='received_messages', on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-
-
 
 
 class Receipt(models.Model):
@@ -134,10 +121,6 @@ class Receipt(models.Model):
     def __str__(self):
         return f'Receipt {self.transaction_id} for {self.user.username}'
     
-
-
-
-
 
 
 class Publicity(models.Model):
@@ -163,6 +146,7 @@ class Video(models.Model):
 
     def __str__(self):
         return self.description or "Video"
+
 
 class Comment(models.Model):
     publicity = models.ForeignKey(Publicity, related_name='comments', on_delete=models.CASCADE)
@@ -208,8 +192,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
-    
-
 
 
 class Delivery(models.Model):
@@ -221,8 +203,6 @@ class Delivery(models.Model):
 
     def __str__(self):
         return f'Delivery for {self.sale.product.name} to {self.sale.user.username}'
-
-
 
 
 class ChatMessage(models.Model):
@@ -246,11 +226,6 @@ class EShop(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
-
-
 
 
 # Rating for products
@@ -286,3 +261,64 @@ class ServiceQualityRating(models.Model):
 
     def __str__(self):
         return f'Service quality - {self.rating} stars by {self.user.username}'
+
+
+from django.utils import timezone
+
+class PreCommandProduct(models.Model):
+    STATUS_CHOICES = [
+        ('disponible', 'Disponible'),
+        ('pending', 'Pending'),
+    ]
+
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    official_release_date = models.DateField(default=timezone.now)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='pre_command_products/', blank=True, null=True)
+    video_publicity = models.FileField(upload_to='pre_command_videos/', blank=True, null=True)
+    new_innovation = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    eshop_location = models.CharField(max_length=255)  # The actual location can be captured here (e.g., GPS)
+
+    def __str__(self):
+        return self.name
+
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    
+    def __str__(self):
+        return self.code
+
+
+class EmailCampaign(models.Model):
+    subject = models.CharField(max_length=255)
+    body = models.TextField()
+    send_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.subject
+
+
+class Analytics(models.Model):
+    date = models.DateField(auto_now_add=True)
+    traffic = models.IntegerField()
+    sales = models.DecimalField(max_digits=10, decimal_places=2)
+    customer_behavior = models.JSONField()  # Store behavior as JSON
+
+    def __str__(self):
+        return f'Analytics for {self.date}'
+
+
+
+class PreCommandTransaction(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(PreCommandProduct, on_delete=models.CASCADE)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, default='non-paid')  # 'reserved' or 'paid'
+    date = models.DateTimeField(auto_now_add=True)  # Automatically set to now when created

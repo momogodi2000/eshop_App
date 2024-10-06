@@ -1,0 +1,52 @@
+{% extends 'panel/base/base_admin.html' %}
+{% load static %}
+
+{% block title %}Pre Command Transactions{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col sm:py-12">
+    <div class="relative py-3 sm:max-w-4xl sm:mx-auto">
+        <div class="absolute inset-0 bg-gradient-to-r from-teal-400 to-blue-500 shadow-lg transform skew-y-0 rotate-6 sm:rotate-3 sm:rounded-3xl"></div>
+        <div class="relative bg-white shadow-lg sm:rounded-3xl p-10">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Pre-Command Transactions</h1>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto bg-white border-collapse border border-gray-300 rounded-lg shadow-sm">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+                            <th class="py-3 px-6 text-left border-b">Transaction ID</th>
+                            <th class="py-3 px-6 text-left border-b">User</th>
+                            <th class="py-3 px-6 text-left border-b">Product</th>
+                            <th class="py-3 px-6 text-left border-b">Amount Paid (XAF)</th>
+                            <th class="py-3 px-6 text-left border-b">Status</th>
+                            <th class="py-3 px-6 text-left border-b">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions %}
+                        <tr class="border-b hover:bg-gray-100 text-gray-700 text-sm">
+                            <td class="py-3 px-6">{{ transaction.id }}</td>
+                            <td class="py-3 px-6">{{ transaction.user.username }} ({{ transaction.user.get_full_name }})</td>
+                            <td class="py-3 px-6">{{ transaction.product.name }}</td>
+                            <td class="py-3 px-6">{{ transaction.amount_paid }}</td>
+                            <td class="py-3 px-6">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                {% if transaction.status == 'paid' %} bg-green-100 text-green-800
+                                {% else %} bg-red-100 text-red-800 {% endif %}">
+                                    {{ transaction.status }}
+                                </span>
+                            </td>
+                            <td class="py-3 px-6">{{ transaction.date|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-gray-500">No transactions found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

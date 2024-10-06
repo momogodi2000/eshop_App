@@ -4,24 +4,23 @@
 {% block title %}Manage Messages{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4 animate__animated animate__fadeInDown">Manage Contact Messages</h1>
+<div class="container mx-auto mt-5">
+    <h1 class="text-3xl font-bold text-center mb-4 animate__animated animate__fadeInDown">Manage Contact Messages</h1>
 
     <!-- Contact Messages -->
     <div class="mb-5">
-        <h2>Contact Messages</h2>
-        <div class="row">
+        <h2 class="text-2xl font-semibold mb-4">Contact Messages</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             {% for message in contact_messages %}
-            <div class="col-md-4">
-                <div class="card message-card mb-4 animate__animated animate__fadeInUp">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ message.name }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ message.email }}</h6>
-                        <p class="card-text">{{ message.message }}</p>
-                        <p class="card-text"><small class="text-muted">{{ message.created_at }}</small></p>
-                        <!-- Delete and Reply Buttons -->
-                        <a href="{% url 'delete_contact_message' message.id %}" class="btn btn-danger">Delete</a>
-                        <a href="{% url 'reply_contact_message' message.id %}" class="btn btn-primary">Reply</a>
+            <div class="bg-white shadow-md rounded-lg p-4 mb-4 animate__animated animate__fadeInUp">
+                <div class="flex flex-col">
+                    <h5 class="text-lg font-semibold">{{ message.name }}</h5>
+                    <h6 class="text-sm text-gray-600 mb-2">{{ message.email }}</h6>
+                    <p class="text-gray-800 mb-2">{{ message.message }}</p>
+                    <p class="text-gray-500 text-xs"><small>{{ message.created_at }}</small></p>
+                    <div class="mt-4 flex space-x-2">
+                        <a href="{% url 'delete_contact_message' message.id %}" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">Delete</a>
+                        <a href="{% url 'reply_contact_message' message.id %}" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Reply</a>
                     </div>
                 </div>
             </div>
@@ -31,21 +30,19 @@
 
     <!-- Contact Details -->
     <div>
-        <h2>Contact Details</h2>
-        <div class="row">
+        <h2 class="text-2xl font-semibold mb-4">Contact Details</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             {% for contact in contacts %}
-            <div class="col-md-4">
-                <div class="card message-card mb-4 animate__animated animate__fadeInUp">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ contact.email }}</h5>
-                        <p class="card-text">Description: {{ contact.description }}</p>
-                        <p class="card-text">Service Rate: {{ contact.service_rate }}</p>
-                        <p class="card-text">Date: {{ contact.date }}</p>
-                        <p class="card-text">Location: {{ contact.location }}</p>
-                        <!-- Delete Button for Contact -->
-                        <a href="{% url 'delete_contact' contact.id %}" class="btn btn-danger">Delete</a>
-                        <!-- Reply Button for Contact -->
-                        <a href="{% url 'reply_contact_message' contact.id %}" class="btn btn-primary">Reply</a>
+            <div class="bg-white shadow-md rounded-lg p-4 mb-4 animate__animated animate__fadeInUp">
+                <div class="flex flex-col">
+                    <h5 class="text-lg font-semibold">{{ contact.email }}</h5>
+                    <p class="text-gray-800 mb-2">Description: {{ contact.description }}</p>
+                    <p class="text-gray-800 mb-2">Service Rate: {{ contact.service_rate }}</p>
+                    <p class="text-gray-800 mb-2">Date: {{ contact.date }}</p>
+                    <p class="text-gray-800 mb-2">Location: {{ contact.location }}</p>
+                    <div class="mt-4 flex space-x-2">
+                        <a href="{% url 'delete_contact' contact.id %}" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">Delete</a>
+                        <a href="{% url 'reply_contact_message' contact.id %}" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Reply</a>
                     </div>
                 </div>
             </div>

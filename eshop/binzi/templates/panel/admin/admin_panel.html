@@ -5,97 +5,90 @@
 {% block content %}
 <div class="dashboard">
     <main class="dashboard-app">
-        <header class="dashboard-toolbar">
-            <a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
+        <header class="dashboard-toolbar flex items-center justify-between p-4 bg-white shadow">
+            <a href="#!" class="menu-toggle text-blue-600">
+                <i class="fas fa-bars"></i>
+            </a>
+            <h1 class="text-2xl font-bold">Dashboard</h1>
         </header>
-        <div class="dashboard-content">
-            <div class="container">
+        <div class="dashboard-content p-6 bg-gray-100">
+            <div class="container mx-auto">
                 <!-- Dashboard Overview Section -->
-                <section class="dashboard-overview mt-4">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">
-                                    <h5>Total Users</h5>
-                                    <h3 id="totalUsers">{{ total_users }}</h3> <!-- Dynamic value from database -->
-                                </div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="text-white" href="#">View Details <i class="fas fa-angle-right"></i></a>
-                                </div>
-                            </div>
+                <section class="dashboard-overview mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="card bg-blue-600 text-white p-4 rounded-lg shadow">
+                        <div class="card-body">
+                            <h5 class="font-semibold">Total Users</h5>
+                            <h3 id="totalUsers" class="text-3xl font-bold">{{ total_users }}</h3>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">
-                                    <h5>Total Products</h5>
-                                    <h3 id="totalProducts">{{ total_products }}</h3> <!-- Dynamic value from database -->
-                                </div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="text-white" href="#">View Details <i class="fas fa-angle-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">
-                                    <h5>Total Sales</h5>
-                                    <h3 id="totalSales">{{ total_sales }}</h3> <!-- Dynamic value from database -->
-                                </div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="text-white" href="#">View Details <i class="fas fa-angle-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">
-                                    <h5>Chat with Delivery</h5>
-                                    <h3 id="chatWithDelivery">{{ chat_with_delivery }}</h3> <!-- Dynamic value from database -->
-                                </div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="text-white" href="#">View Details <i class="fas fa-angle-right"></i></a>
-                                </div>
-                            </div>
+                        <div class="card-footer mt-2">
+                            <a class="text-white hover:underline" href="#">View Details <i class="fas fa-angle-right"></i></a>
                         </div>
                     </div>
-
-                    <!-- Graph Section -->
-                    <div class="row mt-5">
-                        <div class="col-md-12">
-                            <h2>Sales Analytics</h2>
-                            <canvas id="statsChart"></canvas>
+                    <div class="card bg-green-600 text-white p-4 rounded-lg shadow">
+                        <div class="card-body">
+                            <h5 class="font-semibold">Total Products</h5>
+                            <h3 id="totalProducts" class="text-3xl font-bold">{{ total_products }}</h3>
+                        </div>
+                        <div class="card-footer mt-2">
+                            <a class="text-white hover:underline" href="#">View Details <i class="fas fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="card bg-yellow-600 text-white p-4 rounded-lg shadow">
+                        <div class="card-body">
+                            <h5 class="font-semibold">Total Sales</h5>
+                            <h3 id="totalSales" class="text-3xl font-bold">{{ total_sales }}</h3>
+                        </div>
+                        <div class="card-footer mt-2">
+                            <a class="text-white hover:underline" href="#">View Details <i class="fas fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="card bg-red-600 text-white p-4 rounded-lg shadow">
+                        <div class="card-body">
+                            <h5 class="font-semibold">Chat with Delivery</h5>
+                            <h3 id="chatWithDelivery" class="text-3xl font-bold">{{ chat_with_delivery }}</h3>
+                        </div>
+                        <div class="card-footer mt-2">
+                            <a class="text-white hover:underline" href="#">View Details <i class="fas fa-angle-right"></i></a>
                         </div>
                     </div>
                 </section>
 
+                <!-- Graph Section -->
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <h2 class="text-xl font-bold">Sales Analytics</h2>
+                        <canvas id="statsChart" class="mt-4"></canvas>
+                    </div>
+                </div>
+
                 <!-- Video Section for Publicity -->
                 <section class="video-section mt-5">
-                    <h2>Promotional Video</h2>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/wjo8JRsHFrU" allowfullscreen></iframe>
+                    <h2 class="text-xl font-bold">Promotional Video</h2>
+                    <div class="mt-4">
+                        <iframe class="w-full h-60 md:h-80" src="https://www.youtube.com/embed/wjo8JRsHFrU" allowfullscreen></iframe>
                     </div>
-                    <p>Check out our latest promotional video to understand how eShop can benefit your business.</p>
+                    <p class="mt-2 text-gray-700">Check out our latest promotional video to understand how eShop can benefit your business.</p>
                 </section>
 
                 <!-- Testimonials Section -->
                 <section class="testimonials mt-5">
-                    <h2>User Testimonials</h2>
-                    <div class="testimonial-item">
-                        <p>"eShop has revolutionized the way we manage our online store. The intuitive interface and powerful features have greatly improved our efficiency."</p>
-                        <h5>- Alex Johnson</h5>
+                    <h2 class="text-xl font-bold">User Testimonials</h2>
+                    <div class="mt-4 bg-white p-4 rounded-lg shadow">
+                        <p class="italic">"eShop has revolutionized the way we manage our online store. The intuitive interface and powerful features have greatly improved our efficiency."</p>
+                        <h5 class="mt-2 font-semibold">- Alex Johnson</h5>
                     </div>
-                    <div class="testimonial-item">
-                        <p>"The customer support and ease of use of eShop have been fantastic. We've seen a significant boost in sales since we started using it."</p>
-                        <h5>- Maria Garcia</h5>
+                    <div class="mt-4 bg-white p-4 rounded-lg shadow">
+                        <p class="italic">"The customer support and ease of use of eShop have been fantastic. We've seen a significant boost in sales since we started using it."</p>
+                        <h5 class="mt-2 font-semibold">- Maria Garcia</h5>
                     </div>
                 </section>
             </div>
         </div>
 
         <!-- Footer -->
-        <footer class="footer mt-auto py-3 bg-light">
-            <div class="container">
-                <span class="text-muted">© 2024 Product Management System</span>
+        <footer class="footer mt-auto py-3 bg-white shadow">
+            <div class="container mx-auto text-center">
+                <span class="text-gray-600">© 2024 Product Management System</span>
             </div>
         </footer>
     </main>

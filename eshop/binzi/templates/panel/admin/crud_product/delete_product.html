@@ -1,12 +1,13 @@
 {% extends 'panel/base/base_admin.html' %}
+
 {% block content %}
-<div class="container mt-4">
-    <h1>Delete Product</h1>
-    <p>Are you sure you want to delete the product "{{ product.name }}"?</p>
-    <form method="post">
+<div class="container mx-auto mt-4">
+    <h1 class="text-2xl font-bold mb-4">Delete Product</h1>
+    <p class="mb-4">Are you sure you want to delete the product "<strong>{{ product.name }}</strong>"?</p>
+    <form method="post" class="flex flex-col space-y-4">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Yes, delete</button>
-        <a href="{% url 'manage_products' %}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">Yes, delete</button>
+        <a href="{% url 'manage_products' %}" class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400">Cancel</a>
     </form>
 </div>
 {% endblock %}

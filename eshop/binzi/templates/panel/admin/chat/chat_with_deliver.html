@@ -2,56 +2,31 @@
 {% block title %}Chat with Deliver{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Chat with Deliver</h1>
+<div class="container mx-auto mt-12">
+    <h1 class="text-3xl font-bold text-center mb-6">Chat with Deliver</h1>
 
-    <div class="chat-container">
-        <div class="chat-box">
+    <div class="chat-container max-w-lg mx-auto">
+        <div class="chat-box border border-gray-300 rounded-lg p-4 h-96 overflow-y-scroll bg-gray-100">
             {% for message in messages %}
-                <div class="message {{ message.sender == user|yesno:"sent,received" }}">
-                    <p><strong>{{ message.sender.username }}:</strong> {{ message.message }}</p>
-                    <small>{{ message.timestamp }}</small>
+                <div class="message mb-2 p-2 rounded">
+                    <p class="{{ message.sender == user|yesno:'text-right bg-green-100, text-left bg-red-100' }}">
+                        <strong>{{ message.sender.username }}:</strong> {{ message.message }}
+                    </p>
+                    <small class="text-gray-500">{{ message.timestamp }}</small>
                 </div>
             {% empty %}
-                <p>No messages yet.</p>
+                <p class="text-center text-gray-500">No messages yet.</p>
             {% endfor %}
         </div>
         <form method="post" class="mt-3">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Send</button>
+            <div class="flex">
+                {{ form.as_p|add:" class='flex-grow mr-2'"|safe }}
+                <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Send</button>
+            </div>
         </form>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    .chat-container {
-        max-width: 600px;
-        margin: auto;
-    }
-    .chat-box {
-        border: 1px solid #ddd;
-        padding: 10px;
-        height: 400px;
-        overflow-y: scroll;
-        background-color: #f9f9f9;
-    }
-    .message {
-        margin-bottom: 10px;
-        padding: 5px;
-        border-radius: 5px;
-    }
-    .message.sent {
-        background-color: #d4edda;
-        text-align: right;
-    }
-    .message.received {
-        background-color: #f8d7da;
-        text-align: left;
-    }
-</style>
 {% endblock %}
 
 {% block extra_js %}

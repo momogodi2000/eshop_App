@@ -4,36 +4,34 @@
 {% block title %}Manage Publicity{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <!-- Return to Admin Panel Button -->
-    
+<div class="container mx-auto mt-5">
     <!-- Add Publicity Button -->
-    <a href="{% url 'add_publicity' %}" class="btn btn-primary mb-4">Add Publicity</a>
+    <a href="{% url 'add_publicity' %}" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 mb-4 inline-block">Add Publicity</a>
 
     <!-- Publicities List -->
-    <div class="row">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         {% for publicity in publicities %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">{{ publicity.title }}</h5>
-                    <p class="card-text">{{ publicity.description }}</p>
-                    <p class="card-text"><small class="text-muted">{{ publicity.date_posted|date:"d M Y" }}</small></p>
+        <div class="bg-white shadow-md rounded-lg h-full p-4">
+            <div class="flex flex-col h-full">
+                <h5 class="text-lg font-semibold mb-2">{{ publicity.title }}</h5>
+                <p class="text-gray-700 mb-2">{{ publicity.description }}</p>
+                <p class="text-gray-500 text-sm mb-4"><small>{{ publicity.date_posted|date:"d M Y" }}</small></p>
 
-                    <!-- Media List (Photos and Videos) -->
-                    <div class="media-list">
-                        {% for photo in publicity.photos.all %}
-                        <img src="{{ photo.image.url }}" class="img-fluid mb-2" alt="Photo for {{ publicity.title }}">
-                        {% endfor %}
-                        
-                        {% for video in publicity.videos.all %}
-                        <video src="{{ video.video.url }}" class="img-fluid mb-2" controls></video>
-                        {% endfor %}
-                    </div>
+                <!-- Media List (Photos and Videos) -->
+                <div class="media-list mb-4">
+                    {% for photo in publicity.photos.all %}
+                    <img src="{{ photo.image.url }}" class="w-full h-auto mb-2 rounded" alt="Photo for {{ publicity.title }}">
+                    {% endfor %}
+                    
+                    {% for video in publicity.videos.all %}
+                    <video src="{{ video.video.url }}" class="w-full h-auto mb-2 rounded" controls></video>
+                    {% endfor %}
+                </div>
 
-                    <!-- Action Buttons -->
-                    <a href="{% url 'edit_publicity' publicity.pk %}" class="btn btn-warning">Edit</a>
-                    <a href="{% url 'delete_publicity' publicity.pk %}" class="btn btn-danger">Delete</a>
+                <!-- Action Buttons -->
+                <div class="mt-auto flex space-x-2">
+                    <a href="{% url 'edit_publicity' publicity.pk %}" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600">Edit</a>
+                    <a href="{% url 'delete_publicity' publicity.pk %}" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">Delete</a>
                 </div>
             </div>
         </div>

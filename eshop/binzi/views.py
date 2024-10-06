@@ -157,6 +157,27 @@ def logout(request):
 
 # admin dashboard
 
+
+from .forms import ChatMessageForm  # Ensure this line is present
+from .models import ChatMessage
+from .models import Product, CustomUser, ProductRating, DeliverRating, ServiceQualityRating
+from django.db.models import Avg
+from .models import EShop
+from .models import Delivery
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from .models import PreCommandProduct
+from .forms import PreCommandProductForm
+from django.shortcuts import render
+from django.db.models import Count, Sum
+from .models import CustomUser, Sale, Product, ContactMessage
+from .forms import UpdateSettingsForm  # Make sure this line is present
+from .forms import ReplyMessageForm  # Create this form for replying to messages
+from django.core.mail import send_mail
+import yagmail
+from django.contrib import messages
+
+
 @login_required
 def admin_panel(request):
     total_users = CustomUser.objects.count()
@@ -340,7 +361,6 @@ def manage_discounts(request):
     })
 
 
-
 # panel/admin/crud_pub/views.py
 
 @login_required
@@ -398,13 +418,6 @@ def delete_publicity(request, pk):
     return render(request, 'panel/admin/crud_pub/delete_publicity.html', {'publicity': publicity})
 
 
-
-## admin view messsage
-from .forms import ReplyMessageForm  # Create this form for replying to messages
-from django.core.mail import send_mail
-import yagmail
-from django.contrib import messages
-
 # Yagmail credentials
 username = "yvangodimomo@gmail.com"
 password = "pzls apph esje cgdl"
@@ -454,14 +467,6 @@ def reply_contact_message(request, message_id):
     return render(request, 'panel/admin/setting/reply_contact_message.html', {'message': message, 'form': form})
 
 
-from .forms import ChatMessageForm  # Ensure this line is present
-from .models import ChatMessage
-from .models import Product, CustomUser, ProductRating, DeliverRating, ServiceQualityRating
-from django.db.models import Avg
-from .models import EShop
-from .models import Delivery
-
-
 @login_required
 def sender_panel(request):
     if request.method == 'POST':
@@ -485,10 +490,6 @@ def receiver_panel(request):
     
     return render(request, 'panel/deliver/chat/receiver_panel.html', {'messages': messages})
 
-
-
-from .forms import UpdateSettingsForm  # Make sure this line is present
-
 @login_required
 def update_setting(request):
     user = request.user
@@ -505,6 +506,131 @@ def update_setting(request):
         form = UpdateSettingsForm(instance=user)
     
     return render(request, 'panel/admin/update/update_setting.html', {'form': form})
+
+
+def platform_statistics(request):
+    # Basic statistics
+    total_users = CustomUser.objects.count()
+    total_sales = Sale.objects.count()
+    total_products = Product.objects.count()
+    total_messages = ContactMessage.objects.count()
+
+    # Monthly sales data for the graph (example data)
+    sales_data = (
+        Sale.objects
+        .extra({'month': "strftime('%%Y-%%m', sale_date)"})
+        .values('month')
+        .annotate(total=Sum('total_amount'))
+        .order_by('month')
+    )
+
+    context = {
+        'total_users': total_users,
+        'total_sales': total_sales,
+        'total_products': total_products,
+        'total_messages': total_messages,
+        'sales_data': sales_data
+    }
+    return render(request, 'panel/admin/setting/platform_statistics.html', context)
+
+# List all pre-command products
+def pre_command_list(request):
+    products = PreCommandProduct.objects.all()
+    return render(request, 'panel/admin/command/pre_command_product_list.html', {'products': products})
+
+# Create a new pre-command product
+def pre_command_create(request):
+    if request.method == 'POST':
+        form = PreCommandProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('pre_command_list')
+    else:
+        form = PreCommandProductForm()
+    return render(request, 'panel/admin/command/pre_command_product_form.html', {'form': form})
+
+# Edit an existing pre-command product
+def pre_command_edit(request, pk):
+    product = get_object_or_404(PreCommandProduct, pk=pk)
+    if request.method == 'POST':
+        form = PreCommandProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('pre_command_list')
+    else:
+        form = PreCommandProductForm(instance=product)
+    return render(request, 'panel/admin/command/pre_command_product_form.html', {'form': form})
+
+# Delete a pre-command product
+def pre_command_delete(request, pk):
+    product = get_object_or_404(PreCommandProduct, pk=pk)
+    if request.method == 'POST':
+        product.delete()
+        return redirect('pre_command_list')
+    return render(request, 'panel/admin/command/pre_command_product_confirm_delete.html', {'product': product})
+
+# View the details of a specific pre-command product
+def pre_command_detail(request, pk):
+    product = get_object_or_404(PreCommandProduct, pk=pk)
+    return render(request, 'panel/admin/command/pre_command_product_detail.html', {'product': product})
+
+
+from django.shortcuts import render, redirect
+from .models import Coupon, EmailCampaign, Analytics
+
+# View for managing Coupons
+def coupon_list(request):
+    coupons = Coupon.objects.all()
+    return render(request, 'panel/admin/coupon/coupon_list.html', {'coupons': coupons})
+
+def coupon_create(request):
+    if request.method == 'POST':
+        code = request.POST['code']
+        discount_percentage = request.POST['discount_percentage']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        Coupon.objects.create(
+            code=code,
+            discount_percentage=discount_percentage,
+            start_date=start_date,
+            end_date=end_date
+        )
+        return redirect('coupon_list')
+    return render(request, 'panel/admin/coupon/coupon_form.html')
+
+# View for managing Email Campaigns
+def email_campaign_list(request):
+    campaigns = EmailCampaign.objects.all()
+    return render(request, 'panel/admin/coupon/email_campaign_list.html', {'campaigns': campaigns})
+
+def email_campaign_create(request):
+    if request.method == 'POST':
+        subject = request.POST['subject']
+        body = request.POST['body']
+        EmailCampaign.objects.create(
+            subject=subject,
+            body=body
+        )
+        return redirect('email_campaign_list')
+    return render(request, 'panel/admin/coupon/email_campaign_form.html')
+
+# View for Analytics
+def analytics_list(request):
+    analytics = Analytics.objects.all()
+    return render(request, 'panel/admin/coupon/analytics_list.html', {'analytics': analytics})
+
+
+from django.contrib.admin.views.decorators import staff_member_required
+
+
+def pre_command_transactions(request):
+    # Fetch all transactions
+    transactions = PreCommandTransaction.objects.select_related('user', 'product').all()
+
+    return render(request, 'panel/admin/command/pre_command_transactions.html', {'transactions': transactions})
+
+
+
 
 
 #clients logic/view
@@ -539,90 +665,125 @@ def product_browsing(request):
     })
 
 ##payment API
+import json
+import time
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from .models import Receipt
+from django.urls import reverse
+from campay.sdk import Client as CamPayClient
 
 campay = CamPayClient({
     "app_username": "JByBUneb4BceuEyoMu1nKlmyTgVomd-QfokOrs4t4B9tPJS7hhqUtpuxOx5EQ7zpT0xmYw3P6DU6LU0mH2DvaQ",
     "app_password": "m-Xuj9EQIT_zeQ5hSn8hLjYlyJT7KnSTHABYVp7tKeHKgsVnF0x6PEcdtZCVaDM0BN5mX-eylX0fhrGGMZBrWg",
-    "environment": "PROD"  # use "DEV" for demo mode or "PROD" for live mode
+    "environment": "PROD"
 })
 
+@csrf_exempt
+@require_http_methods(["POST"])
 @login_required
 def process_payment(request):
-    if request.method == 'POST':
+    try:
+        # Parse JSON request data
+        data = json.loads(request.body)
+        payment_method = data.get('paymentMethod')
+        cart_items = data.get('cartItems')
+        cart_total = data.get('cartTotal')
+        phone_number = data.get('phoneNumber')
+
+        # Validate input data
+        if not all([payment_method, cart_items, cart_total, phone_number]):
+            return JsonResponse({'success': False, 'message': 'Missing required data'}, status=400)
+
+        # Ensure cart_total is a float
         try:
-            # Parse JSON request data
-            data = json.loads(request.body)
-            payment_method = data.get('paymentMethod')
-            cart_items = data.get('cartItems')
-            cart_total = data.get('cartTotal')
-            phone_number = data.get('phoneNumber')  # Phone number for the payment
+            cart_total = float(cart_total)
+        except ValueError:
+            return JsonResponse({'success': False, 'message': 'Invalid cart total'}, status=400)
 
-            # Process payment with CamPay
+        # Validate phone number format
+        phone_number = phone_number.strip().replace(" ", "")
+        if not phone_number.isdigit() or len(phone_number) != 9:
+            return JsonResponse({'success': False, 'message': 'Invalid phone number format'}, status=400)
+
+        # Generate unique external reference
+        external_reference = f"TRX-{request.user.id}-{int(time.time())}"
+
+        # Process payment with CamPay
+        try:
             collect = campay.collect({
-                "amount": str(cart_total),  # Ensure cart_total is a string
+                "amount": str(cart_total),
                 "currency": "XAF",
-                "from": "237" + phone_number,  # Include country code
+                "from": "237" + phone_number,  # Prefix country code
                 "description": "Purchase Payment",
-                "external_reference": "",  # Can be a unique transaction ID from your system
+                "external_reference": external_reference,
             })
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'CamPay error: {str(e)}'}, status=400)
 
-            # Check if payment was successful
-            if collect.get('status') == 'SUCCESSFUL':
-                # Generate receipt
-                receipt_id = generate_receipt(cart_items, cart_total)
+        # Check if payment was successful
+        if collect.get('status') == 'SUCCESSFUL':
+            # Generate receipt
+            receipt_id = generate_receipt(cart_items, cart_total, request.user)
+            if receipt_id:
                 return JsonResponse({
                     'success': True,
                     'receiptId': receipt_id,
                     'receiptUrl': reverse('download_receipt', args=[receipt_id])
                 })
             else:
-                # Handle payment failure
-                return JsonResponse({'success': False, 'message': collect.get('reason', 'Payment failed')}, status=400)
+                return JsonResponse({'success': False, 'message': 'Failed to generate receipt'}, status=500)
+        else:
+            return JsonResponse({'success': False, 'message': collect.get('reason', 'Payment failed')}, status=400)
 
-        except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)}, status=400)
-    
-    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'message': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Unexpected error: {str(e)}'}, status=500)
 
 @login_required
 def generate_receipt(cart_items, cart_total):
-    # Create a receipt object and save it to the database
-    receipt = Receipt.objects.create(total=cart_total)
+    try:
+        # Create a receipt object and save it to the database
+        receipt = Receipt.objects.create(total=cart_total)
 
-    # Generate PDF receipt
-    context = {
-        'cart_items': cart_items,
-        'cart_total': cart_total,
-    }
-    html = render_to_string('panel/clients/product/receipt.html', context)
-    result = BytesIO()
-    pdf = pisa.CreatePDF(BytesIO(html.encode('utf-8')), dest=result)
+        # Generate PDF receipt
+        context = {
+            'cart_items': cart_items,
+            'cart_total': cart_total,
+        }
+        html = render_to_string('panel/clients/product/receipt.html', context)
+        result = BytesIO()
+        pdf = pisa.CreatePDF(BytesIO(html.encode('utf-8')), dest=result)
 
-    if not pdf.err:
-        receipt_file = ContentFile(result.getvalue())
-        receipt.pdf.save(f'receipt_{receipt.id}.pdf', receipt_file)
-        return receipt.id
+        if not pdf.err:
+            receipt_file = ContentFile(result.getvalue())
+            receipt.pdf.save(f'receipt_{receipt.id}.pdf', receipt_file)
+            return receipt.id
+        else:
+            return None  # Return None if PDF generation fails
+    except Exception as e:
+        print(f"Error generating receipt: {e}")
+        return None
 
-    return None
 
 @login_required
 def download_receipt(request, transaction_id):
-    # Retrieve the receipt object based on the transaction_id
-    receipt = get_object_or_404(Receipt, transaction_id=transaction_id)
-
-    # Render the receipt template with receipt data
+    receipt = get_object_or_404(Receipt, id=transaction_id)
     html = render_to_string('panel/clients/product/receipt.html', {'receipt': receipt})
 
-    # Create a PDF response
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="receipt_{transaction_id}.pdf"'
 
-    # Convert HTML to PDF and write to response
     pisa_status = pisa.CreatePDF(html, dest=response)
 
     if pisa_status.err:
-        return HttpResponse('Error generating PDF')
+        return HttpResponse('Error generating PDF', status=500)
     return response
+
+
 
 
 @login_required
@@ -669,6 +830,9 @@ def retrieve_payment_details(transaction_id):
         }
     except Receipt.DoesNotExist:
         return None
+
+
+
 
 
 
@@ -760,7 +924,6 @@ def loyalty_program(request):
     else:
         return render(request, 'login.html')
 
-
 @login_required
 def rate_page(request):
     # Annotate products with the average rating from the related ProductRating model
@@ -800,8 +963,6 @@ def rate_page(request):
     }
     return render(request, 'panel/clients/rate/rate_page.html', context)
 
-
-
 def delivery_notifications(request):
     if request.user.is_authenticated and request.user.role == 'client':
         notifications = Delivery.objects.filter(sale__user=request.user).order_by('-timestamp')
@@ -809,8 +970,6 @@ def delivery_notifications(request):
         notifications = []
 
     return render(request, 'panel/clients/deliver/delivery_notifications.html', {'notifications': notifications})
-
-
 
 def nearby_eshops_view(request):
     eshops = EShop.objects.all()  # You can also filter by location
@@ -826,8 +985,6 @@ def get_eshop_details(request, eshop_id):
         'address': eshop.address,
         'website': eshop.website
     }) 
-
-
 
 @login_required
 def setting_user(request):
@@ -868,7 +1025,113 @@ def setting_user(request):
 def profile_user(request):
     return render(request, 'panel/clients/profile/profile_user.html', {'user': request.user})
 
+from django.shortcuts import render
+from .models import PreCommandTransaction
+from decimal import Decimal
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse, FileResponse
+from .models import PreCommandProduct, PreCommandTransaction
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.graphics.barcode.qr import QrCodeWidget
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics import renderPDF
+from django.utils.timezone import now
+from campay.sdk import Client as CamPayClient
+import uuid  # For generating unique external reference
 
+
+def pre_command_products(request):
+    products = PreCommandProduct.objects.all()
+    return render(request, 'panel/clients/pre_command/pre_command_products.html', {'products': products})
+
+def product_payment(request, product_id):
+    product = get_object_or_404(PreCommandProduct, id=product_id)
+
+    if request.method == 'POST':
+        user = request.user
+        phone = request.POST.get("phone").strip()
+        payment_type = request.POST.get("payment_type")  # 'full' or 'partial'
+
+        amount = product.price if payment_type == 'full' else product.price * Decimal('0.3')
+        payment_description = "Full payment" if payment_type == 'full' else "Reservation (30%)"
+
+        # Ensure phone is formatted correctly
+        if not phone.startswith('237'):
+            phone = '237' + phone
+
+        # Generate a unique external reference
+        external_reference = str(uuid.uuid4())
+
+        # Process payment using CamPay
+        payment_response = campay.collect({
+            "amount": str(amount),
+            "currency": "XAF",
+            "from": phone,
+            "description": payment_description,
+            "external_reference": external_reference  # Unique reference for the transaction
+        })
+
+        if payment_response.get('status') == 'SUCCESSFUL':
+            # Generate PDF Receipt
+            receipt_info = {
+                "reference": payment_response.get('reference'),
+                "name": user.get_full_name(),
+                "email": user.email,
+                "phone": phone,
+                "product": product.name,
+                "amount": amount,
+                "description": payment_description,
+                "date": now()
+            }
+            buffer = generate_pdf_receipt(receipt_info)
+
+            # Store payment status
+            product_status = 'paid' if payment_type == 'full' else 'reserved'
+            PreCommandTransaction.objects.create(
+                user=user,
+                product=product,
+                amount_paid=amount,
+                status=product_status,
+                date=timezone.now()
+            )
+
+            return FileResponse(buffer, as_attachment=True, filename=f'payment_receipt_{product.id}.pdf', content_type='application/pdf')
+
+        else:
+            context = {'message': 'Payment failed. Please try again.'}
+            return render(request, 'panel/passenger/ticket/payment_failed.html', context)
+
+    return render(request, 'panel/clients/pre_command/product_payment.html', {'product': product})
+
+def generate_pdf_receipt(receipt_info):
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer)
+    
+    p.drawString(100, 750, "Product Payment Receipt")
+    p.drawString(100, 730, f"Name: {receipt_info['name']}")
+    p.drawString(100, 710, f"Email: {receipt_info['email']}")
+    p.drawString(100, 690, f"Phone: {receipt_info['phone']}")
+    p.drawString(100, 670, f"Product: {receipt_info['product']}")
+    p.drawString(100, 650, f"Amount: {receipt_info['amount']} XAF")
+    p.drawString(100, 630, f"Description: {receipt_info['description']}")
+    p.drawString(100, 610, f"Date: {receipt_info['date']}")
+
+    # QR Code generation
+    qr_data = f"Reference: {receipt_info['reference']}\nProduct: {receipt_info['product']}\nAmount: {receipt_info['amount']}"
+    qr_code = QrCodeWidget(qr_data)
+    bounds = qr_code.getBounds()
+    width = bounds[2] - bounds[0]
+    height = bounds[3] - bounds[1]
+    d = Drawing(45, 45, transform=[45./width, 0, 0, 45./height, 0, 0])
+    d.add(qr_code)
+    renderPDF.draw(d, p, 100, 560)
+
+    p.showPage()
+    p.save()
+
+    buffer.seek(0)
+    return buffer
 
 
 

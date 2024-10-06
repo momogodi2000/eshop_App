@@ -1,26 +1,27 @@
 {% extends 'panel/base/base_admin.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="mb-4">{{ product.name }}</h1>
-    <div class="card">
+<div class="container mx-auto mt-4">
+    <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <!-- Display product image -->
         {% if product.image %}
-            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-        {% else %}
+            <img src="{{ product.image.url }}" class="w-full h-48 object-cover" alt="{{ product.name }}">
         {% endif %}
-        <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text">{{ product.description }}</p>
-            <p class="card-text">Quantity: {{ product.quantity }}</p>
-            <p class="card-text">Price: ${{ product.price }}</p>
-            <p class="card-text">Minimum Quantity: {{ product.min_quantity }}</p>
-            <p class="card-text">Maximum Quantity: {{ product.max_quantity }}</p>
-            <p class="card-text">Status: {{ product.get_status_display }}</p>
-            <p class="card-text">Category: {{ product.category.name }}</p>
-            <p class="card-text">Catalog: {{ product.catalog.name }}</p>
-            <a href="{% url 'edit_product' product.id %}" class="btn btn-warning">Edit</a>
-            <a href="{% url 'manage_products' %}" class="btn btn-secondary">Back to Products</a>
+        <div class="p-6">
+            <h5 class="text-xl font-semibold mb-2">{{ product.name }}</h5>
+            <p class="text-gray-700 mb-2">{{ product.description }}</p>
+            <p class="text-gray-600 mb-1">Quantity: {{ product.quantity }}</p>
+            <p class="text-gray-600 mb-1">Price: ${{ product.price }}</p>
+            <p class="text-gray-600 mb-1">Minimum Quantity: {{ product.min_quantity }}</p>
+            <p class="text-gray-600 mb-1">Maximum Quantity: {{ product.max_quantity }}</p>
+            <p class="text-gray-600 mb-1">Status: {{ product.get_status_display }}</p>
+            <p class="text-gray-600 mb-1">Category: {{ product.category.name }}</p>
+            <p class="text-gray-600 mb-1">Catalog: {{ product.catalog.name }}</p>
+            <div class="mt-4">
+                <a href="{% url 'edit_product' product.id %}" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600">Edit</a>
+                <a href="{% url 'manage_products' %}" class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 ml-2">Back to Products</a>
+            </div>
         </div>
     </div>
 </div>

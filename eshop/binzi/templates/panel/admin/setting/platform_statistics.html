@@ -1,0 +1,66 @@
+{% extends 'panel/base/base_admin.html' %}
+{% block content %}
+<div class="container mx-auto mt-10">
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <!-- Total Users -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Users</h3>
+            <p class="text-2xl text-blue-600">{{ total_users }}</p>
+        </div>
+        
+        <!-- Total Sales -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Sales</h3>
+            <p class="text-2xl text-green-600">{{ total_sales }}</p>
+        </div>
+        
+        <!-- Total Products -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Products</h3>
+            <p class="text-2xl text-yellow-600">{{ total_products }}</p>
+        </div>
+        
+        <!-- Total Messages -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Messages</h3>
+            <p class="text-2xl text-purple-600">{{ total_messages }}</p>
+        </div>
+    </div>
+
+    <!-- Sales Trend Graph -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4">Monthly Sales Trend</h3>
+        <canvas id="salesChart" class="w-full h-64"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var salesData = {
+        labels: [{% for data in sales_data %}"{{ data.month }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
+        datasets: [{
+            label: 'Total Sales',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            fill: true,
+            data: [{% for data in sales_data %}{{ data.total }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+        }]
+    };
+    
+    var salesChart = new Chart(ctx, {
+        type: 'line',
+        data: salesData,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

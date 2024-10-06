@@ -10,19 +10,65 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>{% if publicity %}Edit Publicity: {{ publicity.title }}{% else %}Add Publicity{% endif %}</h2>
-    <form method="post" enctype="multipart/form-data">
+<div class="container mx-auto mt-5">
+    <h2 class="text-2xl font-bold mb-4">{% if publicity %}Edit Publicity: {{ publicity.title }}{% else %}Add Publicity{% endif %}</h2>
+    <form method="post" enctype="multipart/form-data" class="bg-white shadow-md rounded-lg p-6">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Save</button>
-        <a href="{% url 'manage_publicity' %}" class="btn btn-secondary">Cancel</a>
+        <div class="mb-4">
+            <label for="{{ form.title.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+            {{ form.title }}
+        </div>
+        <div class="mb-4">
+            <label for="{{ form.description.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+            {{ form.description }}
+        </div>
+        <div class="mb-4">
+            <label for="photos" class="block text-gray-700 text-sm font-bold mb-2">Photos:</label>
+            <input type="file" name="photos" id="photos" multiple accept="image/*" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label for="videos" class="block text-gray-700 text-sm font-bold mb-2">Videos:</label>
+            <input type="file" name="videos" id="videos" multiple accept="video/*" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline">Save</button>
+            <a href="{% url 'manage_publicity' %}" class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 focus:outline-none focus:shadow-outline">Cancel</a>
+        </div>
     </form>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const photoInput = document.getElementById('photos');
+        const videoInput = document.getElementById('videos');
+
+        photoInput.addEventListener('change', function(e) {
+            validateFiles(e.target.files, 'image');
+        });
+
+        videoInput.addEventListener('change', function(e) {
+            validateFiles(e.target.files, 'video');
+        });
+
+        function validateFiles(files, type) {
+            const maxSize = type === 'image' ? 5 * 1024 * 1024 : 50 * 1024 * 1024; // 5MB for images, 50MB for videos
+            const validTypes = type === 'image' ? ['image/jpeg', 'image/png', 'image/gif'] : ['video/mp4', 'video/webm', 'video/ogg'];
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.size > maxSize) {
+                    alert(`File ${file.name} is too large. Maximum size is ${maxSize / (1024 * 1024)}MB.`);
+                    return false;
+                }
+                if (!validTypes.includes(file.type)) {
+                    alert(`File ${file.name} is not a valid ${type} type.`);
+                    return false;
+                }
+            }
+            return true;
+        }
+    });
+</script>
 {% endblock %}

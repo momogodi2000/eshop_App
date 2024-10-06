@@ -1,0 +1,14 @@
+{% extends 'panel/base/base_admin.html' %}
+{% load static %}
+
+ {% block content %}
+<div class="container mx-auto my-8">
+  <h1 class="text-3xl font-bold mb-4">Add/Edit Pre Command Product</h1>
+  <form method="POST" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+  </form>
+</div>
+
+{% endblock %}

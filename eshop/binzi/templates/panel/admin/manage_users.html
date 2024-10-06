@@ -3,65 +3,33 @@
 
 {% block title %}Manage Users{% endblock %}
 
-{% block styles %}
-<style>
-    .table-hover tbody tr:hover {
-        background-color: #f5f5f5;
-    }
-    .modal-header {
-        background-color: #007bff;
-        color: white;
-    }
-    .modal-footer .btn {
-        transition: background-color 0.3s;
-    }
-    .modal-footer .btn:hover {
-        background-color: #0056b3;
-    }
-    @media (max-width: 768px) {
-        .modal-dialog {
-            max-width: 90%;
-        }
-    }
-    @media (max-width: 576px) {
-        .btn {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        .table-responsive {
-            overflow-x: auto;
-        }
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="container mt-4">
-    <h1 class="mb-4">Manage Users</h1>
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addUserModal">Add User</button>
+<div class="container mx-auto mt-4">
+    <h1 class="text-3xl font-bold mb-4">Manage Users</h1>
+    <button class="bg-blue-600 text-white py-2 px-4 rounded mb-3 hover:bg-blue-700" data-toggle="modal" data-target="#addUserModal">Add User</button>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow">
             <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                <tr class="bg-gray-100">
+                    <th class="py-2 px-4 border-b text-left">#</th>
+                    <th class="py-2 px-4 border-b text-left">Username</th>
+                    <th class="py-2 px-4 border-b text-left">Email</th>
+                    <th class="py-2 px-4 border-b text-left">Role</th>
+                    <th class="py-2 px-4 border-b text-left">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for user in users %}
-                <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.get_role_display }}</td>
-                    <td>
-                        <a href="{% url 'view_user' user.id %}" class="btn btn-info btn-sm">View</a>
-                        <a href="{% url 'edit_user' user.id %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete_user' user.id %}" class="btn btn-danger btn-sm">Delete</a>
+                <tr class="hover:bg-gray-50 transition duration-150">
+                    <td class="py-2 px-4 border-b">{{ user.id }}</td>
+                    <td class="py-2 px-4 border-b">{{ user.username }}</td>
+                    <td class="py-2 px-4 border-b">{{ user.email }}</td>
+                    <td class="py-2 px-4 border-b">{{ user.get_role_display }}</td>
+                    <td class="py-2 px-4 border-b">
+                        <a href="{% url 'view_user' user.id %}" class="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600">View</a>
+                        <a href="{% url 'edit_user' user.id %}" class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-600">Edit</a>
+                        <a href="{% url 'delete_user' user.id %}" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -71,66 +39,49 @@
 </div>
 
 <!-- Add User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="addUserForm" method="POST" action="{% url 'add_user' %}">
-                {% csrf_token %}
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <select class="form-control" id="role" name="role" required>
-                            <option value="admin">Admin</option>
-                            <option value="deliver">Deliver</option>
-                            <option value="client">Client</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save User</button>
-                </div>
-            </form>
+<div class="fixed inset-0 flex items-center justify-center z-50 hidden" id="addUserModal">
+    <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/3">
+        <div class="bg-blue-600 text-white p-4 rounded-t-lg">
+            <h5 class="text-lg font-bold">Add User</h5>
+            <button type="button" class="absolute top-2 right-3 text-white" onclick="document.getElementById('addUserModal').classList.add('hidden')">&times;</button>
         </div>
+        <form id="addUserForm" method="POST" action="{% url 'add_user' %}">
+            {% csrf_token %}
+            <div class="p-4">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" id="username" name="username" required>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" id="email" name="email" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" id="password" name="password" required>
+                </div>
+                <div class="mb-4">
+                    <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                    <select class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" id="role" name="role" required>
+                        <option value="admin">Admin</option>
+                        <option value="deliver">Deliver</option>
+                        <option value="client">Client</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-between p-4 bg-gray-100 rounded-b-lg">
+                <button type="button" class="bg-gray-400 text-white py-2 px-4 rounded hover:bg-gray-500" onclick="document.getElementById('addUserModal').classList.add('hidden')">Close</button>
+                <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Save User</button>
+            </div>
+        </form>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="{% static 'js/manage_user.js' %}"></script>
 <script>
-    $(document).ready(function() {
-        // Add animation to buttons on hover
-        $('.btn').hover(function() {
-            $(this).animate({ 
-                opacity: 0.8 
-            }, 200);
-        }, function() {
-            $(this).animate({ 
-                opacity: 1 
-            }, 200);
-        });
+    // Modal toggle
+    document.querySelector('[data-toggle="modal"]').addEventListener('click', function() {
+        document.getElementById('addUserModal').classList.toggle('hidden');
     });
 </script>
+
 {% endblock %}

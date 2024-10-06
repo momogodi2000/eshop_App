@@ -75,7 +75,11 @@ class ProductForm(forms.ModelForm):
 
 
 
-
+from django.conf import settings  # Add this line
+from .models import ChatMessage
+from django.contrib.auth import get_user_model
+from .models import EShop
+from .models import PreCommandProduct
 from django.forms.widgets import ClearableFileInput
 
 class CustomClearableFileInput(ClearableFileInput):
@@ -111,14 +115,10 @@ class VideoForm(forms.ModelForm):
         }
 
 
-
-
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'profile_picture', 'theme']
-
-
 
 
 class ContactForm(forms.ModelForm):
@@ -135,8 +135,6 @@ class ContactForm(forms.ModelForm):
         }
 
 
-
-
 class ReplyMessageForm(forms.Form):
     reply_message = forms.CharField(
         widget=forms.Textarea(attrs={
@@ -149,10 +147,6 @@ class ReplyMessageForm(forms.Form):
         required=True
     )
 
-from django.conf import settings  # Add this line
-from .models import ChatMessage
-from django.contrib.auth import get_user_model
-
 
 class ChatMessageForm(forms.ModelForm):
     class Meta:
@@ -160,7 +154,6 @@ class ChatMessageForm(forms.ModelForm):
         fields = ['receiver', 'message']
         
     receiver = forms.ModelChoiceField(queryset=get_user_model().objects.all(), required=True)
-
 
 
 from django.contrib.auth.models import User
@@ -175,10 +168,13 @@ class UpdateSettingsForm(forms.ModelForm):
     telephone = forms.CharField(max_length=15, required=False)  # Adjust max_length as needed
 
 
-
-from .models import EShop
-
 class EShopForm(forms.ModelForm):
     class Meta:
         model = EShop
         fields = ['name', 'description', 'latitude', 'longitude', 'address', 'website']
+
+
+class PreCommandProductForm(forms.ModelForm):
+    class Meta:
+        model = PreCommandProduct
+        fields = ['name', 'description', 'official_release_date', 'price', 'image', 'video_publicity', 'new_innovation', 'status', 'eshop_location']

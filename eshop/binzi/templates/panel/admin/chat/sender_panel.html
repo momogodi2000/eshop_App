@@ -4,22 +4,26 @@
 {% block title %}Sender Panel{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center">Sender Panel</h1>
+<div class="container mx-auto mt-12">
+    <h1 class="text-3xl font-bold text-center">Sender Panel</h1>
     
-    <form method="POST">
+    <form method="POST" class="mt-6">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Send Message</button>
+        <div class="mb-4">
+            {{ form.as_p|safe }}
+        </div>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Send Message</button>
     </form>
     
-    <h3 class="mt-4">Sent Messages</h3>
-    <div class="list-group">
+    <h3 class="text-2xl font-semibold mt-6">Sent Messages</h3>
+    <div class="mt-4 space-y-2">
         {% for message in messages %}
-            <div class="list-group-item">
+            <div class="p-4 bg-white border border-gray-300 rounded-lg shadow-md">
                 <strong>{{ message.receiver.username }}:</strong> {{ message.message }}
-                <small class="text-muted">Sent at {{ message.timestamp }}</small>
+                <small class="block text-gray-500">Sent at {{ message.timestamp }}</small>
             </div>
+        {% empty %}
+            <p class="text-center text-gray-500">No messages sent yet.</p>
         {% endfor %}
     </div>
 </div>

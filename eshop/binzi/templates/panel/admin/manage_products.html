@@ -1,51 +1,56 @@
 {% extends 'panel/base/base_admin.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="mb-4">Manage Products</h1>
-    <a href="{% url 'add_product' %}" class="btn btn-primary mb-3">Add Product</a>
+<div class="container mx-auto mt-8">
+    <h1 class="text-2xl font-bold mb-6">Manage Products</h1>
+    
+    <a href="{% url 'add_product' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow mb-6 inline-block">
+        Add Product
+    </a>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Category</th>
-                <th>Catalog</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 100px; max-height: 100px;">
-                    {% else %}
-                        No Image
-                    {% endif %}
-                </td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.quantity }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.get_status_display }}</td>
-                <td>{{ product.category.name }}</td>
-                <td>{{ product.catalog.name }}</td>
-                <td>
-                    <a href="{% url 'edit_product' product.id %}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="{% url 'delete_product' product.id %}" class="btn btn-danger btn-sm">Delete</a>
-                    <a href="{% url 'view_product' product.id %}" class="btn btn-info btn-sm">View</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto border-collapse border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-4 py-2 border">#</th>
+                    <th class="px-4 py-2 border">Image</th>
+                    <th class="px-4 py-2 border">Name</th>
+                    <th class="px-4 py-2 border">Description</th>
+                    <th class="px-4 py-2 border">Quantity</th>
+                    <th class="px-4 py-2 border">Price</th>
+                    <th class="px-4 py-2 border">Status</th>
+                    <th class="px-4 py-2 border">Category</th>
+                    <th class="px-4 py-2 border">Catalog</th>
+                    <th class="px-4 py-2 border">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr class="text-center">
+                    <td class="px-4 py-2 border">{{ forloop.counter }}</td>
+                    <td class="px-4 py-2 border">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-24 h-24 object-cover">
+                        {% else %}
+                            No Image
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-2 border">{{ product.name }}</td>
+                    <td class="px-4 py-2 border">{{ product.description }}</td>
+                    <td class="px-4 py-2 border">{{ product.quantity }}</td>
+                    <td class="px-4 py-2 border">{{ product.price }}</td>
+                    <td class="px-4 py-2 border">{{ product.get_status_display }}</td>
+                    <td class="px-4 py-2 border">{{ product.category.name }}</td>
+                    <td class="px-4 py-2 border">{{ product.catalog.name }}</td>
+                    <td class="px-4 py-2 border">
+                        <a href="{% url 'edit_product' product.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-2 rounded">Edit</a>
+                        <a href="{% url 'delete_product' product.id %}" class="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">Delete</a>
+                        <a href="{% url 'view_product' product.id %}" class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

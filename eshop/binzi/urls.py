@@ -102,6 +102,31 @@ urlpatterns = [
     path('setting_deliver/', views.setting_deliver, name='setting_deliver'),
     path('setting_user/', views.setting_user, name='setting_user'),
     path('profile_user/', views.profile_user, name='profile_user'),
+    path('platform-statistics/', views.platform_statistics, name='platform_statistics'),
+
+
+
+
+    path('pre_command/', views.pre_command_list, name='pre_command_list'),
+    path('pre_command/create/', views.pre_command_create, name='pre_command_create'),
+    path('pre_command/<int:pk>/edit/', views.pre_command_edit, name='pre_command_edit'),
+    path('pre_command/<int:pk>/delete/', views.pre_command_delete, name='pre_command_delete'),
+    path('pre_command/<int:pk>/', views.pre_command_detail, name='pre_command_detail'),
+
+
+
+    path('coupons/', views.coupon_list, name='coupon_list'),
+    path('coupons/create/', views.coupon_create, name='coupon_create'),
+    path('email-campaigns/', views.email_campaign_list, name='email_campaign_list'),
+    path('email-campaigns/create/', views.email_campaign_create, name='email_campaign_create'),
+    path('analytics/', views.analytics_list, name='analytics_list'),
+
+
+    path('pre_command_products/', views.pre_command_products, name='pre_command_products'),
+    path('pre-command/payment/<int:product_id>/', views.product_payment, name='product_payment'),
+
+
+    path('pre-command-transactions/', views.pre_command_transactions, name='pre_command_transactions'),
 
 
 ]

@@ -1,28 +1,15 @@
+{% extends 'panel/base/base_admin.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete User</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/manage_user.css' %}">
-</head>
-<body>
-    <div class="container mt-4">
-        <h1 class="mb-4">Delete User</h1>
-        <p>Are you sure you want to delete the user <strong>{{ user.username }}</strong>?</p>
-        
-        <form method="POST" action="">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Yes, Delete</button>
-            <a href="{% url 'manage_users' %}" class="btn btn-secondary">Cancel</a>
-        </form>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="{% static 'js/manage_user.js' %}"></script>
-</body>
-</html>
+{% block content %}
+<div class="container mx-auto mt-4">
+    <h1 class="text-2xl font-bold mb-4">Delete User</h1>
+    <p class="mb-4">Are you sure you want to delete the user <strong>{{ user.username }}</strong>?</p>
+    
+    <form method="POST" action="" class="flex flex-col space-y-4">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">Yes, Delete</button>
+        <a href="{% url 'manage_users' %}" class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400">Cancel</a>
+    </form>
+</div>
+{% endblock %}

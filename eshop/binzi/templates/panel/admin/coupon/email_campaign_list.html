@@ -1,0 +1,26 @@
+{% extends 'panel/base/base_admin.html' %}
+
+{% block content %}
+<div class="p-4">
+    <h1 class="text-2xl font-bold">Email Campaigns</h1>
+    <a href="{% url 'email_campaign_create' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Create Email Campaign</a>
+    <table class="min-w-full mt-4 border-collapse border border-gray-300">
+        <thead>
+            <tr>
+                <th class="border border-gray-300 px-4 py-2">Subject</th>
+                <th class="border border-gray-300 px-4 py-2">Body</th>
+                <th class="border border-gray-300 px-4 py-2">Send Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in campaigns %}
+            <tr>
+                <td class="border border-gray-300 px-4 py-2">{{ campaign.subject }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ campaign.body|truncatewords:10 }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ campaign.send_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

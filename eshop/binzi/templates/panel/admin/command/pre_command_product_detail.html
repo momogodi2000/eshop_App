@@ -1,0 +1,22 @@
+{% extends 'panel/base/base_admin.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto my-8">
+    <h1 class="text-2xl font-bold mb-4">{{ product.name }}</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-64 object-cover rounded">
+        </div>
+        <div>
+            <p class="text-gray-900 font-semibold mb-2">Price: ${{ product.price }}</p>
+            <p class="mb-4">{{ product.description }}</p>
+            <p class="text-sm text-gray-500">New Innovation: {{ product.new_innovation }}</p>
+            <p class="text-sm text-gray-500">Official Release Date: {{ product.official_release_date }}</p>
+            <p class="text-sm text-gray-500">Eshop Location: {{ product.eshop_location }}</p>
+            <p class="text-sm text-gray-500">Status: {{ product.get_status_display }}</p>
+            <video src="{{ product.video_publicity.url }}" controls class="w-full mt-4 rounded-lg shadow-md"></video>
+        </div>
+    </div>
+</div>
+{% endblock %}

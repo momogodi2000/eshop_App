@@ -8,351 +8,210 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Admin Panel{% endblock %}</title>
 
-    <!-- Font Awesome and Bootstrap CDN -->
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Font Awesome CDN for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-
-    <!-- Internal Styles -->
     <style>
-        /* Variables */
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2c3e50;
-            --text-color: #333;
-            --bg-color: #f4f4f4;
-            --nav-width: 250px;
-            --transition-speed: 0.3s;
-        }
-
-        /* Base Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        .dashboard {
-            display: flex;
+        /* Custom styles for sidebar and layout */
+        .dashboard-nav {
+            width: 250px;
+            background-color: #2d3748;
             min-height: 100vh;
         }
 
-        /* Navigation */
-        .dashboard-nav {
-            width: var(--nav-width);
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 20px;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .dashboard-nav header {
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .brand-logo {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .brand-logo i {
-            margin-right: 10px;
-        }
-
-        .profile-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 20px auto;
-        }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .dashboard-nav-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
         .dashboard-nav-item {
-            padding: 15px 0;
-            color: white;
-            text-decoration: none;
-            display: block;
-            transition: all var(--transition-speed) ease;
+            transition: padding-left 0.2s ease-in-out;
         }
 
         .dashboard-nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding-left: 25px;
+            padding-left: 1.75rem;
         }
 
-        .logout-btn {
-            margin-top: 20px;
-            width: 100%;
+        .brand-logo span {
+            color: #fbbf24;
+            font-weight: bold;
         }
 
-        /* Content Area */
-        .dashboard-content {
-            flex-grow: 1;
-            padding: 20px;
-            transition: all var(--transition-speed) ease;
+        #theme-icon {
+            transition: transform 0.3s;
         }
 
-        #toggleSidebar {
-            display: none;
-            background-color: #333;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #toggleSidebar.active i {
+        .dark-mode #theme-icon {
             transform: rotate(180deg);
         }
 
-        /* Form Styles */
-        .form-control {
-            border-radius: 20px;
+        /* Profile Avatar */
+        .profile-avatar img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
         }
 
-        .btn-outline-light {
-            border-radius: 20px;
+        /* Dark mode styles */
+        .dark-mode {
+            background-color: #1a202c;
+            color: #e2e8f0;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .dashboard {
-                flex-direction: column;
-            }
-
-            .dashboard-nav {
-                width: 100%;
-                position: fixed;
-                top: 0;
-                left: -100%;
-                height: 100vh;
-                z-index: 1000;
-            }
-
-            .dashboard-nav.active {
-                left: 0;
-            }
-
-            #toggleSidebar {
-                display: block;
-            }
+        .dark-mode .dashboard-nav {
+            background-color: #2d3748;
         }
 
-        /* Dark Theme */
-        .dark-theme {
-            --text-color: #f4f4f4;
-            --bg-color: #333;
+        .dark-mode .dashboard-content {
+            background-color: #2d3748;
         }
 
-        .dark-theme .dashboard-content {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+        .dark-mode .text-gray-900 {
+            color: #e2e8f0;
         }
 
-        /* Animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+        .dark-mode .bg-gray-100 {
+            background-color: #1a202c;
         }
 
-        .dashboard-nav-item,
-        .card {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation: none !important;
-                transition: none !important;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            .dashboard-nav,
-            #toggleSidebar,
-            .logout-btn {
-                display: none;
-            }
-
-            .dashboard-content {
-                margin-left: 0;
-                width: 100%;
-            }
+        .dark-mode .bg-white {
+            background-color: #2d3748;
         }
     </style>
 </head>
 
-<body>
-
-    <div class="dashboard">
-        <!-- Sidebar Navigation -->
-        <div class="dashboard-nav">
-            <header>
-                <a href="{% url 'admin_panel' %}" class="brand-logo">
-                    <i class="fas fa-store"></i> <span>eShop Admin Panel</span>
+<div class="flex h-screen">
+    <!-- Sidebar Navigation -->
+    <div class="dashboard-nav flex flex-col justify-between text-white">
+        <div>
+            <header class="p-4 border-b border-gray-700">
+                <a href="{% url 'admin_panel' %}" class="brand-logo flex items-center space-x-2">
+                    <i class="fas fa-store icon-theme"></i>
+                    <span>eShop Admin Panel</span>
                 </a>
-                <div class="profile-avatar">
+
+                <!-- Profile Avatar -->
+                <div class="profile-avatar mt-4 flex justify-center">
                     {% if user.profile_picture %}
-                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid rounded-circle">
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="rounded-full">
                     {% else %}
-                        <img src="{% static 'image/auth.png' %}" alt="Default Avatar" class="img-fluid rounded-circle">
+                        <img src="{% static 'image/auth.png' %}" alt="Default Avatar" class="rounded-full">
                     {% endif %}
                 </div>
             </header>
 
-            <nav class="dashboard-nav-list">
-                <a href="{% url 'admin_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="{% url 'manage_users' %}" class="dashboard-nav-item"><i class="fas fa-users"></i> Manage Users</a>
-                <a href="{% url 'manage_products' %}" class="dashboard-nav-item"><i class="fas fa-box"></i> Manage Products</a>
-                <a href="{% url 'manage_messages' %}" class="dashboard-nav-item"><i class="fas fa-shopping-cart"></i> Manage Messages</a>
-                <a href="{% url 'manage_publicity' %}" class="dashboard-nav-item"><i class="fas fa-tags"></i> Manage Publicity</a>
-                <a href="{% url 'manage_discounts' %}" class="dashboard-nav-item"><i class="fas fa-gift"></i> Manage Discounts</a>
-                <a href="{% url 'payment_verification' %}" class="dashboard-nav-item"><i class="fas fa-credit-card"></i> Payment Verification</a>
-                <a href="{% url 'analyse' %}" class="dashboard-nav-item"><i class="fas fa-chart-line"></i> Sales Analytics</a>
-                <a href="{% url 'sender_panel' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with Delivery</a>
-                <a href="{% url 'update_setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
-                <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
+            <nav class="dashboard-nav-list mt-4 space-y-2">
+                <a href="{% url 'admin_panel' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-tachometer-alt mr-2 icon-theme"></i> Dashboard</a>
+                <a href="{% url 'manage_users' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-users mr-2 icon-theme"></i> Manage Users</a>
+                <a href="{% url 'manage_products' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-box mr-2 icon-theme"></i> Manage Products</a>
+                <a href="{% url 'manage_messages' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-shopping-cart mr-2 icon-theme"></i> Manage Messages</a>
+                <a href="{% url 'manage_publicity' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-tags mr-2 icon-theme"></i> Manage Publicity</a>
+                <a href="{% url 'manage_discounts' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-gift mr-2 icon-theme"></i> Manage Discounts</a>
+                <a href="{% url 'pre_command_list' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-cart-plus mr-2 icon-theme"></i> Pre command items</a>
+                <a href="{% url 'platform_statistics' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-chart-line mr-2 icon-theme"></i> Platform Statistic</a>
+                
+                <a href="{% url 'pre_command_transactions' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-bell mr-2 icon-theme"></i> Pre command Notification</a>
+                
+                <a href="{% url 'payment_verification' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-credit-card mr-2 icon-theme"></i> Payment Verification</a>
+                <a href="{% url 'analyse' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-chart-line mr-2 icon-theme"></i> Sales Analytics</a>
+                <a href="{% url 'sender_panel' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-comments mr-2 icon-theme"></i> Chat with Delivery</a>
+                <a href="{% url 'coupon_list' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-tags mr-2 icon-theme"></i> Coupons</a>                
+                <a href="{% url 'email_campaign_list' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-envelope mr-2 icon-theme"></i> Email Publicity</a>
+                <a href="{% url 'analytics_list' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-chart-bar mr-2 icon-theme"></i> Coupons analyse</a>
+                <a href="{% url 'about_us' %}" class="dashboard-nav-item block py-2 px-4 hover:bg-gray-600"><i class="fas fa-info-circle mr-2 icon-theme"></i> About Us</a>
+                
             </nav>
-
-            <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
         </div>
 
+        <a href="{% url 'logout' %}" class="block py-2 px-4 bg-red-600 hover:bg-red-700 text-center">Logout</a>
+    </div>
         <!-- Main Content -->
-        <button id="toggleSidebar" class="btn btn-outline-light d-lg-none">
-            <i class="fas fa-bars"></i>
-        </button>
+        <div class="flex-1 flex flex-col">
+            <header class="dashboard-toolbar bg-gray-800 p-4 flex justify-between items-center">
+                <!-- Toggle button for mobile sidebar -->
+                <button id="toggleSidebar" class="text-white lg:hidden">
+                    <i class="fas fa-bars"></i>
+                </button>
 
-        <main class="dashboard-app">
-            <header class="dashboard-toolbar">
                 <!-- Search and Tools -->
-                <form class="form-inline my-2 my-lg-0 ml-auto">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                <form class="flex space-x-2">
+                    <input class="form-control rounded-lg p-2 text-gray-900" type="search" placeholder="Search" aria-label="Search">
+                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg" type="submit">Search</button>
                 </form>
 
                 <!-- Language and Theme Switcher -->
-                <div class="ml-3 d-flex align-items-center">
-                    <div class="dropdown">
-                        <button class="btn btn-outline-light dropdown-toggle" id="languageDropdown" data-toggle="dropdown">
-                            <i class="fas fa-globe"></i>
+                <div class="flex items-center space-x-3">
+                    <div class="dropdown relative">
+                        <button class="bg-gray-600 text-white px-4 py-2 rounded-lg" id="languageDropdown">
+                            <i class="fas fa-globe"></i> <span id="currentLanguage">English</span>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Français</a>
+                        <div class="dropdown-menu hidden absolute right-0 mt-2 w-32 bg-white shadow-lg">
+                            <a class="block px-4 py-2 text-gray-800 hover:bg-gray-200" href="#" data-lang="en">English</a>
+                            <a class="block px-4 py-2 text-gray-800 hover:bg-gray-200" href="#" data-lang="fr">Français</a>
                         </div>
                     </div>
 
                     <!-- Theme Switcher -->
-                    <button class="btn btn-outline-light ml-3" id="theme-toggle">
+                    <button id="theme-toggle" class="bg-gray-600 text-white px-4 py-2 rounded-lg">
                         <i class="fas fa-moon" id="theme-icon"></i>
                     </button>
                 </div>
             </header>
 
-            <div class="dashboard-content">
+            <main class="dashboard-content p-4 bg-white flex-1 overflow-y-auto">
                 {% block content %}
                 {% endblock %}
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
 
-<style>
-    #toggleSidebar {
-    display: none;
-    margin-bottom: 20px;
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    <!-- Tailwind JavaScript CDN for dropdowns and dynamic content -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle sidebar in mobile view
+            document.getElementById('toggleSidebar').addEventListener('click', function() {
+                document.querySelector('.dashboard-nav').classList.toggle('hidden');
+            });
 
-#toggleSidebar.active {
-    background-color: #444;
-}
+            // Language dropdown toggle and change
+            const languageDropdown = document.getElementById('languageDropdown');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            const currentLanguage = document.getElementById('currentLanguage');
 
-#toggleSidebar.active i {
-    transform: rotate(180deg);
-}
+            languageDropdown.addEventListener('click', function() {
+                dropdownMenu.classList.toggle('hidden');
+            });
 
-#toggleSidebar i {
-    font-size: 1.5rem;
-    transition: all 0.3s ease;
-}
-</style>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script>
-$(document).ready(function() {
-    // Toggle sidebar in mobile view
-    $('#toggleSidebar').on('click', function() {
-        $('.dashboard-nav').toggleClass('active');
-        $(this).toggleClass('active');
-    });
+            dropdownMenu.querySelectorAll('a').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    currentLanguage.textContent = this.textContent;
+                    dropdownMenu.classList.add('hidden');
+                    // Here you would typically trigger a function to change the language
+                    // changeLanguage(this.getAttribute('data-lang'));
+                });
+            });
 
-    // Smooth transitions for nav links on hover
-    $('.dashboard-nav-item').hover(function() {
-        $(this).animate({
-            paddingLeft: '25px'
-        }, 200);
-    }, function() {
-        $(this).animate({
-            paddingLeft: '15px'
-        }, 200);
-    });
+            // Theme toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const body = document.body;
 
-    // Close sidebar when clicking outside of it (for mobile)
-    $(document).on('click', function(event) {
-        if (!$(event.target).closest('.dashboard-nav, #toggleSidebar').length) {
-            if ($('.dashboard-nav').hasClass('active')) {
-                $('.dashboard-nav').removeClass('active');
-                $('#toggleSidebar').removeClass('active');
-            }
-        }
-    });
-
-    // Add active class to toggle button when sidebar is open
-    $('.dashboard-nav').on('click', function() {
-        if ($(this).hasClass('active')) {
-            $('#toggleSidebar').addClass('active');
-        } else {
-            $('#toggleSidebar').removeClass('active');
-        }
-    });
-
-    // Add event listener to the main content area to close the sidebar when clicked
-    $('.dashboard-content').on('click', function() {
-        if ($('.dashboard-nav').hasClass('active')) {
-            $('.dashboard-nav').removeClass('active');
-            $('#toggleSidebar').removeClass('active');
-        }
-    });
-});
-</script>
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                if (body.classList.contains('dark-mode')) {
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                    document.querySelectorAll('.fas').forEach(icon => {
+                        icon.style.color = '#e2e8f0';  // Light color for dark mode
+                    });
+                } else {
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                    document.querySelectorAll('.fas').forEach(icon => {
+                        icon.style.color = '';  // Reset to default color
+                    });
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
