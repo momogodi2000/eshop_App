@@ -1232,3 +1232,19 @@ def setting_deliver(request):
         form = UpdateSettingsForm(instance=user)
     
     return render(request, 'panel/deliver/update/setting_deliver.html', {'form': form})
+
+
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from .models import Receipt
+
+@login_required
+def manage_deliver_view(request):
+    # Check if the user has the "deliver" role
+    if request.user.role != 'deliver':
+        raise PermissionDenied("You do not have permission to access this page.")
+    
+    # Get all receipts to display for the deliver
+    receipts = Receipt.objects.select_related('user').all()
+    
+    return render(request, 'panel/deliver/command/manage_deliver.html', {'receipts': receipts})

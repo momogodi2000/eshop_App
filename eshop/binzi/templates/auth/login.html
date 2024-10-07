@@ -5,67 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  
     <style>
         body {
             background-image: url('{% static "image/login.jpeg" %}');
             background-size: cover;
             background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            color: #ffffff81;
-        }
-
-        .form-container {
-            max-width: 500px;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.274);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .form-container:hover {
-            transform: scale(1.02);
-        }
-
-        .btn-social {
-            transition: transform 0.3s ease;
-        }
-
-        .btn-social:hover {
-            transform: scale(1.1);
-        }
-
-        /* Responsive styles */
-        @media (max-width: 576px) {
-            .form-container {
-                margin: 20px;
-                padding: 15px;
-            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="form-container">
-            <h2>Login</h2>
-            <form method="post">
-                {% csrf_token %}
+<body class="flex items-center justify-center min-h-screen bg-gray-900 bg-opacity-75">
+    <div class="max-w-md w-full bg-white bg-opacity-40 backdrop-blur-lg p-8 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+        <h2 class="text-2xl font-semibold text-center text-gray-800">Login</h2>
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="mb-4">
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-primary btn-block">Login</button>
-            </form>
-            <div class="text-center mt-3">
-                <p>Don't have an account? <a href="{% url 'register' %}" class="btn btn-primary">Register</a></p>
-                <p><a href="{% url 'forgot_password' %}" class="btn btn-primary">Forgot Password?</a></p>
-                <p><a href="{% url 'home' %}" class="btn btn-primary">Return Home</a></p>
             </div>
-            
+            <button type="submit" class="w-full py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Login</button>
+        </form>
+        <div class="text-center mt-3">
+            <p class="text-gray-700">Don't have an account? <a href="{% url 'register' %}" class="text-blue-600 hover:underline">Register</a></p>
+            <p><a href="{% url 'forgot_password' %}" class="text-blue-600 hover:underline">Forgot Password?</a></p>
+            <p><a href="{% url 'home' %}" class="text-blue-600 hover:underline">Return Home</a></p>
         </div>
     </div>
 </body>

@@ -124,9 +124,11 @@ urlpatterns = [
 
     path('pre_command_products/', views.pre_command_products, name='pre_command_products'),
     path('pre-command/payment/<int:product_id>/', views.product_payment, name='product_payment'),
-
-
     path('pre-command-transactions/', views.pre_command_transactions, name='pre_command_transactions'),
+
+
+    path('manage/', views.manage_deliver_view, name='manage_deliver'),
+
 
 
 ]

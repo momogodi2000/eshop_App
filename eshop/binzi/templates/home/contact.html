@@ -6,12 +6,6 @@
 {% block styles %}
 <style>
     /* Global Styles */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       font-family: 'Poppins', sans-serif;
       background-color: #f4f6f9;
@@ -20,57 +14,7 @@
     }
 
     h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #00698f;
-    }
-
-    .text-center {
-      text-align: center;
-    }
-
-    /* Form Styles */
-    .contact-form {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 30px;
-      background-color: #fff;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-form label {
-      font-weight: bold;
-    }
-
-    .contact-form input, 
-    .contact-form textarea {
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-      transition: border-color 0.3s ease;
-    }
-
-    .contact-form input:focus, 
-    .contact-form textarea:focus {
-      border-color: #00698f;
-      outline: none;
-    }
-
-    .btn-primary {
-      background-color: #00698f;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-primary:hover {
-      background-color: #005a77;
+      @apply text-4xl font-bold text-teal-700;
     }
 
     /* Animation Classes */
@@ -78,69 +22,43 @@
       animation-duration: 1.5s;
     }
 
-    /* Footer */
     footer {
-      padding: 20px;
-      text-align: center;
-      background-color: #333;
-      color: #fff;
-      position: relative;
-      bottom: 0;
-      width: 100%;
-    }
-
-    /* Media Queries */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2rem;
-      }
-
-      .contact-form {
-        padding: 20px;
-      }
-    }
-
-    @media (max-width: 576px) {
-      .contact-form {
-        padding: 15px;
-      }
+      @apply p-5 text-center bg-gray-800 text-white;
     }
 </style>
 
-<!-- Bootstrap CSS and Animate.css -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-<link href="{% static 'css/contact.css' %}" rel="stylesheet">
+<!-- Tailwind CSS -->
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 {% endblock %}
 
 {% block content %}
-<main class="container mt-5">
+<main class="container mx-auto mt-10">
     <h1 class="text-center mb-4 animate__animated animate__fadeInDown">Contact Us</h1>
-    <form action="/send_message" method="POST" class="contact-form animate__animated animate__fadeInUp" id="contactForm">
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+    <form action="/send_message" method="POST" class="max-w-lg mx-auto p-8 bg-white rounded-lg shadow-lg contact-form animate__animated animate__fadeInUp" id="contactForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-bold mb-2">Name</label>
+                <input type="text" class="block w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-teal-700" id="name" name="name" placeholder="Your Name" required>
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-bold mb-2">Email</label>
+                <input type="email" class="block w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-teal-700" id="email" name="email" placeholder="Your Email" required>
             </div>
         </div>
-        <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+        <div class="mb-4">
+            <label for="message" class="block text-sm font-bold mb-2">Message</label>
+            <textarea class="block w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-teal-700" id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary w-100 animate__animated animate__pulse" id="submitButton">Send Message</button>
+        <button type="submit" class="w-full px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-600 focus:outline-none transition duration-300 animate__animated animate__pulse" id="submitButton">Send Message</button>
     </form>
 </main>
 {% endblock %}
 
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
-<script src="{% static 'js/contact.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
 <script>
     // Add fade-out animation to the form upon submission
     document.querySelector('#contactForm').addEventListener('submit', function(event) {
