@@ -117,6 +117,8 @@ class Receipt(models.Model):
     payment_method = models.CharField(max_length=50)  # E.g., "PayPal", "Credit Card"
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50)  # E.g., "Completed", "Pending"
+    pdf = models.FileField(upload_to='receipts/', null=True, blank=True)  # Add this line to store the PDF
+
 
     def __str__(self):
         return f'Receipt {self.transaction_id} for {self.user.username}'

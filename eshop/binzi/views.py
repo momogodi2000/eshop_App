@@ -667,13 +667,23 @@ def product_browsing(request):
 ##payment API
 import json
 import time
+import logging
+import math
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 from .models import Receipt
 from django.urls import reverse
 from campay.sdk import Client as CamPayClient
+from io import BytesIO
+from django.core.files.base import ContentFile
+from xhtml2pdf import pisa
+
+logger = logging.getLogger(__name__)
 
 campay = CamPayClient({
     "app_username": "JByBUneb4BceuEyoMu1nKlmyTgVomd-QfokOrs4t4B9tPJS7hhqUtpuxOx5EQ7zpT0xmYw3P6DU6LU0mH2DvaQ",
@@ -686,47 +696,56 @@ campay = CamPayClient({
 @login_required
 def process_payment(request):
     try:
-        # Parse JSON request data
         data = json.loads(request.body)
+        logger.info(f"Received payment data: {data}")
+        
         payment_method = data.get('paymentMethod')
         cart_items = data.get('cartItems')
         cart_total = data.get('cartTotal')
         phone_number = data.get('phoneNumber')
 
-        # Validate input data
         if not all([payment_method, cart_items, cart_total, phone_number]):
-            return JsonResponse({'success': False, 'message': 'Missing required data'}, status=400)
+            missing = [k for k, v in {'paymentMethod': payment_method, 'cartItems': cart_items, 'cartTotal': cart_total, 'phoneNumber': phone_number}.items() if not v]
+            logger.error(f"Missing required data: {missing}")
+            return JsonResponse({'success': False, 'message': f'Missing required data: {", ".join(missing)}'}, status=400)
 
-        # Ensure cart_total is a float
         try:
             cart_total = float(cart_total)
+            # Round up to the nearest whole number
+            cart_total = math.ceil(cart_total)
         except ValueError:
+            logger.error(f"Invalid cart total: {cart_total}")
             return JsonResponse({'success': False, 'message': 'Invalid cart total'}, status=400)
 
-        # Validate phone number format
         phone_number = phone_number.strip().replace(" ", "")
         if not phone_number.isdigit() or len(phone_number) != 9:
+            logger.error(f"Invalid phone number format: {phone_number}")
             return JsonResponse({'success': False, 'message': 'Invalid phone number format'}, status=400)
 
-        # Generate unique external reference
         external_reference = f"TRX-{request.user.id}-{int(time.time())}"
 
-        # Process payment with CamPay
         try:
             collect = campay.collect({
-                "amount": str(cart_total),
+                "amount": str(cart_total),  # Convert to string after rounding
                 "currency": "XAF",
-                "from": "237" + phone_number,  # Prefix country code
+                "from": "237" + phone_number,
                 "description": "Purchase Payment",
                 "external_reference": external_reference,
             })
+            logger.info(f"CamPay response: {collect}")
         except Exception as e:
+            logger.error(f"CamPay error: {str(e)}")
             return JsonResponse({'success': False, 'message': f'CamPay error: {str(e)}'}, status=400)
 
-        # Check if payment was successful
         if collect.get('status') == 'SUCCESSFUL':
-            # Generate receipt
-            receipt_id = generate_receipt(cart_items, cart_total, request.user)
+            receipt = Receipt.objects.create(
+                transaction_id=external_reference,
+                user=request.user,
+                amount=cart_total,
+                payment_method=payment_method,
+                status='Completed'
+            )
+            receipt_id = generate_receipt(cart_items, cart_total, request.user, receipt)
             if receipt_id:
                 return JsonResponse({
                     'success': True,
@@ -734,25 +753,33 @@ def process_payment(request):
                     'receiptUrl': reverse('download_receipt', args=[receipt_id])
                 })
             else:
+                logger.error("Failed to generate receipt")
                 return JsonResponse({'success': False, 'message': 'Failed to generate receipt'}, status=500)
         else:
-            return JsonResponse({'success': False, 'message': collect.get('reason', 'Payment failed')}, status=400)
+            logger.error(f"Payment failed. CamPay response: {collect}")
+            return JsonResponse({
+                'success': False, 
+                'message': f"Payment failed: {collect.get('message', 'Unknown reason')}",
+                'camPayResponse': collect
+            }, status=400)
 
     except json.JSONDecodeError:
+        logger.error("Invalid JSON data")
         return JsonResponse({'success': False, 'message': 'Invalid JSON data'}, status=400)
     except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
         return JsonResponse({'success': False, 'message': f'Unexpected error: {str(e)}'}, status=500)
 
-@login_required
-def generate_receipt(cart_items, cart_total):
-    try:
-        # Create a receipt object and save it to the database
-        receipt = Receipt.objects.create(total=cart_total)
+# ... rest of the code remains the same ...
 
-        # Generate PDF receipt
+
+def generate_receipt(cart_items, cart_total, user, receipt):
+    try:
         context = {
             'cart_items': cart_items,
             'cart_total': cart_total,
+            'user': user,
+            'receipt': receipt,
         }
         html = render_to_string('panel/clients/product/receipt.html', context)
         result = BytesIO()
@@ -760,22 +787,23 @@ def generate_receipt(cart_items, cart_total):
 
         if not pdf.err:
             receipt_file = ContentFile(result.getvalue())
-            receipt.pdf.save(f'receipt_{receipt.id}.pdf', receipt_file)
+            receipt.pdf.save(f'receipt_{receipt.id}.pdf', receipt_file)  # Save the generated PDF
+            receipt.save()  # Save the receipt after adding the PDF file
             return receipt.id
         else:
-            return None  # Return None if PDF generation fails
+            return None
     except Exception as e:
         print(f"Error generating receipt: {e}")
         return None
 
 
 @login_required
-def download_receipt(request, transaction_id):
-    receipt = get_object_or_404(Receipt, id=transaction_id)
+def download_receipt(request, receipt_id):
+    receipt = get_object_or_404(Receipt, id=receipt_id, user=request.user)
     html = render_to_string('panel/clients/product/receipt.html', {'receipt': receipt})
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="receipt_{transaction_id}.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="receipt_{receipt_id}.pdf"'
 
     pisa_status = pisa.CreatePDF(html, dest=response)
 
